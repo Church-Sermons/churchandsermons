@@ -1,9 +1,5 @@
 <p align="center"><img src="./public/images/churchandsermons.png" width="200" height="200"></p>
 
-<p align="center">
-
-</p>
-
 ## About Church And Sermons
 
 Church and Sermons is a web application that provides a platform to access organisations, view profiles, add and view resources and participate in sermons
