@@ -1,0 +1,39 @@
+/*
+===================================================
+=============== Form Overrides ================
+===================================================
+*/
+
+*.is-muted:hover {
+    color: $grey-light !important;
+}
+/*
+===================================================
+=============== Dropdown Overrides ================
+===================================================
+*/
+
+*.dropdown {
+    position: relative;
+    .dropdown-menu {
+        position: absolute;
+        z-index: 1000;
+        background: #fff;
+        min-width: 200px;
+        display: none;
+        left: 0;
+        top: 100%;
+        box-shadow: 0 0 1px rgba(57, 70, 78, 0.15),
+            0 20px 55px -8px rgba(57, 70, 78, 0.15);
+        text-align: left;
+    }
+
+    &.is-aligned-right .dropdown-menu {
+        left: auto;
+        right: 0;
+    }
+
+    &.is-open .dropdown-menu {
+        display: block;
+    }
+}

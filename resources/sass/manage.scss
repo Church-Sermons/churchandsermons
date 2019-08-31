@@ -1,0 +1,57 @@
+*.side-menu {
+    padding-top: 10px;
+    height: 100%;
+    overflow-y: auto;
+    position: fixed;
+    width: inherit;
+    overflow-x: hidden;
+    background: white;
+}
+
+.custom-container {
+    width: 100%;
+    min-height: 100%;
+    padding: 20px;
+}
+
+body {
+    background-color: whitesmoke;
+}
+
+.right-side {
+    flex: 1;
+    min-height: 100vh;
+    padding: 10px 30px;
+}
+
+.left-side {
+    width: 230px;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+.inner-container {
+    display: flex;
+    width: 100%;
+    min-height: 100%;
+}
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+.menu-list li ul {
+    margin: 0 initial;
+}
+
+.menu-label {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.menu-list li a.menu-link {
+    padding-left: 20px;
+    padding-right: 10px;
+}
