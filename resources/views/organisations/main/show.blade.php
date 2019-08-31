@@ -173,6 +173,28 @@
                                     </div>
                                 </div>
                                 <div class="card-content">
+                                    <div class="tabs is-left">
+                                        <ul>
+                                            <li class="is-active">
+                                                <a href="#">
+                                                    <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+                                                    <span>Audio</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <span class="icon is-small"><i class="fas fa-film"></i></span>
+                                                    <span>Video</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <span class="icon is-small"><i class="fas fa-file-alt"></i></span>
+                                                    <span>Documents</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                     @if ($organisation->resources->count() > 0)
 
                                         <div class="table-container">
@@ -189,14 +211,14 @@
                                                         <tr>
                                                             <td>{{ $resource->name }}</td>
                                                             <td>{{ $resource->description }}</td>
-                                                            {{-- <td><a data-lightbox="resource" class="button is-success is-outlined player" href="{{ $resource->file_name }}" data-title="{{ $resource->name }}"><i class="{{ $resource->category->name == 'audio'?'far fa-play-circle':'fas fa-video' }}"></i></a></td> --}}
-                                                            <td>
+                                                            <td><a data-lightbox="resource" class="button is-success is-outlined player" href="{{ $resource->file_name }}" data-title="{{ $resource->name }}"><i class="{{ $resource->category->name == 'audio'?'far fa-play-circle':'fas fa-video' }}"></i></a></td>
+                                                            {{-- <td>
                                                                 @if ($resource->category->name == 'audio')
                                                                     <audio id="player" controls>
                                                                         <source src="{{ asset('storage/'.$resource->file_name) }}" type="audio/mp3" />
                                                                     </audio>
                                                                 @endif
-                                                            </td>
+                                                            </td> --}}
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
