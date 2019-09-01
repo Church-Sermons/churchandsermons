@@ -375,10 +375,10 @@
                                         <h4 class="subtitle has-text-black-ter is-4">Write Review</h4>
                                         <div class="field">
                                             <div class="control">
-                                                <input type="hidden" name="rating" class="rating-store" value="{{ Faker\Factory::create()->randomFloat(1, 1, 4) }}">
+                                                <input type="hidden" name="rating" class="rating-store" value="1">
 
                                                 <div class="has-text-grey">
-                                                    Rating: <span class="rating-display">{{ Faker\Factory::create()->randomFloat(1, 1, 4) }}</span>/5
+                                                    Rating: <span class="rating-display">1</span>/5
                                                 </div>
                                             </div>
                                             @error('rating')
