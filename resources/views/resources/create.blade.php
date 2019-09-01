@@ -93,6 +93,7 @@
         @slot('col')
             is-one-third is-offset-one-third
         @endslot
+
         @slot('title')
             Create Category
         @endslot
