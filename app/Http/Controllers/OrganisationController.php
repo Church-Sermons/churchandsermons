@@ -11,10 +11,11 @@ use App\User;
 
 class OrganisationController extends Controller
 {
-
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator|author')->except(['index', 'show']);
+        $this->middleware(
+            'role:administrator|superadministrator|author'
+        )->except(['index', 'show']);
     }
     /**
      * Display a listing of the resource.
@@ -23,11 +24,13 @@ class OrganisationController extends Controller
      */
     public function index()
     {
+        $organisations = Organisation::orderBy('id', 'desc')
+            ->with('category')
+            ->paginate(10);
 
-        $organisations = Organisation::orderBy('id', 'desc')->with('category')->paginate(10);
-
-        return view('organisations.main.index')->withOrganisations($organisations);
-
+        return view('organisations.main.index')->withOrganisations(
+            $organisations
+        );
     }
 
     /**
@@ -61,27 +64,28 @@ class OrganisationController extends Controller
         ]);
 
         // store to db
-        $organisation = new Organisation();
-        $organisation->name = $request->name;
-        $organisation->email = $request->email;
-        $organisation->phone = $request->phone;
-        $organisation->website = $request->website;
-        $organisation->address = $request->address;
-        $organisation->lat = $request->lat;
-        $organisation->lon = $request->lon;
-        $organisation->description = $request->description;
+        $organisation = new Organisation(
+            $request->except(['category', 'logo', 'protocol'])
+        );
         $organisation->category_id = $request->category;
-        $organisation->logo = $request->logo->store('uploads', 'public');
+        // $organisation->logo = $request->logo->store('uploads', 'public');
         $organisation->user_id = Auth::user()->id;
 
-        if($organisation->save()){
+        if ($organisation->save()) {
+            // associate with media library
+            $organisation
+                ->addMedia($request->logo)
+                ->usingName($request->name . '-Logo')
+                ->toMediaCollection('logo');
+
             Session::flash('success', 'Organisation created successfully');
             return redirect()->route('organisations.index');
-        }else{
-
-            return redirect()->back()->withInput()->withErrors($validator);
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
         }
-
     }
 
     /**
@@ -92,7 +96,9 @@ class OrganisationController extends Controller
      */
     public function show($uuid)
     {
-        $organisation = Organisation::where('uuid', $uuid)->with(['category', 'reviews'])->first();
+        $organisation = Organisation::where('uuid', $uuid)
+            ->with(['category', 'reviews'])
+            ->first();
 
         return view('organisations.main.show')->withOrganisation($organisation);
     }
@@ -105,15 +111,17 @@ class OrganisationController extends Controller
      */
     public function edit($uuid)
     {
-        $organisation = Organisation::where('uuid', $uuid)->with('category')->first();
+        $organisation = Organisation::where('uuid', $uuid)
+            ->with('category')
+            ->first();
 
-        if($organisation->user_id != Auth::user()->id){
-
+        if ($organisation->user_id != Auth::user()->id) {
             return redirect()->route('organisations.index');
         }
         $categories = OrganisationCategory::all();
-        return view('organisations.main.edit')->withOrganisation($organisation)
-                            ->withCategories($categories);
+        return view('organisations.main.edit')
+            ->withOrganisation($organisation)
+            ->withCategories($categories);
     }
 
     /**
@@ -127,7 +135,7 @@ class OrganisationController extends Controller
     {
         $organisation = Organisation::where('uuid', $uuid)->first();
 
-        if($organisation->user_id != Auth::user()->id){
+        if ($organisation->user_id != Auth::user()->id) {
             Session::flash('error', 'Unauthorized Access');
 
             return redirect()->route('organisations.index');
@@ -145,25 +153,18 @@ class OrganisationController extends Controller
         ]);
 
         // store to db
-
-        $organisation->name = $request->name;
-        $organisation->email = $request->email;
-        $organisation->phone = $request->phone;
-        $organisation->website = $request->website;
-        $organisation->address = $request->address;
-        $organisation->lat = $request->lat;
-        $organisation->lon = $request->lon;
-        $organisation->description = $request->description;
+        $organisation->fill($request->except(['category', 'logo', 'protocol']));
         $organisation->category_id = $request->category;
-        $organisation->logo = $request->logo->store('uploads', 'public');
         $organisation->user_id = Auth::user()->id;
 
-        if($organisation->save()){
+        if ($organisation->save()) {
             Session::flash('success', 'Organisation updated successfully');
             return redirect()->route('organisations.index');
-        }else{
-
-            return redirect()->back()->withInput()->withErrors($validator);
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
         }
     }
 

@@ -15,16 +15,32 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 // Manage - Content Providers
-Route::prefix('manage')->middleware('role:superadministrator|administrator')->group(function(){
-  Route::get('/', 'ManageController@index')->name('manage.index');
-  Route::get('/dashboard', 'ManageController@dashboard')->name('manage.dashboard');
-  Route::resource('/users', 'UserController');
-  Route::resource('/permissions', 'PermissionController', ['except' => 'destroy']);
-  Route::resource('/roles', 'RoleController', ['except' => 'destroy']);
-  Route::resource('/posts', 'PostController');
-});
+Route::prefix('manage')
+    ->middleware('role:superadministrator|administrator')
+    ->group(function () {
+        Route::get('/', 'ManageController@index')->name('manage.index');
+        Route::get('/dashboard', 'ManageController@dashboard')->name(
+            'manage.dashboard'
+        );
+        Route::resource('/users', 'UserController');
+        Route::resource('/permissions', 'PermissionController', [
+            'except' => 'destroy'
+        ]);
+        Route::resource('/roles', 'RoleController', ['except' => 'destroy']);
+        Route::resource('/posts', 'PostController');
+    });
+
+/**
+ *
+ * Category Routes
+ *
+ */
+Route::resource('/categories', 'OrganisationCategoryController');
+Route::post(
+    '/categories/store-json',
+    'OrganisationCategoryController@storeCategoryJSON'
+)->name('categories.storejson');
 
 /**
  *
@@ -33,9 +49,8 @@ Route::prefix('manage')->middleware('role:superadministrator|administrator')->gr
  *
  */
 Route::resource('/organisations', 'OrganisationController');
-Route::resource('/categories', 'OrganisationCategoryController');
 // Organisation&Events
-Route::prefix('/organisations/{organisation_id}')->group(function(){
+Route::prefix('/organisations/{organisation_id}')->group(function () {
     // organisation events
     Route::resource('/events', 'EventController', ['as' => 'organisations']);
 
@@ -43,13 +58,17 @@ Route::prefix('/organisations/{organisation_id}')->group(function(){
     Route::resource('/team', 'TeamController', ['as' => 'organisations']);
 
     // organisation contact
-    Route::resource('/contacts', 'ContactController', ['as' => 'organisations']);
+    Route::resource('/contacts', 'ContactController', [
+        'as' => 'organisations'
+    ]);
 
     // organisation claims
     Route::resource('/claims', 'ClaimController', ['as' => 'organisations']);
 
     // organisation resource
-    Route::resource('/resources', 'ResourceController', ['as' => 'organisations']);
+    Route::resource('/resources', 'OrganisationResourceController', [
+        'as' => 'organisations'
+    ]);
 
     // organisation reviews
     Route::resource('/reviews', 'ReviewController', ['as' => 'organisations']);
@@ -62,7 +81,7 @@ Route::prefix('/organisations/{organisation_id}')->group(function(){
  *
  */
 Route::resource('/profiles', 'ProfileController');
-Route::prefix('/profiles/{profile_id}')->group(function(){
+Route::prefix('/profiles/{profile_id}')->group(function () {
     // profile events
     Route::resource('/events', 'EventController', ['as' => 'profiles']);
 
@@ -73,7 +92,9 @@ Route::prefix('/profiles/{profile_id}')->group(function(){
     Route::resource('/claims', 'ClaimController', ['as' => 'profiles']);
 
     // profile resource
-    Route::resource('/resources', 'ResourceController', ['as' => 'profiles']);
+    Route::resource('/resources', 'ProfileResourceController', [
+        'as' => 'profiles'
+    ]);
 
     // profile reviews
     Route::resource('/reviews', 'ReviewController', ['as' => 'profiles']);
@@ -87,29 +108,29 @@ Route::prefix('/profiles/{profile_id}')->group(function(){
  */
 Route::resource('/resources', 'ResourceController');
 
-
-
 // Auth Routes
 Auth::routes(['verify' => true]);
 
 // Home Routes
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/fake', function(){
+Route::get('/fake', function () {
     $faker = Faker\Factory::create();
     $data = array();
 
-    for($i = 0; $i < 10;$i++){
-        $data [] = array(
+    for ($i = 0; $i < 10; $i++) {
+        $data[] = array(
             'name' => $faker->name(),
             'company_name' => $faker->company,
             'email' => $faker->companyEmail,
             'phone' => $faker->e164PhoneNumber,
-            'website' => 'https://'.$faker->domainName,
+            'website' => 'https://' . $faker->domainName,
             'address' => $faker->address,
-            'coordinates' => array('latitude' => $faker->latitude, 'longitude' => $faker->longitude),
-            'description' => $faker->paragraph(),
-
+            'coordinates' => array(
+                'latitude' => $faker->latitude,
+                'longitude' => $faker->longitude
+            ),
+            'description' => $faker->paragraph()
         );
     }
 

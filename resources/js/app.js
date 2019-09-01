@@ -25,3 +25,4 @@ Vue.component("SlugWidget", require("./components/SlugWidget.vue").default);
 
 // require scripts
 require("./manage.js");
+require('./modal.js');

@@ -10,11 +10,11 @@ try {
     window.$ = window.jQuery = require("jquery");
 } catch (e) {}
 
-/**
- * Load LighBox
- */
-
+// Load Lightbox
 window.lightbox = require("lightbox2");
+
+// Load Plyr
+window.plyr = require("plyr");
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

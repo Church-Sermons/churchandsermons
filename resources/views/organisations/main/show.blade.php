@@ -10,7 +10,7 @@
                         <div class="level">
                             <div class="level-item has-text-centered">
                                 <figure class="image is-128x128 has-text-centered">
-                                    <img src="{{ asset('/storage/'.$organisation->logo)}}" alt="organisation-logo">
+                                    <img src="{{ $organisation->getFirstMediaUrl('logo', 'main') }}" alt="{{ $organisation->name.'-Logo' }}">
                                 </figure>
                             </div>
                         </div>
@@ -164,10 +164,10 @@
                                 <div class="card-header">
                                     <h4 class="card-header-title">Resources</h4>
                                     <div class="is-pulled-right">
-                                        <a href="{{ route('organisations.resources.create', $organisation->uuid) }}" class="button is-primary is-outlined m-t-5 m-r-5" title="Add Member">
+                                        <a id="addResource" href="{{ route('organisations.resources.create', $organisation->uuid) }}" class="button is-primary is-outlined m-t-5 m-r-5" title="Add Member">
                                             <i class="fas fa-plus"></i>
                                         </a>
-                                        <a href="{{ route('organisations.resources.index', $organisation->uuid) }}" class="button is-primary is-outlined m-t-5 m-r-5" title="View All">
+                                        <a id="viewResource" href="{{ route('organisations.resources.index', $organisation->uuid) }}" class="button is-primary is-outlined m-t-5 m-r-5" title="View All">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </div>
@@ -175,58 +175,122 @@
                                 <div class="card-content">
                                     <div class="tabs is-left">
                                         <ul>
-                                            <li class="is-active">
-                                                <a href="#">
+                                            <li class="tab">
+                                                <a href="#audio" class="tab-link tab-active">
                                                     <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
                                                     <span>Audio</span>
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a href="#">
+                                            <li class="tab">
+                                                <a href="#video" class="tab-link">
                                                     <span class="icon is-small"><i class="fas fa-film"></i></span>
                                                     <span>Video</span>
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a href="#">
+                                            <li class="tab">
+                                                <a href="#document" class="tab-link">
                                                     <span class="icon is-small"><i class="fas fa-file-alt"></i></span>
                                                     <span>Documents</span>
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
-                                    @if ($organisation->resources->count() > 0)
-
-                                        <div class="table-container">
-                                            <table class="table is-fullwidth">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th>Description</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($organisation->resources as $resource)
+                                    <div class="tab-content-active tab-content" id="audio">
+                                        @if ($organisation->getMedia('audios')->count() > 0)
+                                            <div class="table-container">
+                                                <table class="table is-fullwidth">
+                                                    <thead>
                                                         <tr>
-                                                            <td>{{ $resource->name }}</td>
-                                                            <td>{{ $resource->description }}</td>
-                                                            <td><a data-lightbox="resource" class="button is-success is-outlined player" href="{{ $resource->file_name }}" data-title="{{ $resource->name }}"><i class="{{ $resource->category->name == 'audio'?'far fa-play-circle':'fas fa-video' }}"></i></a></td>
-                                                            {{-- <td>
-                                                                @if ($resource->category->name == 'audio')
-                                                                    <audio id="player" controls>
-                                                                        <source src="{{ asset('storage/'.$resource->file_name) }}" type="audio/mp3" />
-                                                                    </audio>
-                                                                @endif
-                                                            </td> --}}
+                                                            <th>Name</th>
+                                                            <th>Size</th>
+                                                            <th></th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($organisation->getMedia('audios') as $media)
+                                                            <tr>
+                                                                <td>{{ $media->name }}</td>
+                                                                <td>{{ $media->human_readable_size }}</td>
+                                                                <td>
+                                                                    <audio id="audio-player" class="is-pulled-right" controls>
+                                                                        <source src="{{ $media->getUrl() }}" type="{{ $media->mime_type }}"/>
+                                                                    </audio>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @else
+                                            <p>There are no audio resources</p>
+                                        @endif
+                                    </div>
+
+                                    <div id="video" class="tab-content">
+                                        @if ($organisation->getMedia('videos')->count() > 0)
+                                            <div class="table-container">
+                                                <table class="table is-fullwidth">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Size</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($organisation->getMedia('videos') as $media)
+                                                            <tr>
+                                                                <td>{{ $media->name }}</td>
+                                                                <td>{{ $media->human_readable_size }}</td>
+                                                                <td>
+                                                                    <a class="media-toggler button is-success is-outlined player" href="#"
+                                                                        data-url="{{ $media->getFullUrl() }}" data-name="{{ $media->name }}"
+                                                                        data-type="{{ $media->mime_type }}">
+                                                                        <i class="fas fa-video"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @else
+                                            <p>There are no video resources</p>
+                                        @endif
+                                    </div>
+
+
+                                        <div id="document" class="tab-content">
+                                            @if ($organisation->getMedia('documents')->count() > 0)
+                                                <div class="table-container">
+                                                    <table class="table is-fullwidth">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Size</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($organisation->getMedia('documents') as $media)
+                                                                <tr>
+                                                                    <td>{{ $media->name }}</td>
+                                                                    <td>{{ $media->human_readable_size }}</td>
+                                                                    <td>
+                                                                        <a class="button is-success is-outlined player" href="#">
+                                                                            <i class="fas fa-file-alt"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            @else
+                                                <p>There are no documents</p>
+                                            @endif
                                         </div>
-                                    @else
-                                        <p>There are no resources</p>
-                                    @endif
+
                                 </div>
                             </div>
 
@@ -416,30 +480,73 @@
         </div>
     </div>
 </div>
+@component('components.modal')
+    @slot('col')
+        is-three-fifths is-offset-one-fifth
+    @endslot
+    @slot('title')
+        <span class="media-title"></span>
+    @endslot
+    <div class="columns">
+        <div class="column is-fullwidth">
+            <video id="player" controls>
+                <source src="#" type=# />
+                Your browser does not support the video tag
+            </video>
+        </div>
+    </div>
+
+@endcomponent
+@endsection
+@section('styles')
+    <style>
+        #player{
+            width: 100%;
+            height: 100%;
+        }
+        .tab-content{
+            display: none;
+        }
+
+        .tab-content-active{
+            display: block;
+        }
+        .tab-active{
+            color: hsl(171, 100%, 41%) !important;
+            border-bottom-color: hsl(171, 100%, 41%) !important;
+        }
+    </style>
 @endsection
 @section('scripts')
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         // extract plucked data from data in html
-        const ratingsDOM = JSON.parse(document.querySelector('#ratings').getAttribute('data-ratings'));
-        const ids = JSON.parse(document.querySelector('#reviewIds').getAttribute('data-ids'));
+        const ratingsDOM = document.querySelector('#ratings');
+        const ids = document.querySelector('#reviewIds');
 
-        // assign arrays to object
-        let ratings = Object.assign(...ids.map((v, i) => ({[`comment${v}`]:ratingsDOM[i]})));
+        if(ratingsDOM && ids){
+            // json parse & get attribute
+            const parsedRatingsDOM = JSON.parse(ratingsDOM.getAttribute('data-ratings'));
+            const parsedIds = JSON.parse(ids.getAttribute('data-ids'));
 
-        ratings = {
-            ...ratings,
-            average_rating:document.querySelector('.average_rating').getAttribute('data-ratings')
-        }
+            // assign arrays to object
+            let ratings = Object.assign(...parsedIds.map((v, i) => ({[`comment${v}`]:parsedRatingsDOM[i]})));
 
-        const starTotal = 5;
+            ratings = {
+                ...ratings,
+                average_rating:document.querySelector('.average_rating').getAttribute('data-ratings')
+            }
 
-        for(let rating in ratings){
-            const starPercentage = (ratings[rating] / starTotal) * 100;
+            const starTotal = 5;
 
-            const startPercentageRounded = `${(Math.round(starPercentage / 10) * 10)}%`;
+            for(let rating in ratings){
+                const starPercentage = (ratings[rating] / starTotal) * 100;
 
-            document.querySelector(`.${rating} .stars-inner`).style.width = startPercentageRounded;
+                const startPercentageRounded = `${(Math.round(starPercentage / 10) * 10)}%`;
+
+                document.querySelector(`.${rating} .stars-inner`).style.width = startPercentageRounded;
+            }
+
         }
 
         const stars = Array.from(document.querySelectorAll('.rating-star'));
@@ -476,6 +583,89 @@
 
         // run function
         starRating();
+
+        // modal
+        const mediaToggler = document.querySelectorAll('.media-toggler');
+        const modalContainer = document.querySelector('#modalContainer');
+        const close = document.querySelector('.close');
+        const mediaDisplay = document.querySelector('#player > source');
+
+        Array.from(mediaToggler).forEach(function(v){
+            v.addEventListener('click', function(e){
+                e.preventDefault();
+                // open modal
+                modalContainer.style.display = 'block';
+
+                // get attributes
+                const name = this.getAttribute('data-name');
+                const url = this.getAttribute('data-url');
+                const type = this.getAttribute('data-type');
+
+
+                document.querySelector('#player').pause();
+
+                // set attribute
+                mediaDisplay.setAttribute('src', url);
+                mediaDisplay.setAttribute('type', type)
+                document.querySelector('.media-title').innerHTML = name;
+
+
+                document.querySelector('#player').load();
+                // document.querySelector('#player').play();
+
+            });
+        });
+
+        // close modal on close button click
+        close.addEventListener('click', function(e){
+            e.preventDefault();
+
+            // remove file
+            mediaDisplay.setAttribute('src', '#');
+            mediaDisplay.setAttribute('type', '#');
+            modalContainer.style.display = 'none';
+
+        });
+
+        // close modal onclick anywhere outside modal
+        window.addEventListener('click', function(e){
+            if(e.target == modalContainer){
+                modalContainer.style.display = 'none';
+            }
+        })
+
+        // tabs manipulation
+        const tabs = document.querySelectorAll('.tab');
+        const tabLinks = document.querySelectorAll('.tab-link');
+
+        Array.from(tabLinks).forEach(function(v){
+            v.addEventListener('click', function(e){
+                e.preventDefault();
+
+                // change colors
+                if(!this.classList.contains('tab-active')){
+                    // run forloop to remove from others
+                    tabLinks.forEach(function(tl){
+                        tl.classList.remove('tab-active');
+                    });
+
+                    this.classList.add('tab-active');
+                }
+
+                // open content
+                const tabContent = document.querySelectorAll('.tab-content');
+                // on click remove class from others and add to clicked
+                const tabContentHash = this.getAttribute('href');
+                // remove from tab contents
+                Array.from(tabContent).forEach(function(tc){
+                    tc.classList.remove('tab-content-active');
+                });
+                // set on selected tab content
+                document.querySelector(tabContentHash).classList.add('tab-content-active');
+
+            });
+        });
+
     });
     </script>
 @endsection

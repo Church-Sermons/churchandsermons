@@ -10,7 +10,9 @@ class OrganisationCategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator|author')->except(['index', 'show']);
+        $this->middleware(
+            'role:administrator|superadministrator|author'
+        )->except(['index', 'show']);
     }
     /**
      * Display a listing of the resource.
@@ -41,7 +43,7 @@ class OrganisationCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validator = $this->validate($request, [
             'name' => 'required|max:100',
             'linked_to' => 'required|max:50'
         ]);
@@ -50,13 +52,15 @@ class OrganisationCategoryController extends Controller
         $category->name = $request->name;
         $category->linked_to = $request->linked_to;
 
-        if($category->save()){
-
+        if ($category->save()) {
             Session::flash('success', 'Category added successfully');
 
             return redirect()->route('categories.index');
-        }else{
-            return redirect()->route('categories.create')->withInput();
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
     }
 
@@ -104,13 +108,14 @@ class OrganisationCategoryController extends Controller
         $category->name = $request->name;
         $category->linked_to = $request->linked_to;
 
-        if($category->save()){
-
+        if ($category->save()) {
             Session::flash('success', 'Category edited successfully');
 
             return redirect()->route('categories.show', $id);
-        }else{
-            return redirect()->route('categories.edit')->withInput();
+        } else {
+            return redirect()
+                ->route('categories.edit')
+                ->withInput();
         }
     }
 
@@ -123,5 +128,43 @@ class OrganisationCategoryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Store category and return JSON
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storeCategoryJSON(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:100',
+            'linked_to' => 'required|max:50'
+        ]);
+
+        // check if already exists
+        $checkExists = OrganisationCategory::where(
+            'name',
+            $request->name
+        )->first();
+        if ($checkExists) {
+            return response()->json(['message' => 'Name already exists']);
+        } else {
+            $category = new OrganisationCategory();
+            $category->name = $request->name;
+            $category->linked_to = $request->linked_to;
+
+            if ($category->save()) {
+                return response()->json(
+                    ['message' => 'Category Saved Successfully'],
+                    201
+                );
+            } else {
+                return response()->json([
+                    'message' => 'Category Failed To Save'
+                ]);
+            }
+        }
     }
 }
