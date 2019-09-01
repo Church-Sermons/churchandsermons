@@ -44,7 +44,7 @@
                             <div class="field has-addons">
                                <div class="control">
                                     <span class="select">
-                                        <select name="protocol">
+                                        <select name="protocol" class="protocol">
                                             <option value="http://">HTTP</option>
                                             <option value="https://">HTTPS</option>
                                         </select>
@@ -263,6 +263,33 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     // merge protocol with site
+    const protocol = document.querySelector('.protocol');
+    const website = document.querySelector('#website');
+    const match = /^https?\:\/\//i;
+
+    protocol.addEventListener('change', function(e){
+
+        if(website.value){
+            if(!match.test(website.value)){
+                // attach protocol and set new value to this
+                website.value = `${this.value}${website.value}`;
+            }else{
+                website.value = `${this.value}${website.value.replace(match, '')}`;
+            }
+        }
+
+    });
+
+    // clean website, check if protocol exists
+    website.addEventListener('blur', function(e){
+        // check if has input and protocol
+        if(this.value && !match.test(this.value)){
+            // attach protocol and set new value to this
+            this.value = `${protocol.value}${this.value}`;
+        }
+
+    });
+
 
 })
 </script>
