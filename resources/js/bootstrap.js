@@ -7,7 +7,10 @@ window._ = require("lodash");
  */
 
 try {
+    window.Popper = require("popper.js").default;
     window.$ = window.jQuery = require("jquery");
+
+    require("bootstrap");
 } catch (e) {}
 
 // Load Lightbox
@@ -15,6 +18,9 @@ window.lightbox = require("lightbox2");
 
 // Load Plyr
 window.plyr = require("plyr");
+
+// Form-Persistence
+window.formPersistence = require("form-persistence");
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

@@ -10,9 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Home Routes
+Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
+// samples
+Route::get('/sample', function () {
+    return view('sample');
 });
 
 // Manage - Content Providers
@@ -110,9 +113,6 @@ Route::resource('/resources', 'ResourceController');
 
 // Auth Routes
 Auth::routes(['verify' => true]);
-
-// Home Routes
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/fake', function () {
     $faker = Faker\Factory::create();

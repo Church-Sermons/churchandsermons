@@ -10396,7 +10396,7 @@ fieldset[disabled] .button {
 }
 
 .tag:not(body).is-delete:active {
-  background-color: gainsboro;
+  background-color: #dbdbdb;
 }
 
 .tag:not(body).is-rounded {

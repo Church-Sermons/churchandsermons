@@ -8,14 +8,14 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>Church & Sermons | @yield('title')</title>
 
         <!-- Fonts -->
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
         <!-- Styles -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
         @yield('styles')
     </head>
 
@@ -25,14 +25,14 @@
             <!-- Partials -->
             @include('_partials.nav.main')
 
-            <div class="app-container">
+            <div id="wrapper">
                 @yield('content')
             </div>
 
 
         </div>
          <!-- Scripts -->
-         <script src="{{ asset('js/app.js') }}"></script>
+         <script src="{{ asset('js/scripts.js') }}"></script>
          @yield('scripts')
     </body>
 

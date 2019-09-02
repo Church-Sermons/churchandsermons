@@ -1,0 +1,83 @@
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* navbar */
+.navbar {
+    border-bottom: solid 2px $custom-primary;
+}
+
+.env-informer {
+    background: $custom-bluish;
+}
+
+#wrapper {
+    padding-top: 70px;
+}
+
+/* banner section */
+#banner {
+    width: 100%;
+    min-height: 500px;
+}
+.banner-content {
+    width: 100%;
+    min-height: 500px;
+    background: rgb(0, 0, 0)
+        url("../../../public/images/app/home-banner-bg.jpg") no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.dark-overlay {
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    color: #fff;
+}
+
+.dark-overlay a {
+    color: $custom-primary;
+}
+
+.dark-overlay a:hover {
+    opacity: 0.4;
+}
+
+/* actions section */
+#actions {
+    width: 100%;
+    min-height: 300px;
+}
+
+/* recents section */
+#recents {
+    width: 100%;
+    min-height: 300px;
+    margin-bottom: 50px;
+}
+
+#recentsCarousel .carousel-inner {
+    height: 100%;
+}
+
+#recentsCarousel .carousel-inner .card img {
+    width: 100%;
+    height: 100%;
+}
+
+/* announce section */
+#announce {
+    width: 100%;
+    background: whitesmoke;
+}
+
+/* temporary wrapper */
+#tempWrapper {
+    margin-bottom: 20px;
+}
