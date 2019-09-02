@@ -9,4 +9,4 @@ require("./bootstrap");
 /**
  * Load All Custom Scripts
  */
-// require('./');
+require("./scripts/temp");

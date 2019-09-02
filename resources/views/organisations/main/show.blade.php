@@ -1,671 +1,312 @@
+@section('title', $organisation->name)
+
 @extends('layouts.app')
 
 @section('content')
-<div class="section">
-    <div class="container">
-        <div class="card">
-            <div class="card-content">
-                <div class="columns">
-                    <div class="column is-one-quarter">
-                        <div class="level">
-                            <div class="level-item has-text-centered">
-                                <figure class="image is-128x128 has-text-centered">
-                                    <img src="{{ $organisation->getFirstMediaUrl('logo', 'main') }}" alt="{{ $organisation->name.'-Logo' }}">
-                                </figure>
-                            </div>
+<div id="safeguard">
+    <section id="banner">
+        <div class="banner-content">
+            <div class="dark-overlay py-5">
+                <div class="container d-flex justify-content-center w-100 h-100 align-items-center flex-column">
+                    <!-- Logo Image-->
+                    <img src="{{ Helper::setFallbackLogoImage($organisation->getFirstMediaUrl('logo', 'main')) }}" alt="{{ $organisation->name.__("-Logo") }}" width="200" height="200" class="rounded">
+                    <h4 class="text-center display-4 text-uppercase font-weight-bold my-2">
+                        {{ ucwords($organisation->name) }}
+                    </h4>
+
+                </div>
+            </div>
+        </div>
+    </section><!-- End of Banner Section -->
+
+    <section id="details">
+        <div class="details-inner container my-5">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-image-handler-lg">
+                            <img src="{{ asset('images/temp/slides/slide-1.jpg') }}" alt="slide-image-holder" class="rounded-top w-100 h-100">
                         </div>
-                        <hr>
-                        <div class="field has-text-centered is-uppercase m-t-15">
-                            <h3 class="title is-6">Contact Information</h3>
-                        </div>
-                        <div class="field has-text-left">
-                            <h4 class="title is-6">Location</h4>
-                            <p class="subtitle is-6">{{ $organisation->address }}</p>
-                        </div>
-                        <div class="field has-text-left">
-                            <h4 class="title is-6">Phone</h4>
-                            <p class="subtitle is-6">{{ $organisation->phone }}</p>
-                        </div>
-                        <div class="field has-text-left">
-                            <h4 class="title is-6">Email</h4>
-                            <p class="subtitle is-6">{{ $organisation->email }}</p>
-                        </div>
-                        <div class="field has-text-left">
-                            <h4 class="title is-6">Website</h4>
-                            <p class="subtitle is-6"><a href="{{ $organisation->website }}">{{ $organisation->website}}</a></p>
-                        </div>
-                        <hr>
-                        <div class="field">
-                            <h4 class="title is-6 m-b-30">Rating</h4>
-                            <p class="subtitle is-6 average_rating" data-ratings="{{ $organisation->average_review }}">
-                                <span class="stars-outer">
-                                    <span class="stars-inner"></span>
-                                </span>
+                        <div class="card-body">
+                            <h3 class="card-title font-weight-bold">About</h3>
+                            <p class="card-text">
+                                {{ $organisation->description }}
                             </p>
                         </div>
-                        <hr>
-                        <form action="{{ route('organisations.contacts.store', $organisation->uuid) }}" method="POST">
-                            @csrf
-                            <div class="field">
-                                <label for="name" class="label">Name</label>
-                                <div class="control">
-                                    <input type="text" class="input @error('name') is-danger @enderror" value="{{ Auth::check()?Auth::user()->name:old('name') }}" @auth readonly @endauth name="name">
-                                </div>
-                                @error('name')
-                                    <p class="help is-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="field">
-                                <label for="email" class="label">Email</label>
-                                <div class="control">
-                                    <input type="hidden" name="uuid_link" value="{{ $organisation->uuid }}">
-                                    <input type="text" class="input @error('email') is-danger @enderror" value="{{ Auth::check()?Auth::user()->email:old('email') }}" @auth readonly @endauth name="email">
-                                </div>
-                                @error('email')
-                                    <p class="help is-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="field">
-                                <label for="subject" class="label">Subject</label>
-                                <div class="control">
-                                    <input type="text" class="input @error('subject') is-danger @enderror" value="{{ old('subject') }}" name="subject">
-                                </div>
-                                @error('subject')
-                                    <p class="help is-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="field">
-                                <label for="message" class="label">Message</label>
-                                <div class="control">
-                                    <textarea name="message" rows="5" style="resize: none;" class="textarea @error('message') is-danger @enderror">{{ old('message') }}</textarea>
-                                </div>
-                                @error('message')
-                                    <p class="help is-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="field">
-                                <div class="control">
-                                    <button class="button is-fullwidth is-outlined is-primary m-t-5">Send</button>
-                                </div>
-                            </div>
-                        </form>
-                        @auth
-                        <hr>
-                        <form action="{{ route('organisations.claims.store', $organisation->uuid) }}" method="POST">
-                            @csrf
-                            <div class="field">
-                                <label for="claim_subject" class="label">Subject</label>
-                                <div class="control">
-                                    <input type="hidden" name="uuid_link" value="{{ $organisation->uuid }}">
-                                    <input type="text" class="input @error('claim_subject') is-danger @enderror" value="{{ old('subject') }}" name="claim_subject">
-                                </div>
-                                @error('claim_subject')
-                                    <p class="help is-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="field">
-                                <label for="claim_message" class="label">Message</label>
-                                <div class="control">
-                                    <textarea name="claim_message" style="resize: none;" rows="5" class="textarea @error('claim_message') is-danger @enderror">{{ old('claim_message') }}</textarea>
-                                </div>
-                                @error('claim_message')
-                                    <p class="help is-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="field">
-                                <div class="control">
-                                    <button class="button is-fullwidth is-outlined is-primary m-t-5">Send</button>
-                                </div>
-                            </div>
-                        </form>
-                        @endauth
                     </div>
-                    <div class="column is-three-quarters">
-                        <div class="container">
-                            <div class="columns">
-                                <div class="column is-three-quarters">
-                                    <div class="field has-text-left">
-                                        <h4 class="title is-4">{{ $organisation->name }}</h4>
-                                        <h4 class="subtitle is-5 is-uppercase">{{ $organisation->category->name }}</h4>
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            {{-- <span class="d-block my-3 border border-bottom w-100"></span> --}}
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="card-title font-weight-bold mb-3">Events</h3>
+                                </div>
+                                <div class="col text-right">
+                                    <a href="{{ route('organisations.events.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
+                                    <a href="{{ route('organisations.events.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                </div>
+                            </div>
+                            @forelse ($organisation->events as $event)
+                                <div class="card border-right bg-light">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-2 pr-2">
+                                                <span class="w-100 h-100 bg-primary text-white rounded p-1 d-flex flex-column align-items-center justify-content-center">
+                                                    <h1 class="font-weight-bold">{{ Helper::dateFormatter($event->created_at)[1] }}</h1>
+                                                    <h5 class="text-capitalize">{{ Helper::dateFormatter($event->created_at)[0] }}</h5>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-10 pl-2">
+                                                <h3 class="h4 mb-1 font-weight-bold">{{ $event->title }}</h3>
+                                                <p class="mini-texts my-2 lead">
+                                                    <i class="fas fa-map-marker-alt mr-1 text-primary"></i> {{ $event->address }}
+                                                </p>
+                                                <p class="mini-texts mt-1">
+                                                    {{ $event->description }}
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                @auth
-                                <div class="column is-one-quarter">
-                                    <a href="#reviewForm" class="button is-primary is-fullwidth">
-                                        <i class="fas fa-pen-alt m-r-5"></i> Add A Review
+                            @empty
+                                <p class="lead">There are no events coming up</p>
+                            @endforelse
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="card-title font-weight-bold mb-3">Resources</h3>
+                                </div>
+                                <div class="col text-right">
+                                    <a href="{{ route('organisations.resources.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
+                                    <a href="{{ route('organisations.resources.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                </div>
+                            </div>
+
+                            <ul class="nav nav-pills nav-justified">
+                                <li class="nav-item">
+                                    <a
+                                    href="#audio"
+                                    class="nav-link active"
+                                    data-toggle="pill"
+                                    >
+                                    <i class="fas fa-music"></i> Audio
                                     </a>
-                                </div>
-                                @endauth
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                    href="#video"
+                                    class="nav-link"
+                                    data-toggle="pill"
+                                    >
+                                    <i class="fas fa-film"></i> Video
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                    href="#document"
+                                    class="nav-link"
+                                    data-toggle="pill"
+                                    >
+                                    <i class="far fa-file-alt"></i> Document
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content mt-4">
+                                <div class="tab-pane active" id="audio">
+                                    @forelse ($organisation->getMedia('audios') as $audio)
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="audio-container d-flex flex-column border rounded">
+                                                    <div class="container pt-3">
+                                                        <div class="row">
+                                                            <div class="col-md-2 pr-1">
+                                                                <img src="https://via.placeholder.com/300" alt="placeholder-image" class="rounded w-100" height="80"/>
+                                                            </div>
+                                                            <div class="col-md-10 pl-2">
+                                                                <h4 class="font-weight-bold text-capitalize">{{ $audio->name }}</h4>
+                                                                <h5 class="text-capitalize">{{ $organisation->user->name }}</h5>
+                                                                <h6 class="text-uppercase text-muted">{{ $audio->human_readable_size }}</h6>
+                                                            </div>
+                                                        </div>
 
-                            </div>
-                            <div class="columns">
-                                <div class="column">
-                                    <div class="image-container">
-                                        <img src="{{ asset('images/churchandsermons.jpg') }}" alt="slide-image">
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-header-title">
-                                        About
-                                    </h3>
-                                </div>
-                                <div class="card-content">
-                                    <p class="subtitle is-6">
-                                        {{ $organisation->description }}
-                                    </p>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-header-title">Resources</h4>
-                                    <div class="is-pulled-right">
-                                        <a id="addResource" href="{{ route('organisations.resources.create', $organisation->uuid) }}" class="button is-primary is-outlined m-t-5 m-r-5" title="Add Member">
-                                            <i class="fas fa-plus"></i>
-                                        </a>
-                                        <a id="viewResource" href="{{ route('organisations.resources.index', $organisation->uuid) }}" class="button is-primary is-outlined m-t-5 m-r-5" title="View All">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="tabs is-left">
-                                        <ul>
-                                            <li class="tab">
-                                                <a href="#audio" class="tab-link tab-active">
-                                                    <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
-                                                    <span>Audio</span>
-                                                </a>
-                                            </li>
-                                            <li class="tab">
-                                                <a href="#video" class="tab-link">
-                                                    <span class="icon is-small"><i class="fas fa-film"></i></span>
-                                                    <span>Video</span>
-                                                </a>
-                                            </li>
-                                            <li class="tab">
-                                                <a href="#document" class="tab-link">
-                                                    <span class="icon is-small"><i class="fas fa-file-alt"></i></span>
-                                                    <span>Documents</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="tab-content-active tab-content" id="audio">
-                                        @if ($organisation->getMedia('audios')->count() > 0)
-                                            <div class="table-container">
-                                                <table class="table is-fullwidth">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Size</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($organisation->getMedia('audios') as $media)
-                                                            <tr>
-                                                                <td>{{ $media->name }}</td>
-                                                                <td>{{ $media->human_readable_size }}</td>
-                                                                <td>
-                                                                    <audio id="audio-player" class="is-pulled-right" controls>
-                                                                        <source src="{{ $media->getUrl() }}" type="{{ $media->mime_type }}"/>
-                                                                    </audio>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        @else
-                                            <p>There are no audio resources</p>
-                                        @endif
-                                    </div>
-
-                                    <div id="video" class="tab-content">
-                                        @if ($organisation->getMedia('videos')->count() > 0)
-                                            <div class="table-container">
-                                                <table class="table is-fullwidth">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Size</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($organisation->getMedia('videos') as $media)
-                                                            <tr>
-                                                                <td>{{ $media->name }}</td>
-                                                                <td>{{ $media->human_readable_size }}</td>
-                                                                <td>
-                                                                    <a class="media-toggler button is-success is-outlined player" href="#"
-                                                                        data-url="{{ $media->getFullUrl() }}" data-name="{{ $media->name }}"
-                                                                        data-type="{{ $media->mime_type }}">
-                                                                        <i class="fas fa-video"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        @else
-                                            <p>There are no video resources</p>
-                                        @endif
-                                    </div>
-
-
-                                        <div id="document" class="tab-content">
-                                            @if ($organisation->getMedia('documents')->count() > 0)
-                                                <div class="table-container">
-                                                    <table class="table is-fullwidth">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Name</th>
-                                                                <th>Size</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($organisation->getMedia('documents') as $media)
-                                                                <tr>
-                                                                    <td>{{ $media->name }}</td>
-                                                                    <td>{{ $media->human_readable_size }}</td>
-                                                                    <td>
-                                                                        <a class="button is-success is-outlined player" href="#">
-                                                                            <i class="fas fa-file-alt"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
+                                                    </div>
+                                                    <audio id="player" controls>
+                                                        <source src="{{ $audio->getUrl() }}" type="{{ $audio->mime_type }}" />
+                                                        {{-- <source src="/path/to/audio.ogg" type="audio/ogg" /> --}}
+                                                    </audio>
                                                 </div>
-                                            @else
-                                                <p>There are no documents</p>
-                                            @endif
-                                        </div>
-
-                                </div>
-                            </div>
-
-                            @auth
-                            <hr>
-                            <div class="columns">
-                                <div class="column">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-header-title">Events</h3>
-                                            <div class="is-pulled-right">
-                                                <a href="{{ route('organisations.events.create', $organisation->uuid) }}" class="button is-primary is-outlined m-t-5 m-r-5" title="Add Member">
-                                                    <i class="fas fa-plus"></i>
-                                                </a>
-                                                <a href="{{ route('organisations.events.index', $organisation->uuid) }}" class="button is-primary is-outlined m-t-5 m-r-5" title="View All">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
                                             </div>
                                         </div>
-                                        <div class="card-content">
-                                            @forelse($organisation->events as $event)
-                                                <div class="card m-b-5">
-                                                    <div class="card-content">
-                                                        <h3><strong>{{ $event->title }}</strong></h3>
-                                                        <h6>{{ $event->address }}</h6>
-                                                        <p>{{ $event->description }}</p>
-                                                        <small><i class="fas fa-calendar-alt m-r-5"></i>{{ $event->created_at->toFormattedDateString() }}</small>
+
+                                    @empty
+                                        <div class="col">
+                                            <p class="lead">No audio resources available</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                                <div class="tab-pane fade" id="video">
+                                    <div class="row">
+                                        @forelse ($organisation->getMedia('videos') as $video)
+                                            <div class="col-lg-4 col-sm-6 col-xs-12">
+                                                <div class="card">
+                                                    <img src="{{ asset('images/temp/slides/slide-2.jpg') }}" alt="video-placeholder" height="150" class="w-100 rounded">
+                                                    <div class="dark-overlay d-flex justify-content-center align-items-center">
+                                                        <a href="#" class="btn btn-success btn-lg" data-video-access="{'url': {{ $video->getFullUrl() }},'name': {{ $video->name }},'mime': {{ $video->mime_type }}}">
+                                                            <i class="fas fa-play"></i>
+                                                        </a>
                                                     </div>
                                                 </div>
-                                            @empty
-                                                <p>There are no upcoming events</p>
-                                            @endforelse
+                                            </div>
+                                        @empty
+                                            <div class="col">
+                                                <p class="lead">No video resources available</p>
+                                            </div>
+                                        @endforelse
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="document">
+                                    <div class="col-lg-3 col-sm-6 col-xs-12">
+                                        <div class="card border-0">
+                                        <img
+                                            src="https://via.placeholder.com/100"
+                                            alt="audio-placeholder"
+                                        />
+                                        <a href="#" class="h4 mini-texts mt-2 mb-1"
+                                            >Lorem, ipsum dolor.</a
+                                        >
+                                        <h4 class="h4 text-muted mini-texts">
+                                            2.4 MB
+                                        </h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="columns">
-                                <div class="column">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="card-header-title">Team</h4>
-                                            <div class="is-pulled-right">
-                                                <a href="{{ route('organisations.team.create', $organisation->uuid) }}" class="button is-primary is-outlined m-t-5 m-r-5" title="Add Member">
-                                                    <i class="fas fa-user-plus"></i>
-                                                </a>
-                                                <a href="{{ route('organisations.team.index', $organisation->uuid) }}" class="button is-primary is-outlined m-t-5 m-r-5" title="View All">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="card-content">
-                                            @if ($organisation->profiles->count() > 0)
-                                            <div class="columns">
-                                                @foreach ($organisation->profiles as $profile)
-                                                <div class="column is-one-fifth">
-                                                    <a href="{{ route('profiles.show', $profile->uuid) }}">
-                                                        <figure class="is-fullwidth image">
-                                                            <img src="{{ asset('storage/'.$profile->profile_image) }}" alt="team-member-profile-image">
-                                                        </figure>
-                                                        <div class="has-text-centered m-t-10">
-                                                            <h5 class="title is-5">{{ $profile->name }} {{ $profile->surname }}</h5>
-                                                            <h6 class="subtitle is-6 is-uppercase">{{ $profile->category->name }}</h6>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                            @else
-                                                <p>There is no team member added</p>
-                                            @endif
-                                        </div>
-                                    </div>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="card-title font-weight-bold mb-3">Team</h3>
+                                </div>
+                                <div class="col text-right">
+                                    <a href="{{ route('organisations.team.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-user-plus"></i></a>
+                                    <a href="{{ route('organisations.team.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="columns">
-                                <div class="column is-three-quarters">
 
-                                    <form action="{{ route('organisations.reviews.store', $organisation->uuid) }}" method="POST" id="#reviewForm">
-                                        @csrf
-                                        <h4 class="subtitle has-text-black-ter is-4">Write Review</h4>
-                                        <div class="field">
-                                            <div class="control">
-                                                <input type="hidden" name="rating" class="rating-store" value="1">
-
-                                                <div class="has-text-grey">
-                                                    Rating: <span class="rating-display">1</span>/5
-                                                </div>
-                                            </div>
-                                            @error('rating')
-                                                <p class="help is-danger">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                        <div class="field">
-                                            <div class="control">
-                                                <input type="hidden" name="uuid_link" value="{{ $organisation->uuid }}">
-                                                <textarea name="review_message" placeholder="Write Review" style="resize:none;" rows="5" class="textarea @error('review_message') is-danger @enderror">{{ old('review_message') }}</textarea>
-                                            </div>
-                                            @error('review_message')
-                                                <p class="help is-danger">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                        <div class="field">
-                                            <div class="control">
-                                                <button class="button is-fullwidth is-outlined is-primary m-t-5">Submit</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <hr>
-                                    @if ($organisation->reviews->count() > 0)
-                                    <input type="hidden" name="ids" id="reviewIds" data-ids="{{ $organisation->reviews->pluck('id') }}">
-                                    <input type="hidden" name="ratings" id="ratings" data-ratings="{{ $organisation->reviews->pluck('rating') }}">
-
-                                    @foreach ($organisation->reviews as $review)
-                                    <div class="media">
-                                        <div class="media-content">
-                                            <div class="content">
-                                                <div class="columns">
-                                                    <div class="column is-two-thirds">
-                                                        <div class="{{ __("comment").$review->id }} m-b-10">
-                                                            <span class="stars-outer">
-                                                                <span class="stars-inner"></span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    @if(Auth::check() && $review->user_id == Auth::user()->id)
-                                                    <div class="column is-one-third">
-                                                        <div class="field">
-                                                            <span class="has-text-grey is-pulled-right">
-                                                                <button onclick="alert('Still Under Construction');" class="button is-primary is-small is-outlined m-r-5">
-                                                                    <i class="fas fa-edit is-4"></i>
-                                                                </button>
-                                                                <form action="{{ route('organisations.reviews.destroy', [$review->uuid_link, $review->id]) }}" method="POST" class="is-inline-block">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button class="button is-danger is-small is-outlined">
-                                                                        <i class="far fa-trash-alt"></i>
-                                                                    </button>
-                                                                </form>
-
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    @endif
-                                                </div>
-                                                <p>
-                                                    <strong class="m-r-5">{{ $review->user->name }}</strong><small>{{ __("@").strtolower($review->user->name) }}</small>
-                                                    <span class="is-pulled-right has-text-grey-light">
-                                                        <small class="icon is-small"><i class="{{ Helper::checkDuration($review->created_at) }}"></i></small>
-                                                        <small class="is-small">{{ $review->created_at->diffForHumans() }}</small>
-                                                    </span>
-
-                                                </p>
-                                                <p>
-                                                   {{ $review->message }}
+                            <div class="row">
+                                @forelse ($organisation->profiles as $profile)
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="card">
+                                            <div class="card-body d-flex flex-column align-items-center">
+                                                <img src="{{ asset('storage/'.$profile->profile_image) }}" alt="avatar" class="rounded-circle mr-2 mt-2" width="80" height="80">
+                                                <h4 class="text-capitalize font-weight-bold mt-1">
+                                                    <a href="{{ route('profiles.show', $profile->uuid) }}">{{ $profile->name.__(" ").$profile->surname }}</a>
+                                                </h4>
+                                                <h6 class="text-capitalize mini-texts">{{ $profile->category->name }}</h6>
+                                                <span class="mb-2">
+                                                    @forelse (Helper::starRating($profile->average_review) as $rating)
+                                                        <i class="{{ $rating }}"></i>
+                                                    @empty
+                                                        <span></span>
+                                                    @endforelse
+                                                </span>
+                                                <p class="mini-texts text-center">
+                                                    {{ $profile->description }}
                                                 </p>
                                             </div>
+
                                         </div>
                                     </div>
+                                @empty
+                                    <div class="col">
+                                        <p class="lead">No team members added yet</p>
+                                    </div>
+                                @endforelse
 
-                                    @endforeach
-                                    @else
-                                    <div class="field">
-                                        <p>
-                                            There are no reviews at the moment
-                                        </p>
-                                    </div>
-                                    @endif
-                                    <hr>
-                                </div>
-                                {{-- <div class="column is-one-quarter has-text-centered">
-                                    <div class="field">
-                                        <h4 class="subtitle is-1">4.5</h4>
-                                    </div>
-                                    <div class="field">
-                                        <i class="far fa-star fa-10x has-text-primary"></i>
-                                    </div>
-                                </div> --}}
                             </div>
-                            @endauth
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title text-uppercase h5 font-weight-bold">contact information</h4>
+                            <h6 class="h6 font-weight-bold">Location</h6>
+                            <p class="lead mini-texts">{{ $organisation->address }}</p>
+                            <h6 class="h6 font-weight-bold">Phone</h6>
+                            <p class="lead mini-texts">{{ $organisation->phone }}</p>
+                            <h6 class="h6 font-weight-bold">Email</h6>
+                            <p class="lead mini-texts">{{ $organisation->email }}</p>
+                            <h6 class="h6 font-weight-bold">Website</h6>
+                            <p class="lead mini-texts">{{ $organisation->website }}</p>
+                        </div>
+                    </div>
 
+                    <div class="card my-2">
+                        <div class="card-body">
+                            <h4 class="card-title text-uppercase h5 font-weight-bold">status</h4>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h6 class="h6">Reviews</h6>
+                                </div>
+                                <div class="col-8">
+                                    <span class="d-block text-right">
+                                        @forelse (Helper::starRating($organisation->average_review) as $rating)
+                                            <i class="{{ $rating }}"></i>
+                                        @empty
+                                            <p class="small text-muted"></p>
+                                        @endforelse
+                                        <span class="text-muted ml-1">{{ $organisation->average_review?$organisation->average_review:'0.0' }} ({{ $organisation->reviews->count() }})</span>
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h6 class="h6">Messages</h6>
+                                </div>
+                                <div class="col-8">
+                                    <span class="text-muted d-block text-right">{{ $organisation->contacts->count() }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <h6 class="h6">Claims</h6>
+                                </div>
+                                <div class="col-8">
+                                    <span class="text-muted d-block text-right">{{ $organisation->claims()->count() }}</span>
+                                </div>
+                            </div>
+
+                            <span class="d-block border w-100 my-3"></span>
+
+                            <p class="mini-texts">Need Any Help? <a href="#">Contact Us</a></p>
+                            <p class="mini-texts">Something Wrong? <a href="#">Send Claim</a></p>
+                            <p class="mini-texts">Something In Mind? <a href="#">Write Review</a></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@component('components.modal')
-    @slot('col')
-        is-three-fifths is-offset-one-fifth
-    @endslot
-    @slot('title')
-        <span class="media-title"></span>
-    @endslot
-    <div class="columns">
-        <div class="column is-fullwidth">
-            <video id="player" controls>
-                <source src="#" type=# />
-                Your browser does not support the video tag
-            </video>
-        </div>
-    </div>
+    </section>
+</div><!-- End of safeguard wrapper -->
 
-@endcomponent
 @endsection
+
 @section('styles')
     <style>
-        #player{
-            width: 100%;
-            height: 100%;
-        }
-        .tab-content{
-            display: none;
-        }
 
-        .tab-content-active{
-            display: block;
-        }
-        .tab-active{
-            color: hsl(171, 100%, 41%) !important;
-            border-bottom-color: hsl(171, 100%, 41%) !important;
-        }
     </style>
 @endsection
+
 @section('scripts')
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // extract plucked data from data in html
-        const ratingsDOM = document.querySelector('#ratings');
-        const ids = document.querySelector('#reviewIds');
-
-        if(ratingsDOM && ids){
-            // json parse & get attribute
-            const parsedRatingsDOM = JSON.parse(ratingsDOM.getAttribute('data-ratings'));
-            const parsedIds = JSON.parse(ids.getAttribute('data-ids'));
-
-            // assign arrays to object
-            let ratings = Object.assign(...parsedIds.map((v, i) => ({[`comment${v}`]:parsedRatingsDOM[i]})));
-
-            ratings = {
-                ...ratings,
-                average_rating:document.querySelector('.average_rating').getAttribute('data-ratings')
-            }
-
-            const starTotal = 5;
-
-            for(let rating in ratings){
-                const starPercentage = (ratings[rating] / starTotal) * 100;
-
-                const startPercentageRounded = `${(Math.round(starPercentage / 10) * 10)}%`;
-
-                document.querySelector(`.${rating} .stars-inner`).style.width = startPercentageRounded;
-            }
-
-        }
-
-        const stars = Array.from(document.querySelectorAll('.rating-star'));
-
-        // hover get value
-        function starRating(){
-
-            stars.forEach(function(star, index){
-                star.setAttribute('data-count', index);
-                star.addEventListener('mouseenter', enterStarListener);
-                star.addEventListener('click', onClickListener);
-            });
-
-            // document.querySelector('.ratings').addEventListener('mouseleave', leaveStarListener);
-        }
-
-        function enterStarListener(e){
-            fillStarsUpToElement(e.target);
-        }
-
-        function leaveStarListener(){
-            fillStarsUpToElement(null);
-        }
-
-        function fillStarsUpToElement(el){
-            stars.forEach(function(star, index){
-                if(el == null || star.getAttribute('data-count') > el.getAttribute('data-count')){
-                    star.classList.remove('hover');
-                }else{
-                    star.classList.add('hover');
-                }
-            });
-        }
-
-        // run function
-        starRating();
-
-        // modal
-        const mediaToggler = document.querySelectorAll('.media-toggler');
-        const modalContainer = document.querySelector('#modalContainer');
-        const close = document.querySelector('.close');
-        const mediaDisplay = document.querySelector('#player > source');
-
-        Array.from(mediaToggler).forEach(function(v){
-            v.addEventListener('click', function(e){
-                e.preventDefault();
-                // open modal
-                modalContainer.style.display = 'block';
-
-                // get attributes
-                const name = this.getAttribute('data-name');
-                const url = this.getAttribute('data-url');
-                const type = this.getAttribute('data-type');
-
-
-                document.querySelector('#player').pause();
-
-                // set attribute
-                mediaDisplay.setAttribute('src', url);
-                mediaDisplay.setAttribute('type', type)
-                document.querySelector('.media-title').innerHTML = name;
-
-
-                document.querySelector('#player').load();
-                // document.querySelector('#player').play();
-
-            });
-        });
-
-        // close modal on close button click
-        close.addEventListener('click', function(e){
-            e.preventDefault();
-
-            // remove file
-            mediaDisplay.setAttribute('src', '#');
-            mediaDisplay.setAttribute('type', '#');
-            modalContainer.style.display = 'none';
-
-        });
-
-        // close modal onclick anywhere outside modal
-        window.addEventListener('click', function(e){
-            if(e.target == modalContainer){
-                modalContainer.style.display = 'none';
-            }
-        })
-
-        // tabs manipulation
-        const tabs = document.querySelectorAll('.tab');
-        const tabLinks = document.querySelectorAll('.tab-link');
-
-        Array.from(tabLinks).forEach(function(v){
-            v.addEventListener('click', function(e){
-                e.preventDefault();
-
-                // change colors
-                if(!this.classList.contains('tab-active')){
-                    // run forloop to remove from others
-                    tabLinks.forEach(function(tl){
-                        tl.classList.remove('tab-active');
-                    });
-
-                    this.classList.add('tab-active');
-                }
-
-                // open content
-                const tabContent = document.querySelectorAll('.tab-content');
-                // on click remove class from others and add to clicked
-                const tabContentHash = this.getAttribute('href');
-                // remove from tab contents
-                Array.from(tabContent).forEach(function(tc){
-                    tc.classList.remove('tab-content-active');
-                });
-                // set on selected tab content
-                document.querySelector(tabContentHash).classList.add('tab-content-active');
-
-            });
-        });
-
-    });
+        const player = new Plyr("#player");
     </script>
 @endsection

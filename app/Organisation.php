@@ -15,6 +15,11 @@ class Organisation extends Model implements HasMedia
     // guarded
     protected $guarded = ['category_id', 'user_id'];
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     public function category()
     {
         return $this->hasOne('App\OrganisationCategory', 'id', 'category_id');
@@ -23,6 +28,22 @@ class Organisation extends Model implements HasMedia
     public function reviews()
     {
         return $this->hasMany('App\Review', 'uuid_link', 'uuid')->orderBy(
+            'id',
+            'desc'
+        );
+    }
+
+    public function claims()
+    {
+        return $this->hasMany('App\Claim', 'uuid_link', 'uuid')->orderBy(
+            'id',
+            'desc'
+        );
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany('App\Contact', 'uuid_link', 'uuid')->orderBy(
             'id',
             'desc'
         );

@@ -14,13 +14,13 @@ try {
 } catch (e) {}
 
 // Load Lightbox
-window.lightbox = require("lightbox2");
+window.Lightbox = require("lightbox2");
 
 // Load Plyr
-window.plyr = require("plyr");
+window.Plyr = require("plyr");
 
 // Form-Persistence
-window.formPersistence = require("form-persistence");
+window.FormPersistence = require("form-persistence");
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

@@ -37707,11 +37707,11 @@ try {
 } catch (e) {} // Load Lightbox
 
 
-window.lightbox = __webpack_require__(/*! lightbox2 */ "./node_modules/lightbox2/dist/js/lightbox.js"); // Load Plyr
+window.Lightbox = __webpack_require__(/*! lightbox2 */ "./node_modules/lightbox2/dist/js/lightbox.js"); // Load Plyr
 
-window.plyr = __webpack_require__(/*! plyr */ "./node_modules/plyr/dist/plyr.min.js"); // Form-Persistence
+window.Plyr = __webpack_require__(/*! plyr */ "./node_modules/plyr/dist/plyr.min.js"); // Form-Persistence
 
-window.formPersistence = __webpack_require__(/*! form-persistence */ "./node_modules/form-persistence/form-persistence.js");
+window.FormPersistence = __webpack_require__(/*! form-persistence */ "./node_modules/form-persistence/form-persistence.js");
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -37765,7 +37765,20 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /**
  * Load All Custom Scripts
  */
-// require('./');
+
+
+__webpack_require__(/*! ./scripts/temp */ "./resources/js/scripts/temp.js");
+
+/***/ }),
+
+/***/ "./resources/js/scripts/temp.js":
+/*!**************************************!*\
+  !*** ./resources/js/scripts/temp.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
 
 /***/ }),
 
