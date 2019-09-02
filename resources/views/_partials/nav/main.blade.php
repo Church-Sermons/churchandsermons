@@ -64,7 +64,7 @@
                 Contact
               </a>
             </li>
-
+            @guest
             <li class="nav-item">
               <a href="{{ route('login') }}" class="nav-link text-uppercase">
                 <i class="fas custom-fa fa-sign-in-alt"></i> Log In
@@ -75,32 +75,29 @@
                 <i class="fas custom-fa fa-user-plus"></i> Register
               </a>
             </li>
-            @auth
+            @else
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                         Hello, {{ Auth::user()-> name }}
                     </a>
                     <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-user-circle"></i> Profile
+                        <a href="#" class="nav-link dropdown-item">
+                            <i class="fas fa-user-circle mr-1"></i> Profile
                         </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-cog"></i> Settings
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas"></i>
+                        <a href="#" class="dropdown-item nav-link">
+                            <i class="fas fa-cog mr-1"></i> Settings
                         </a>
                         <span class="dropdown-divider"></span>
-                        <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
+                        <a href="{{ route('logout') }}" class="nav-link dropdown-item" onclick="event.preventDefault();
                                                                        document.getElementById('logout-form').submit();">
-                            <i class="fas fa-sign-out-alt"></i> Log Out
+                            <i class="fas fa-sign-out-alt mr-1"></i> Log Out
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
                     </div>
                 </li>
-            @endauth
+            @endguest
           </ul>
         </div>
       </div>

@@ -4,8 +4,8 @@
 
 @section('content')
 <section id="banner">
-    <div class="banner-content">
-        <div class="dark-overlay py-5">
+    <div class="banner-content banner-home">
+        <div class="dark-overlay overlay-home py-5">
             <div class="container">
                 <h4 class="text-center display-4 text-capitalize">
                 what are you looking for?
