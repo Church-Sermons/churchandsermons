@@ -43,11 +43,13 @@
                                 </div>
                                 <div class="col text-right">
                                     <a href="{{ route('organisations.events.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
-                                    <a href="{{ route('organisations.events.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                    @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
+                                        <a href="{{ route('organisations.events.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                    @endOwns
                                 </div>
                             </div>
                             @forelse ($organisation->events as $event)
-                                <div class="card border-right bg-light">
+                                <div class="card border-right bg-light mb-2">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-2 pr-2">
@@ -81,7 +83,9 @@
                                 </div>
                                 <div class="col text-right">
                                     <a href="{{ route('organisations.resources.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
-                                    <a href="{{ route('organisations.resources.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                    @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
+                                        <a href="{{ route('organisations.resources.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                    @endOwns
                                 </div>
                             </div>
 
@@ -195,7 +199,9 @@
                                 </div>
                                 <div class="col text-right">
                                     <a href="{{ route('organisations.team.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-user-plus"></i></a>
-                                    <a href="{{ route('organisations.team.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                    @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
+                                        <a href="{{ route('organisations.team.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                    @endOwns
                                 </div>
                             </div>
 
@@ -287,8 +293,10 @@
                             <span class="d-block border w-100 my-3"></span>
 
                             <p class="mini-texts">Need Any Help? <a href="{{ route('organisations.contacts.create', $organisation->uuid) }}">Contact Us</a></p>
-                            <p class="mini-texts">Something Wrong? <a href="{{ route('organisations.claims.create', $organisation->uuid) }}">Send Claim</a></p>
-                            <p class="mini-texts">Something In Mind? <a href="{{ route('organisations.reviews.create', $organisation->uuid) }}">Write Review</a></p>
+                            @auth
+                                <p class="mini-texts">Something Wrong? <a href="{{ route('organisations.claims.create', $organisation->uuid) }}">Send Claim</a></p>
+                                <p class="mini-texts">Something In Mind? <a href="{{ route('organisations.reviews.create', $organisation->uuid) }}">Write Review</a></p>
+                            @endauth
                         </div>
                     </div>
                 </div>

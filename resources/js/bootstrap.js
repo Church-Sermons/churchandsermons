@@ -25,6 +25,9 @@ window.FormPersistence = require("form-persistence");
 // Star Rating SVG
 window.StarRatingSVG = require("star-rating-svg/src/jquery.star-rating-svg");
 
+// Dropzone
+window.Dropzone = require("dropzone/dist/dropzone");
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the

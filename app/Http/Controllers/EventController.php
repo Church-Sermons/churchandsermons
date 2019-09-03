@@ -12,8 +12,9 @@ class EventController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator|author')->except(['show', 'index']);
-
+        $this->middleware(
+            'role:administrator|superadministrator|author'
+        )->except(['show', 'index']);
     }
     /**
      * Display a listing of the resource.
@@ -22,9 +23,9 @@ class EventController extends Controller
      */
     public function index($uuid)
     {
-        $events = Event::where('uuid_link', $uuid)->orderBy('id', 'desc')->paginate(10);
+        $organisation = Organisation::where('uuid', $uuid)->first();
 
-        return view('events.index')->withEvents($events);
+        return view('events.index')->withOrganisation($organisation);
     }
 
     /**
@@ -50,32 +51,32 @@ class EventController extends Controller
             'title' => 'required|max:255',
             'description' => 'required',
             'address' => 'required',
-            'poster' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
+            'poster' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
         ]);
 
+        $event = new Event($request->except(['poster']));
 
         //upload image first
         if ($request->hasFile('poster')) {
-
             // add to db
-            $event = new Event($request->except(['organisations', 'poster']));
+
             $event->poster = $request->poster->store('uploads', 'public');
-            $event->uuid_link = $uuid;
-            $event->save();
-
-            Session::flash('success', 'Event Saved');
-
-            return redirect()->route('organisations.events.index', $uuid);
-
-        }else{
-
-            Session::flash('error', 'Event failed to save');
-
-            return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $event->uuid_link = $uuid;
 
+        if ($event->save()) {
+            Session::flash('success', 'Event Saved');
 
+            return redirect()->back();
+        } else {
+            Session::flash('error', 'Event failed to save');
+
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
     }
 
     /**
@@ -97,9 +98,11 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($uuid, $id)
     {
-        //
+        $event = Event::findOrFail($id);
+
+        return view('events.edit', compact(['event']));
     }
 
     /**
@@ -109,9 +112,37 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $uuid, $id)
     {
-        //
+        $validator = $this->validate($request, [
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'address' => 'required',
+            'poster' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+        ]);
+
+        $event = Event::findOrFail($id);
+        // $event->fill($request->except(['poster'])); // handled by observer
+        // $event->uuid_link = $uuid;
+
+        if (
+            $event->update(
+                array_merge(
+                    $request->except(['poster'], $event->uuid_link = $uuid)
+                )
+            )
+        ) {
+            Session::flash('success', 'Event Updated');
+
+            return redirect()->back();
+        } else {
+            Session::flash('error', 'Event failed to update');
+
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
     }
 
     /**
@@ -120,8 +151,18 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($uuid, $id)
     {
-        //
+        $event = Event::findOrFail($id);
+
+        if ($event->delete()) {
+            Session::flash('success', 'Event deleted');
+
+            return redirect()->back();
+        } else {
+            Session::flash('error', 'Event failed to delete');
+
+            return redirect()->back();
+        }
     }
 }
