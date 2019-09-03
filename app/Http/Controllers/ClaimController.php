@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Claim;
+use App\Organisation;
 use Auth;
 use Session;
 
@@ -11,7 +12,9 @@ class ClaimController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator')->except(['store']);
+        $this->middleware(
+            'role:administrator|superadministrator|author'
+        )->except(['create']);
     }
 
     /**
@@ -21,9 +24,9 @@ class ClaimController extends Controller
      */
     public function index($uuid)
     {
-        $claims = Claim::where('uuid_link', $uuid)->orderBy('id', 'desc')->paginate(10);
+        $organisation = Organisation::where('uuid', $uuid)->first();
 
-        return view('claims.index')->withClaims($claims);
+        return view('claims.index')->withOrganisation($organisation);
     }
 
     /**
@@ -33,7 +36,9 @@ class ClaimController extends Controller
      */
     public function create($uuid)
     {
-        return view('claims.create');
+        $organisation = Organisation::where('uuid', $uuid)->first();
+
+        return view('claims.create')->withOrganisation($organisation);
     }
 
     /**
@@ -45,27 +50,24 @@ class ClaimController extends Controller
     public function store(Request $request, $uuid)
     {
         $validator = $this->validate($request, [
-            'claim_subject' => 'required|max:255',
-            'claim_message' => 'required',
-
+            'subject' => 'required|max:255',
+            'message' => 'required'
         ]);
 
-        $claim = new Claim();
-        $claim->subject = $request->claim_subject;
-        $claim->message = $request->claim_message;
+        $claim = new Claim($request->all());
         $claim->sender_id = Auth::user()->id;
         $claim->uuid_link = $uuid;
 
-        if($claim->save()){
+        if ($claim->save()) {
             Session::flash('success', 'Claim sent successfully');
 
             return redirect()->back();
-
-        }else{
-
-            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
-
     }
 
     /**
@@ -76,7 +78,7 @@ class ClaimController extends Controller
      */
     public function show($uuid, $id)
     {
-        $claim = Claim::where('id', $id)->first();
+        $claim = Claim::findOrFail($id);
 
         return view('claims.show')->withClaim($claim);
     }
@@ -89,7 +91,6 @@ class ClaimController extends Controller
      */
     public function edit($id)
     {
-
     }
 
     /**
@@ -110,20 +111,18 @@ class ClaimController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($uuid, $id)
     {
-        $claim = Contact::findOrFail($id);
+        $claim = Claim::findOrFail($id);
 
-        if($claim->delete()){
+        if ($claim->delete()) {
             Session::flash('success', 'Claim deleted');
 
-            return redirect()->route('claims.index');
-
-        }else{
-
+            return redirect()->back();
+        } else {
             Session::flash('error', 'Claim failed to delete');
 
-            return redirect()->route('claims.index');
+            return redirect()->back();
         }
     }
 }

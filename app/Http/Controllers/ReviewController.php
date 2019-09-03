@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use App\Review;
 use Session;
 use Auth;
+use App\Organisation;
 
 class ReviewController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator')->except(['store']);
+        $this->middleware(
+            'role:administrator|superadministrator|author'
+        )->except(['create']);
     }
 
     /**
@@ -21,9 +24,9 @@ class ReviewController extends Controller
      */
     public function index($uuid)
     {
-        $reviews = Review::where('uuid_link', $uuid)->orderBy('id', 'desc')->paginate(10);
+        $organisation = Organisation::where('uuid', $uuid)->first();
 
-        return view('reviews.index')->withReviews($reviews);
+        return view('reviews.index')->withOrganisation($organisation);
     }
 
     /**
@@ -33,7 +36,9 @@ class ReviewController extends Controller
      */
     public function create($uuid)
     {
-        return view('reviews.create');
+        $organisation = Organisation::where('uuid', $uuid)->first();
+
+        return view('reviews.create')->withOrganisation($organisation);
     }
 
     /**
@@ -46,25 +51,26 @@ class ReviewController extends Controller
     {
         $validator = $this->validate($request, [
             'rating' => 'required|between:0,5',
-            'review_message' => 'required',
+            'message' => 'required'
         ]);
 
-        $review = new Review();
-        $review->rating = $request->rating;
-        $review->message = $request->review_message;
+        $review = new Review($request->all());
         $review->user_id = Auth::user()->id;
         $review->uuid_link = $uuid;
 
-        if($review->save()){
-            Session::flash('success', 'Review saved. Thank you for submitting a review');
+        if ($review->save()) {
+            Session::flash(
+                'success',
+                'Review saved. Thank you for submitting a review'
+            );
 
             return redirect()->back();
-
-        }else{
-
-            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
-
     }
 
     /**
@@ -75,7 +81,7 @@ class ReviewController extends Controller
      */
     public function show($uuid, $id)
     {
-        $review = Review::where('id', $id)->first();
+        $review = Review::findOrFail($id);
 
         return view('reviews.show')->withReview($review);
     }
@@ -88,7 +94,6 @@ class ReviewController extends Controller
      */
     public function edit($uuid, $id)
     {
-
     }
 
     /**
@@ -102,13 +107,16 @@ class ReviewController extends Controller
     {
         $review = Review::findOrFail($id);
 
-        if($review->user_id != Auth::user()->id){
-            Session::flash('error', 'You are not authorized to update this review');
+        if ($review->user_id != Auth::user()->id) {
+            Session::flash(
+                'error',
+                'You are not authorized to update this review'
+            );
         }
 
         $validator = $this->validate($request, [
             'rating' => 'required|between:0,10',
-            'review_message' => 'sometimes|required',
+            'message' => 'required',
             'uuid_link' => 'required|numeric'
         ]);
 
@@ -117,16 +125,16 @@ class ReviewController extends Controller
         $review->message = $request->review_message;
         $review->uuid_link = $uuid;
 
-        if($review->save()){
+        if ($review->save()) {
             Session::flash('success', 'Review Edited');
 
             return redirect()->back();
-
-        }else{
-
-            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
-
     }
 
     /**
@@ -143,13 +151,11 @@ class ReviewController extends Controller
         //     Session::flash('error', 'You are not authorized to update this review');
         // }
 
-        if($review->delete()){
+        if ($review->delete()) {
             Session::flash('success', 'Review deleted');
 
             return redirect()->back();
-
-        }else{
-
+        } else {
             Session::flash('error', 'Review failed to delete');
 
             return redirect()->back();
