@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Contact;
+use App\Organisation;
 use Session;
 
 class ContactController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator')->except(['store']);
+        $this->middleware(
+            'role:administrator|superadministrator|author'
+        )->except(['store', 'create']);
     }
 
     /**
@@ -20,9 +23,9 @@ class ContactController extends Controller
      */
     public function index($uuid)
     {
-        $contacts = Contact::where('uuid_link', $uuid)->orderBy('id', 'desc')->paginate(10);
+        $organisation = Organisation::where('uuid', $uuid)->first();
 
-        return view('contacts.index')->withContacts($contacts);
+        return view('contacts.index')->withOrganisation($organisation);
     }
 
     /**
@@ -32,7 +35,8 @@ class ContactController extends Controller
      */
     public function create($uuid)
     {
-        return view('contacts.create');
+        $organisation = Organisation::where('uuid', $uuid)->first();
+        return view('contacts.create')->withOrganisation($organisation);
     }
 
     /**
@@ -47,22 +51,22 @@ class ContactController extends Controller
             'name' => 'required|max:150',
             'email' => 'required|max:150',
             'subject' => 'required|max:255',
-            'message' => 'required',
+            'message' => 'required'
         ]);
 
         $contact = new Contact($request->all());
         $contact->uuid_link = $uuid;
 
-        if($contact->save()){
+        if ($contact->save()) {
             Session::flash('success', 'Message sent successfully');
 
             return redirect()->back();
-
-        }else{
-
-            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
-
     }
 
     /**
@@ -86,7 +90,6 @@ class ContactController extends Controller
      */
     public function edit($id)
     {
-
     }
 
     /**
@@ -107,20 +110,18 @@ class ContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($uuid, $id)
     {
         $contact = Contact::findOrFail($id);
 
-        if($contact->delete()){
+        if ($contact->delete()) {
             Session::flash('success', 'Message deleted');
 
-            return redirect()->route('contacts.index');
-
-        }else{
-
+            return redirect()->back();
+        } else {
             Session::flash('error', 'Message failed to delete');
 
-            return redirect()->route('contacts.index');
+            return redirect()->back();
         }
     }
 }

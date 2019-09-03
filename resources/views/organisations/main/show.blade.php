@@ -286,9 +286,9 @@
 
                             <span class="d-block border w-100 my-3"></span>
 
-                            <p class="mini-texts">Need Any Help? <a href="#">Contact Us</a></p>
-                            <p class="mini-texts">Something Wrong? <a href="#">Send Claim</a></p>
-                            <p class="mini-texts">Something In Mind? <a href="#">Write Review</a></p>
+                            <p class="mini-texts">Need Any Help? <a href="{{ route('organisations.contacts.create', $organisation->uuid) }}">Contact Us</a></p>
+                            <p class="mini-texts">Something Wrong? <a href="{{ route('organisations.claims.create', $organisation->uuid) }}">Send Claim</a></p>
+                            <p class="mini-texts">Something In Mind? <a href="{{ route('organisations.reviews.create', $organisation->uuid) }}">Write Review</a></p>
                         </div>
                     </div>
                 </div>
