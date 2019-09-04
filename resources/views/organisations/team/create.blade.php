@@ -17,11 +17,11 @@
                                 fuga impedit corrupti autem optio fugit modi accusamus ducimus
                                 ut facere. Minus, expedita ut. Odit?
                             </p> --}}
+                            @component('components.messages')@endcomponent
                             <form action="{{ route('organisations.team.store', $organisation->uuid) }}"
                                 method="post" enctype="multipart/form-data"
                                 class="py-2" id="teamForm">
                                 @csrf
-                                @component('components.messages')@endcomponent
                                 @component('organisations.team.form', ['categories' => $categories, 'oldCategory' => old('category')])
                                     @slot('name')
                                         {{ old('name') }}

@@ -119,7 +119,7 @@ class ContactController extends Controller
 
             return redirect()->back();
         } else {
-            Session::flash('error', 'Message failed to delete');
+            Session::flash('danger', 'Message failed to delete');
 
             return redirect()->back();
         }

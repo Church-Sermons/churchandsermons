@@ -156,7 +156,7 @@ class ReviewController extends Controller
 
             return redirect()->back();
         } else {
-            Session::flash('error', 'Review failed to delete');
+            Session::flash('danger', 'Review failed to delete');
 
             return redirect()->back();
         }

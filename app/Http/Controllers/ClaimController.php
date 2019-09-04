@@ -120,7 +120,7 @@ class ClaimController extends Controller
 
             return redirect()->back();
         } else {
-            Session::flash('error', 'Claim failed to delete');
+            Session::flash('danger', 'Claim failed to delete');
 
             return redirect()->back();
         }

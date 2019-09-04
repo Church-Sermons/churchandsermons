@@ -18,7 +18,9 @@ class OrganisationResourceController extends Controller
      */
     public function index($uuid)
     {
-        return view('resources.index');
+        $organisation = Organisation::where('uuid', $uuid)->first();
+
+        return view('resources.index', compact(['organisation']));
     }
 
     /**
@@ -30,9 +32,11 @@ class OrganisationResourceController extends Controller
     {
         $categories = OrganisationCategory::all();
         $organisation = Organisation::where('uuid', $uuid)->first();
-        return view('resources.create')
-            ->withCategories($categories)
-            ->withOrganisation($organisation);
+
+        return view(
+            'resources.create',
+            compact(['categories', 'organisation'])
+        );
     }
 
     /**
@@ -49,7 +53,7 @@ class OrganisationResourceController extends Controller
             'category' => 'required|numeric'
         ];
 
-        if ($request->category) {
+        if ($request->has('category')) {
             $category = OrganisationCategory::findOrFail($request->category);
 
             if ($category->name == 'audio') {
@@ -65,9 +69,20 @@ class OrganisationResourceController extends Controller
 
         $validator = $this->validate($request, $rules);
 
-        $resource = new Resource();
-        $resource->name = $request->name;
-        $resource->description = $request->description;
+        $resource = new Resource($request->except(['file_name', 'category']));
+        $resource->category_id = $request->category;
+
+        if ($resource->save()) {
+            Session::flash('success', 'Resource created successfully');
+
+            return redirect()->back();
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+
         // $resource->file_name = $request->file_name->storeAs(
         //     'uploads/resources',
         //     time() .
@@ -75,39 +90,6 @@ class OrganisationResourceController extends Controller
         //         $request->file('file_name')->getClientOriginalExtension(),
         //     'public'
         // );
-        $resource->category_id = $request->category;
-
-        if ($resource->save()) {
-            // sync to organisation
-            $organisation = Organisation::where('uuid', $uuid)->first();
-            $organisation->resources()->syncWithoutDetaching($resource);
-
-            if ($category->name == 'video') {
-                $organisation
-                    ->addMedia($request->file('file_name'))
-                    ->usingName($request->name)
-                    ->toMediaCollection('videos');
-            } elseif ($category->name == 'document') {
-                $organisation
-                    ->addMedia($request->file('file_name'))
-                    ->usingName($request->name)
-                    ->toMediaCollection('documents');
-            } elseif ($category->name == 'audio') {
-                $organisation
-                    ->addMedia($request->file('file_name'))
-                    ->usingName($request->name)
-                    ->toMediaCollection('audios');
-            }
-
-            Session::flash('success', 'Resource created successfully');
-
-            return redirect()->route('organisations.show', $uuid);
-        } else {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors($validator);
-        }
     }
 
     /**
@@ -116,7 +98,7 @@ class OrganisationResourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($org_id, $id)
+    public function show($uuid, $id)
     {
         //
     }
@@ -127,7 +109,7 @@ class OrganisationResourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($org_id, $id)
+    public function edit($uuid, $id)
     {
         //
     }
@@ -139,7 +121,7 @@ class OrganisationResourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $uuid, $id)
     {
         //
     }
@@ -150,8 +132,9 @@ class OrganisationResourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($uuid, $id)
     {
-        //
+        // detach from resource_links
+        // delete using media library package
     }
 }

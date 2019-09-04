@@ -59,16 +59,21 @@
     <section id="explore">
 
         <div class="container explore-inner my-5">
+            @component('components.messages')@endcomponent
             <div class="row">
                 @forelse ($organisations as $organisation)
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="card bg-light">
+                    <div class="col-md-4 col-sm-6 col-xs-12 mb-3">
+                        <div class="card bg-light h-100">
                             <div class="card-image-handler">
-                                <img src="{{ Helper::setFallbackLogoImage($organisation->getFirstMediaUrl('logo', 'main')) }}" alt="{{ $organisation->name.__("-Logo") }}" class="w-100 h-100">
+                                <img src="{{ Helper::setFallbackLogoImage($organisation->getFirstMediaUrl('logo')) }}" alt="{{ $organisation->name.__("-Logo") }}" class="w-100 h-100">
                                 <div class="card-image-overlay rounded-top d-flex align-items-start justify-content-end p-3">
-                                    @hasRoleAndOwns(['administrator', 'author'], $organisation)
-                                        <a href="#" class="btn btn-outline-danger mr-1" title="Delete"><i class="fas fa-trash-alt"></i></a>
-                                        <a href="{{ route('organisations.edit', $organisation->uuid) }}" class="btn btn-outline-primary" title="Edit"><i class="fas fa-edit"></i></a>
+                                    @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
+                                        <form class="d-inline mr-1" action="{{ route('organisations.destroy', $organisation->uuid) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                        </form>
+                                        <a href="{{ route('organisations.edit', $organisation->uuid) }}" class="btn btn-primary" title="Edit"><i class="fas fa-edit"></i></a>
                                     @endOwns
                                 </div>
                             </div>
@@ -87,7 +92,13 @@
                                     @forelse (Helper::starRating($organisation->average_review) as $rating)
                                         <i class="{{ $rating }}"></i>
                                     @empty
-                                        <span class="small text-muted"></span>
+                                        <span>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </span>
                                     @endforelse
                                     <span class="text-muted ml-1">{{ $organisation->average_review?$organisation->average_review:'0.0' }} ({{ $organisation->reviews->count() }})</span>
                                 </span>

@@ -28,9 +28,7 @@ class OrganisationController extends Controller
             ->with('category')
             ->paginate(10);
 
-        return view('organisations.main.index')->withOrganisations(
-            $organisations
-        );
+        return view('organisations.main.index', compact(['organisations']));
     }
 
     /**
@@ -40,8 +38,9 @@ class OrganisationController extends Controller
      */
     public function create()
     {
-        $categories = OrganisationCategory::all();
-        return view('organisations.main.create')->withCategories($categories);
+        $categories = OrganisationCategory::all()->unique('name');
+
+        return view('organisations.main.create', compact(['categories']));
     }
 
     /**
@@ -60,24 +59,17 @@ class OrganisationController extends Controller
             'address' => 'required',
             'description' => 'required',
             'category' => 'required|numeric',
-            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+            'logo' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
         ]);
 
         // store to db
         $organisation = new Organisation(
-            $request->except(['category', 'logo', 'protocol'])
+            $request->except(['category', 'logo'])
         );
         $organisation->category_id = $request->category;
         // $organisation->logo = $request->logo->store('uploads', 'public');
-        $organisation->user_id = Auth::user()->id;
 
         if ($organisation->save()) {
-            // associate with media library
-            $organisation
-                ->addMedia($request->logo)
-                ->usingName($request->name . '-Logo')
-                ->toMediaCollection('logo');
-
             Session::flash('success', 'Organisation created successfully');
             return redirect()->route('organisations.index');
         } else {
@@ -100,7 +92,7 @@ class OrganisationController extends Controller
             ->with(['category', 'reviews'])
             ->first();
 
-        return view('organisations.main.show')->withOrganisation($organisation);
+        return view('organisations.main.show', compact(['organisation']));
     }
 
     /**
@@ -111,17 +103,14 @@ class OrganisationController extends Controller
      */
     public function edit($uuid)
     {
-        $organisation = Organisation::where('uuid', $uuid)
-            ->with('category')
-            ->first();
+        $organisation = Organisation::where('uuid', $uuid)->first();
 
-        if ($organisation->user_id != Auth::user()->id) {
-            return redirect()->route('organisations.index');
-        }
-        $categories = OrganisationCategory::all();
-        return view('organisations.main.edit')
-            ->withOrganisation($organisation)
-            ->withCategories($categories);
+        $categories = OrganisationCategory::distinctCategoryNames();
+
+        return view(
+            'organisations.main.edit',
+            compact(['organisation', 'categories'])
+        );
     }
 
     /**
@@ -135,29 +124,23 @@ class OrganisationController extends Controller
     {
         $organisation = Organisation::where('uuid', $uuid)->first();
 
-        if ($organisation->user_id != Auth::user()->id) {
-            Session::flash('error', 'Unauthorized Access');
-
-            return redirect()->route('organisations.index');
-        }
-
         $validator = $this->validate($request, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
+            'email' => "required|email|max:255|unique:organisations,email,$organisation->id",
             'phone' => 'required|max:20',
             'website' => 'required|max:150|url',
             'address' => 'required',
             'description' => 'required',
             'category' => 'required|numeric',
-            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+            'logo' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
         ]);
 
-        // store to db
-        $organisation->fill($request->except(['category', 'logo', 'protocol']));
-        $organisation->category_id = $request->category;
-        $organisation->user_id = Auth::user()->id;
+        // merge for update
+        $data = array_merge($request->except(['category', 'logo']), [
+            'category_id' => $request->category
+        ]);
 
-        if ($organisation->save()) {
+        if ($organisation->update($data)) {
             Session::flash('success', 'Organisation updated successfully');
             return redirect()->route('organisations.index');
         } else {
@@ -174,8 +157,18 @@ class OrganisationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($uuid)
     {
-        //
+        $organisation = Organisation::where('uuid', $uuid)->first();
+
+        if ($organisation->delete()) {
+            Session::flash('success', 'Organisation deleted successfully');
+
+            return redirect()->route('organisations.index');
+        } else {
+            Session::flash('danger', 'Organisation failed to delete');
+
+            return redirect()->route('organisations.index');
+        }
     }
 }

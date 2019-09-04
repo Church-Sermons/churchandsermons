@@ -119,4 +119,17 @@ class Helper
 
         return false;
     }
+
+    /**
+     *
+     * Media Attachment
+     *
+     */
+    public static function mediaAttacher($model, $data = [])
+    {
+        return $model
+            ->addMedia(request()->file($data['file']))
+            ->usingName(request()->input($data['name']))
+            ->toMediaCollection($data['collection']);
+    }
 }

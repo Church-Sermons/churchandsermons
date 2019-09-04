@@ -160,7 +160,7 @@ class EventController extends Controller
 
             return redirect()->back();
         } else {
-            Session::flash('error', 'Event failed to delete');
+            Session::flash('danger', 'Event failed to delete');
 
             return redirect()->back();
         }

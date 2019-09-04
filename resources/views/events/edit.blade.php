@@ -31,10 +31,10 @@
                                         {{ old('address', $event->address) }}
                                     @endslot
                                     @slot('latitude')
-                                        {{ old('latitude', $event->lat) }}
+                                        {{ old('lat', $event->lat) }}
                                     @endslot
                                     @slot('longitude')
-                                        {{ old('longitude', $event->lon) }}
+                                        {{ old('lon', $event->lon) }}
                                     @endslot
                                     @slot('description')
                                         {{ old('description', $event->description) }}

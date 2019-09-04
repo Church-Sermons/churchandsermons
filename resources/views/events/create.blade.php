@@ -17,11 +17,12 @@
                                 fuga impedit corrupti autem optio fugit modi accusamus ducimus
                                 ut facere. Minus, expedita ut. Odit?
                             </p> --}}
+                            @component('components.messages')@endcomponent
                             <form action="{{ route('organisations.events.store', $organisation->uuid) }}"
                                 method="post" enctype="multipart/form-data"
                                 class="py-2" id="eventForm">
                                 @csrf
-                                @component('components.messages')@endcomponent
+
                                 @component('events.form')
                                     @slot('title')
                                         {{ old('title') }}
@@ -30,10 +31,10 @@
                                         {{ old('address') }}
                                     @endslot
                                     @slot('latitude')
-                                        {{ old('latitude') }}
+                                        {{ old('lat') }}
                                     @endslot
                                     @slot('longitude')
-                                        {{ old('longitude') }}
+                                        {{ old('lon') }}
                                     @endslot
                                     @slot('description')
                                         {{ old('description') }}
