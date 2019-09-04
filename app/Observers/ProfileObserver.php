@@ -5,6 +5,9 @@ namespace App\Observers;
 use App\Profile;
 use App\Organisation;
 use Str;
+use Route;
+use Auth;
+use Storage;
 
 class ProfileObserver
 {
@@ -16,7 +19,17 @@ class ProfileObserver
      */
     public function created(Profile $profile)
     {
+        // check if route exists
+        if (Route::current()->parameters['organisation_id']) {
+            // syncing with other related table
+            $organisation = Organisation::where(
+                'uuid',
+                Route::current()->parameters['organisation_id']
+            )->first();
 
+            // link to relation
+            $organisation->profiles()->syncWithoutDetaching($profile);
+        }
     }
 
     /**
@@ -30,7 +43,16 @@ class ProfileObserver
     {
         // create a uuid
         $profile->uuid = Str::uuid();
+        // associate with currently registered user
+        if (Auth::check()) {
+            $profile->user_id = Auth::user()->id;
+        }
 
+        // check if image is empty
+        if (empty(request()->profile_image)) {
+            // add own path
+            $profile->profile_image = 'images/default-logo.png';
+        }
     }
 
     /**
@@ -42,6 +64,35 @@ class ProfileObserver
     public function updated(Profile $profile)
     {
         //
+    }
+
+    /**
+     * Handle the = profile "updating" event.
+     *
+     * @param  \App\Profile  $Profile
+     * @return void
+     */
+    public function updating(Profile $profile)
+    {
+        // Deleting file on update
+        if (empty(request()->profile_image)) {
+            // empty request use already existing file in db
+            $profile->profile_image = $profile->getOriginal('profile_image');
+        } else {
+            // get old profile image
+            $oldProfile = $profile->profile_image;
+
+            // save new profile image
+            $profile->profile_image = request()->profile_image->store(
+                'uploads',
+                'public'
+            );
+
+            if (is_file(public_path('storage/' . $oldProfile))) {
+                // delete old profile image
+                Storage::disk('public')->delete($oldProfile);
+            }
+        }
     }
 
     /**

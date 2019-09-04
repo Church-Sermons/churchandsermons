@@ -18,9 +18,11 @@ class TeamController extends Controller
      */
     public function index($uuid)
     {
-        $organisation = Organisation::where('uuid', $uuid)->with('profiles')->first();
+        $organisation = Organisation::where('uuid', $uuid)
+            ->with('profiles')
+            ->first();
 
-        return view('organisations.team.index')->withOrganisation($organisation);
+        return view('organisations.team.index', compact(['organisation']));
     }
 
     /**
@@ -32,7 +34,10 @@ class TeamController extends Controller
     {
         $categories = OrganisationCategory::all();
         $organisation = Organisation::where('uuid', $uuid)->first();
-        return view('organisations.team.create')->withCategories($categories)->withOrganisation($organisation);
+        return view(
+            'organisations.team.create',
+            compact(['categories', 'organisation'])
+        );
     }
 
     /**
@@ -47,31 +52,34 @@ class TeamController extends Controller
             'name' => 'required|max:255',
             'surname' => 'required|max:255',
             'email' => 'required|email|max:255|unique:profiles,email',
-            'phone' => 'required|max:20',
+            'phone' =>
+                'required|min:10|max:15|regex:/^[0-9]{3}-[0-9]{3}-[0-9]{3,4}$/',
             'website' => 'required|max:150|url',
             'address' => 'required',
             'description' => 'required',
             'category' => 'required|numeric',
-            'profile_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+            'profile_image' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
         ]);
 
         // add data to profile
-        $profile = new Profile($request->except(['profile_image', 'user_id', 'category']));
-        $profile->profile_image = $request->profile_image->store('uploads', 'public');
-        $profile->user_id = Auth::user()->id;
+        $profile = new Profile($request->except(['profile_image', 'category']));
+        if ($request->hasFile('profile_image')) {
+            $profile->profile_image = $request->profile_image->store(
+                'uploads',
+                'public'
+            );
+        }
+
         $profile->category_id = $request->category;
 
-
-        if($profile->save()){
-            // sync organisation
-            $organisation = Organisation::where('uuid', $uuid)->first();
-            $organisation->profiles()->syncWithoutDetaching($profile);
-
+        if ($profile->save()) {
             Session::flash('success', 'Member created successfully');
-            return redirect()->route('organisations.team.index', $uuid);
-        }else{
-
-            return redirect()->back()->withInput()->withErrors($validator);
+            return redirect()->back();
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
         }
     }
 
@@ -92,9 +100,15 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($uuid, $id)
     {
-        //
+        $profile = Profile::findOrFail($id);
+        $categories = OrganisationCategory::all();
+        $organisation = Organisation::where('uuid', $uuid)->first();
+        return view(
+            'organisations.team.edit',
+            compact(['profile', 'categories', 'organisation'])
+        );
     }
 
     /**
@@ -104,9 +118,38 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $uuid, $id)
     {
-        //
+        // will be upgraded to include already available users to add
+        $validator = $this->validate($request, [
+            'name' => 'required|max:255',
+            'surname' => 'required|max:255',
+            'email' => "required|email|max:255|unique:profiles,email,$id",
+            'phone' =>
+                'required|min:10|max:15|regex:/^[0-9]{3}-[0-9]{3}-[0-9]{3,4}$/',
+            'website' => 'required|max:150|url',
+            'address' => 'required',
+            'description' => 'required',
+            'category' => 'required|numeric',
+            'profile_image' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+        ]);
+
+        // add data to profile
+        $profile = Profile::findOrFail($id);
+
+        $data = array_merge($request->except(['profile_image', 'category']), [
+            'category_id' => $request->category
+        ]);
+
+        if ($profile->update($data)) {
+            Session::flash('success', 'Member edited successfully');
+            return redirect()->back();
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
+        }
     }
 
     /**
@@ -115,8 +158,18 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($uuid, $id)
     {
-        //
+        $organisation = Organisation::where('uuid', $uuid)->first();
+
+        // if exists detach
+        if ($organisation && $organisation->profiles()->detach($id)) {
+            Session::flash('success', 'Team member deleted successfully');
+            return redirect()->back();
+        } else {
+            Session::flash('error', 'Team member not deleted');
+
+            return redirect()->back();
+        }
     }
 }

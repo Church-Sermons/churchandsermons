@@ -1,4 +1,4 @@
-@section('title', 'Add Member')
+@section('title', 'Edit Member')
 
 @extends('layouts.app')
 
@@ -10,51 +10,52 @@
                     <div class="col-md-8 offset-md-2">
                         <div class="card">
                             <div class="card-body">
-                                <h2 class="card-title font-weight-bold mb-3 text-center">Add Team Member</h2>
+                                <h2 class="card-title font-weight-bold mb-3 text-center">{{ $organisation->name.__(" - Edit Member") }}</h2>
                                 {{-- <p class="card-text text-center">
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                     Voluptatem non, quasi aliquid corporis atque, asperiores
                                     fuga impedit corrupti autem optio fugit modi accusamus ducimus
                                     ut facere. Minus, expedita ut. Odit?
                                 </p> --}}
-                                <form action="{{ route('organisations.team.store', $organisation->uuid) }}"
+                                <form action="{{ route('organisations.team.update', [$organisation->uuid, $profile->id]) }}"
                                     method="post" enctype="multipart/form-data"
                                     class="py-2">
                                     @csrf
+                                    @method('PUT')
                                     @component('components.messages')@endcomponent
-                                    @component('organisations.team.form', ['categories' => $categories, 'oldCategory' => old('category')])
+                                    @component('organisations.team.form', ['categories' => $categories, 'oldCategory' => old('category', $profile->category_id)])
                                         @slot('name')
-                                            {{ old('name') }}
+                                            {{ old('name', $profile->name) }}
                                         @endslot
                                         @slot('surname')
-                                            {{ old('surname') }}
+                                            {{ old('surname', $profile->surname) }}
                                         @endslot
                                         @slot('email')
-                                            {{ old('email') }}
+                                            {{ old('email', $profile->email) }}
                                         @endslot
                                         @slot('website')
-                                            {{ old('website') }}
+                                            {{ old('website', $profile->website) }}
                                         @endslot
                                         @slot('phone')
-                                            {{ old('phone') }}
+                                            {{ old('phone', $profile->phone) }}
                                         @endslot
                                         @slot('address')
-                                            {{ old('address') }}
+                                            {{ old('address', $profile->address) }}
                                         @endslot
                                         @slot('latitude')
-                                            {{ old('latitude') }}
+                                            {{ old('latitude', $profile->lat) }}
                                         @endslot
                                         @slot('longitude')
-                                            {{ old('longitude') }}
+                                            {{ old('longitude', $profile->lon) }}
                                         @endslot
                                         @slot('description')
-                                            {{ old('description') }}
+                                            {{ old('description', $profile->description) }}
                                         @endslot
                                         @slot('profile')
-                                            {{ old('profile') }}
+                                            {{ old('profile', $profile->profile_image) }}
                                         @endslot
                                         @slot('submitButtonText')
-                                            Add Member
+                                            Update Member
                                         @endslot
                                     @endcomponent
                                 </form>

@@ -101,4 +101,22 @@ class Helper
             return $store;
         }
     }
+
+    /**
+     *
+     * Category Extractor
+     *
+     */
+    public static function categoryExtractor($categories, $key)
+    {
+        // check if categories exist && key is in array
+        if (
+            $categories->count() > 0 &&
+            in_array($key, $categories->pluck('linked_to')->toArray())
+        ) {
+            return true;
+        }
+
+        return false;
+    }
 }

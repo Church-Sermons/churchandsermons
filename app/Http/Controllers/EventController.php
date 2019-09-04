@@ -127,9 +127,9 @@ class EventController extends Controller
 
         if (
             $event->update(
-                array_merge(
-                    $request->except(['poster'], $event->uuid_link = $uuid)
-                )
+                array_merge($request->except(['poster']), [
+                    'uuid_link' => $uuid
+                ])
             )
         ) {
             Session::flash('success', 'Event Updated');
