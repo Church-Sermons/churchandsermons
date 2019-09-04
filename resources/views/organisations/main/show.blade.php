@@ -207,10 +207,10 @@
 
                             <div class="row">
                                 @forelse ($organisation->profiles as $profile)
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="card">
+                                    <div class="col-md-6 col-sm-12 mb-2">
+                                        <div class="card h-100">
                                             <div class="card-body d-flex flex-column align-items-center">
-                                                <img src="{{ asset('storage/'.$profile->profile_image) }}" alt="avatar" class="rounded-circle mr-2 mt-2" width="80" height="80">
+                                                <img src="{{ asset('storage/'.$profile->profile_image) }}" alt="avatar" class="rounded-circle mr-2 mt-2" width="100" height="100" style="object-fit: cover;">
                                                 <h4 class="text-capitalize font-weight-bold mt-1">
                                                     <a href="{{ route('profiles.show', $profile->uuid) }}">{{ $profile->name.__(" ").$profile->surname }}</a>
                                                 </h4>

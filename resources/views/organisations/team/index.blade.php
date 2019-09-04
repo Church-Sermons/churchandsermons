@@ -12,8 +12,8 @@
                     @component('components.messages')@endcomponent
                     <div class="row">
                         @forelse ($organisation->profiles as $team)
-                            <div class="col-md-3 col-sm-6 col-xs-12">
-                                <div class="card">
+                            <div class="col-md-3 col-sm-6 col-xs-12 mb-2">
+                                <div class="card h-100">
                                     @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
                                     <span class="d-block text-right mt-2 mr-2">
                                         <form class="d-inline" action="{{ route('organisations.team.destroy', [$organisation->uuid, $team->id]) }}" method="POST">
@@ -25,9 +25,7 @@
                                     </span>
                                     @endOwns
                                     <div class="card-body d-flex flex-column align-items-center">
-                                        <div class="rounded-circle mb-3" style="width: 100px; height: 100px">
-                                            <img style="object-fit: cover;" src="{{ asset('storage/'.$team->profile_image) }}" alt="avatar" class="rounded-circle mr-2 mt-2 w-100 h-100">
-                                        </div>
+                                        <img style="object-fit: cover;" src="{{ asset('storage/'.$team->profile_image) }}" alt="avatar" class="rounded-circle mr-2 mt-2" height="100" width="100">
                                         <h4 class="text-capitalize font-weight-bold mt-1">
                                             <a href="{{ route('profiles.show', $team->uuid) }}">{{ $team->name.__(" ").$team->surname }}</a>
                                         </h4>
