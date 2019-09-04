@@ -25,7 +25,9 @@
                                     </span>
                                     @endOwns
                                     <div class="card-body d-flex flex-column align-items-center">
-                                        <img src="{{ asset('storage/'.$team->profile_image) }}" alt="avatar" class="rounded-circle mr-2 mt-2" width="80" height="80">
+                                        <div class="rounded-circle mb-3" style="width: 100px; height: 100px">
+                                            <img style="object-fit: cover;" src="{{ asset('storage/'.$team->profile_image) }}" alt="avatar" class="rounded-circle mr-2 mt-2 w-100 h-100">
+                                        </div>
                                         <h4 class="text-capitalize font-weight-bold mt-1">
                                             <a href="{{ route('profiles.show', $team->uuid) }}">{{ $team->name.__(" ").$team->surname }}</a>
                                         </h4>
@@ -63,66 +65,4 @@
         </div>
     </div>
 </div>
-<div class="section" style="display: none;">
-    <div class="container">
-        <div class="columns">
-            <div class="column">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-header-title">{{ $organisation->name }} Team Members</h4>
-                    </div>
-                    <div class="card-content">
-                        <div class="columns">
-                            @forelse ($organisation->profiles as $profile)
-                            <div class="column is-one-third">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                            <img src="{{ asset('/storage/'.$profile->profile_image) }}" alt="team-member-image">
-                                        </figure>
-                                        <div class="card-content">
-                                            <div class="table-container">
-                                                <table class="table is-narrow">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td><strong>Name</strong></td>
-                                                            <td>{{ $profile->name." ". $profile->surname }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><strong>Email</strong></td>
-                                                            <td>{{ $profile->email }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><strong>Title</strong></td>
-                                                            <td>{{ $profile->category->name }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><strong>Description</strong></td>
-                                                            <td>{{ $profile->description }}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @empty
-                                <div class="column">
-                                    <p>This organisation has no team members</p>
-                                    <a href="{{ route('team.create', $organisation->id) }}" class="m-t-10 button is-primary">
-                                        <i class="fas fa-user-plus"></i> Add Member
-                                    </a>
-                                </div>
-
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
 @endsection

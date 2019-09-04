@@ -1,18 +1,17 @@
-<div id="modalContainer" class="custom-modal-container">
-    <div class="columns">
-        <div class="column {{ $col }}">
-            <div class="card m-t-50">
-                <div class="card-header">
-                    <h4 class="card-header-title">{{ $title }}</h4>
-                    <span class="is-pulled-right m-t-10 m-r-5">
-                        <button class="button is-danger is-small close is-rounded"><i class="fas fa-times"></i></button>
-                    </span>
-                </div>
-                <div class="card-content">
+<div class="modal fade" tab-index="-1" role="dialog" id="categoryModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="font-weight-bold">{{ $title }}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body py-4">
                     {{ $slot }}
                 </div>
             </div>
-
         </div>
     </div>
 </div>

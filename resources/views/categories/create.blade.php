@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="section">
-        <div class="container">
+<div class="section">
+    <div class="container">
         <div class="columns">
             <div class="column is-three-fifths is-offset-one-fifth">
                 <div class="card">
@@ -39,6 +39,6 @@
                 </div>
             </div>
         </div>
-        </div>
     </div>
+</div>
 @endsection

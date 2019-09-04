@@ -94,7 +94,7 @@
         </select>
     @endif
     <div class="input-group-append">
-        <button class="btn btn-primary"><i class="fas fa-plus"></i></button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryModal"><i class="fas fa-plus"></i></button>
     </div>
     @error('category')
         <p class="invalid-feedback">

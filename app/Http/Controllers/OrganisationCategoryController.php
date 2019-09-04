@@ -143,28 +143,23 @@ class OrganisationCategoryController extends Controller
             'linked_to' => 'required|max:50'
         ]);
 
-        // check if already exists
-        $checkExists = OrganisationCategory::where(
-            'name',
-            $request->name
-        )->first();
-        if ($checkExists) {
-            return response()->json(['message' => 'Name already exists']);
-        } else {
-            $category = new OrganisationCategory();
-            $category->name = $request->name;
-            $category->linked_to = $request->linked_to;
+        $category = new OrganisationCategory();
+        $category->name = $request->name;
+        $category->linked_to = $request->linked_to;
 
-            if ($category->save()) {
-                return response()->json(
-                    ['message' => 'Category Saved Successfully'],
-                    201
-                );
-            } else {
-                return response()->json([
-                    'message' => 'Category Failed To Save'
-                ]);
-            }
+        if ($category->save()) {
+            return response()->json(
+                [
+                    'status' => 'success',
+                    'message' => 'Category Saved Successfully'
+                ],
+                201
+            );
+        } else {
+            return response()->json([
+                'status' => 'danger',
+                'message' => 'Category Failed To Save'
+            ]);
         }
     }
 }
