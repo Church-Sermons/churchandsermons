@@ -44,7 +44,7 @@
                                             <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Keyword">
                                         </div>
                                         <div class="col-md-2 col-sm-12">
-                                            <button type="submit" class="btn btn-primary text-uppercase form-control">Search</button>
+                                            <button type="button" class="btn btn-primary text-uppercase form-control">Search</button>
                                         </div>
                                     </div>
                                 </form>
