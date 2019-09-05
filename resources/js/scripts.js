@@ -11,3 +11,4 @@ require("./bootstrap");
  */
 require("./scripts/categories");
 require("./scripts/custom");
+require("./scripts/media");

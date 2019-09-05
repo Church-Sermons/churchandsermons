@@ -1,7 +1,7 @@
 /**
- * Custom Scripting For Plyr
+ * <!-- Custom Code For Plyr -->
  */
-var controls = [
+const controls = [
     "play-large", // The large play button in the center
     "restart", // Restart playback
     "rewind", // Rewind by the seek time (default 10 seconds)
@@ -20,4 +20,13 @@ var controls = [
     "fullscreen" // Toggle fullscreen
 ];
 
-const player = Plyr.setup(".media-player", { controls });
+const audioPlayer = new Plyr("#audio-player", { controls });
+const videoPlayer = new Plyr("#video-player", { controls });
+/**
+ * <!-- End of custom Plyr code -->
+ */
+
+module.exports = {
+    controls,
+    audioPlayer
+};

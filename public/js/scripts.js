@@ -42321,6 +42321,8 @@ __webpack_require__(/*! ./scripts/categories */ "./resources/js/scripts/categori
 
 __webpack_require__(/*! ./scripts/custom */ "./resources/js/scripts/custom.js");
 
+__webpack_require__(/*! ./scripts/media */ "./resources/js/scripts/media.js");
+
 /***/ }),
 
 /***/ "./resources/js/scripts/categories.js":
@@ -42433,7 +42435,7 @@ document.addEventListener("DOMContentLoaded", function () {
 /***/ (function(module, exports) {
 
 /**
- * Custom Scripting For Plyr
+ * <!-- Custom Code For Plyr -->
  */
 var controls = ["play-large", // The large play button in the center
 "restart", // Restart playback
@@ -42452,8 +42454,131 @@ var controls = ["play-large", // The large play button in the center
 "download", // Show a download button with a link to either the current source or a custom URL you specify in your options
 "fullscreen" // Toggle fullscreen
 ];
-var player = Plyr.setup(".media-player", {
+var audioPlayer = new Plyr("#audio-player", {
   controls: controls
+});
+var videoPlayer = new Plyr("#video-player", {
+  controls: controls
+});
+/**
+ * <!-- End of custom Plyr code -->
+ */
+
+module.exports = {
+  controls: controls,
+  audioPlayer: audioPlayer
+};
+
+/***/ }),
+
+/***/ "./resources/js/scripts/media.js":
+/*!***************************************!*\
+  !*** ./resources/js/scripts/media.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// // import player
+// const { player } = require("./custom");
+var _require = __webpack_require__(/*! ./custom */ "./resources/js/scripts/custom.js"),
+    audioPlayer = _require.audioPlayer;
+
+document.addEventListener("DOMContentLoaded", function () {
+  // manage audio media file
+  // get files
+  var el = document.querySelectorAll(".meta-container");
+
+  if (el) {
+    Array.from(el).forEach(function (v) {
+      // on click prevent default
+      v.addEventListener("click", function (e) {
+        e.preventDefault(); // CSS styling
+        // Remove active class and place in now playing area
+        // get data
+        // pass to function to play audio
+
+        playSelectedAudio(getMediaAttributesValue(this)); // update audio display interface
+
+        updateAudioDisplayInterface(getMediaAttributesValue(this));
+      });
+    });
+  }
+
+  function getMediaAttributesValue(v) {
+    return {
+      src: v.getAttribute("data-src"),
+      title: v.getAttribute("data-title"),
+      size: v.getAttribute("data-size"),
+      artist: v.getAttribute("data-artist"),
+      type: v.getAttribute("data-type")
+    };
+  } // music card click
+
+
+  var musicCard = document.querySelectorAll(".music-card");
+
+  if (musicCard) {
+    Array.from(musicCard).forEach(function (card) {
+      card.addEventListener("click", function (e) {
+        // e.stopPropagation();
+        // get data from child
+        var thisChild = this.querySelector(".meta-container");
+
+        if (thisChild) {
+          // get data from this child and play
+          playSelectedAudio(getMediaAttributesValue(thisChild)); // update audio display interface
+
+          updateAudioDisplayInterface(getMediaAttributesValue(thisChild));
+        } // CSS styling
+        // remove active class and add to playing area
+
+
+        if (!this.classList.contains("active")) {
+          // remove class from all other elements
+          removeclassActive(musicCard); // add class here
+
+          addClassActive(this);
+        }
+      });
+    });
+  }
+
+  function playSelectedAudio(_ref) {
+    var src = _ref.src,
+        title = _ref.title,
+        type = _ref.type;
+    audioPlayer.source = {
+      type: "audio",
+      title: title,
+      sources: [{
+        src: src,
+        type: type
+      }]
+    }; // play audio
+
+    audioPlayer.play();
+  }
+
+  function updateAudioDisplayInterface(_ref2) {
+    var title = _ref2.title,
+        artist = _ref2.artist,
+        size = _ref2.size;
+    document.getElementById("title").innerHTML = title;
+    document.getElementById("artist").innerHTML = artist;
+    document.getElementById("size").innerHTML = size;
+  } // remove active class from all other elements
+
+
+  function removeclassActive(el) {
+    Array.from(el).forEach(function (a) {
+      return a.classList.remove("active");
+    });
+  } // add active class to now playing
+
+
+  function addClassActive(el) {
+    el.classList.add("active");
+  }
 });
 
 /***/ }),

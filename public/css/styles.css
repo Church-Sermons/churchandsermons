@@ -18632,9 +18632,10 @@ a:hover {
 
 .playlist-container td:hover {
   cursor: pointer;
+  background: #f1f1f1;
 }
 
 .playlist-container td.active {
-  background: #ccc;
+  background: #ddd;
 }
 

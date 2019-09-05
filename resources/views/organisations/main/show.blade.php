@@ -137,7 +137,7 @@
                                                         </div>
 
                                                     </div>
-                                                    <audio id="player" controls>
+                                                    <audio id="audio-player" class="media-player" controls>
                                                         <source src="{{ $audio->getUrl() }}" type="{{ $audio->mime_type }}" />
                                                         {{-- <source src="/path/to/audio.ogg" type="audio/ogg" /> --}}
                                                     </audio>

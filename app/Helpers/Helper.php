@@ -139,15 +139,49 @@ class Helper
      * Return Media Metadata
      *
      */
-    public static function mediaMetadata($file)
-    {
-        $ffprobe = FFProbe::create([
-            'ffprobe.binaries' => env(
-                'FFPROBE_PATH',
-                'C:/binaries/ffmpeg/bin/ffprobe.exe'
-            )
-        ]);
+    public static $file = null;
+    public static $duration;
+    public static $artist;
+    public static $title;
+    public static $ffprobe;
 
-        return $ffprobe->format($file)->get('duration');
+    public static function media($file)
+    {
+        static::$file = $file;
+
+        if (static::$file) {
+            static::$ffprobe = FFProbe::create([
+                'ffprobe.binaries' => env(
+                    'FFPROBE_PATH',
+                    'C:/binaries/ffmpeg/bin/ffprobe.exe'
+                )
+            ])->format(static::$file);
+        }
+
+        return new static();
+    }
+
+    // return duration
+    public function getDuration()
+    {
+        static::$duration = static::$ffprobe->get('duration');
+
+        return gmdate("i:s", static::$duration);
+    }
+
+    // return title
+    public function getTitle()
+    {
+        static::$title = static::$ffprobe->get('tags')['title'];
+
+        return static::$title;
+    }
+
+    // return artist
+    public function getArtist()
+    {
+        static::$artist = static::$ffprobe->get('tags')['artist'];
+
+        return static::$artist;
     }
 }
