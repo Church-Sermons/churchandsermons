@@ -16,7 +16,7 @@ class UserObserver
     public function created(User $user)
     {
         // attach role
-        // $user->attachRole(Role::where('name', 'author')->first()->id);
+        $user->attachRole(Role::where('name', 'author')->first()->id);
     }
 
     /**
