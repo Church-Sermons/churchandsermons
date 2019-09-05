@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56d7101327cee7b49877d507a1062880",
+    "content-hash": "769ddbf6797c75f5d64203d52f489b32",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -68,6 +68,54 @@
                 "driver"
             ],
             "time": "2019-05-19T08:43:30+00:00"
+        },
+        {
+            "name": "balping/laravel-hashslug",
+            "version": "2.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/balping/laravel-hashslug.git",
+                "reference": "91cc492d0d6c9a4fb6e84067669e4dce6361be59"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/balping%2Flaravel-hashslug/repository/archive.zip?sha=91cc492d0d6c9a4fb6e84067669e4dce6361be59",
+                "reference": "91cc492d0d6c9a4fb6e84067669e4dce6361be59",
+                "shasum": ""
+            },
+            "require": {
+                "hashids/hashids": "^3.0|^4.0",
+                "illuminate/database": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/routing": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.5.*|3.6.*|3.7.*|3.8.*|^4.0",
+                "phpunit/phpunit": "^6.3|^7.0|^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Balping\\HashSlug\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Balázs Dura-Kovács"
+                }
+            ],
+            "description": "Package providing a trait to use Hashids on a model",
+            "keywords": [
+                "hashid",
+                "hashids",
+                "hashslug",
+                "laravel",
+                "slug"
+            ],
+            "time": "2019-09-05T00:04:56+00:00"
         },
         {
             "name": "devmarketer/easynav",
