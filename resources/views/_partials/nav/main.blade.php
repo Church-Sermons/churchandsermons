@@ -1,10 +1,10 @@
 <header class="fixed-top w-100">
     @if (app()->environment() == 'testing')
-    <div class="env-informer w-100 py-1">
-      <div class="container">
-        <h4 class="text-center text-bold text-capitalize display-6">
+    <div class="env-informer w-100">
+      <div class="container h-100">
+        <h5 class="text-center text-bold text-capitalize display-6">
           <i class="fas custom-fa fa-vial"></i> testing mode
-        </h4>
+        </h5>
       </div>
     </div>
     @endif

@@ -150,12 +150,16 @@ class Helper
         static::$file = $file;
 
         if (static::$file) {
-            static::$ffprobe = FFProbe::create([
-                'ffprobe.binaries' => env(
-                    'FFPROBE_PATH',
-                    'C:/binaries/ffmpeg/bin/ffprobe.exe'
-                )
-            ])->format(static::$file);
+            if (app()->environment() == 'local') {
+                static::$ffprobe = FFProbe::create([
+                    'ffprobe.binaries' => env(
+                        'FFPROBE_PATH',
+                        'C:/binaries/ffmpeg/bin/ffprobe.exe'
+                    )
+                ])->format(static::$file);
+            } else {
+                static::$ffprobe = FFProbe::create()->format(static::$file);
+            }
         }
 
         return new static();
