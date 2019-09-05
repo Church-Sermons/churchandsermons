@@ -109,7 +109,7 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
  *
  *
  */
-Route::resource('/resources', 'ResourceController');
+// Route::resource('/resources', 'ResourceController');
 
 // Auth Routes
 Auth::routes(['verify' => true]);

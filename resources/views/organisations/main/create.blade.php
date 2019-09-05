@@ -64,7 +64,15 @@
         </div>
     </div>
 </div>
-
-
+ {{-- Category Modal Partial --}}
+ @include('categories.handler', ['category' => 'organisation'])
 @endsection
-
+@section('scripts')
+    <script>
+        // Form Persistence
+        const organisationForm = document.getElementById('organisationForm');
+        FormPersistence.persist(organisationForm, {
+            useSessionStorage: true
+        });
+    </script>
+@endsection

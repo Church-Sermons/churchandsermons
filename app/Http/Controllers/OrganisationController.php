@@ -38,7 +38,7 @@ class OrganisationController extends Controller
      */
     public function create()
     {
-        $categories = OrganisationCategory::all()->unique('name');
+        $categories = OrganisationCategory::distinctCategoryNames();
 
         return view('organisations.main.create', compact(['categories']));
     }

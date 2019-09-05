@@ -32,7 +32,7 @@ class TeamController extends Controller
      */
     public function create($uuid)
     {
-        $categories = OrganisationCategory::all();
+        $categories = OrganisationCategory::distinctCategoryNames();
         $organisation = Organisation::where('uuid', $uuid)->first();
         return view(
             'organisations.team.create',
@@ -103,7 +103,7 @@ class TeamController extends Controller
     public function edit($uuid, $id)
     {
         $profile = Profile::findOrFail($id);
-        $categories = OrganisationCategory::all();
+        $categories = OrganisationCategory::distinctCategoryNames();
         $organisation = Organisation::where('uuid', $uuid)->first();
         return view(
             'organisations.team.edit',

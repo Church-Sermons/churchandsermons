@@ -35,7 +35,10 @@ class OrganisationObserver
     {
         // create a uuid
         $organisation->uuid = Str::uuid();
-        $organisation->user_id = Auth::user()->id;
+        // link with auth user id
+        if (Auth::check()) {
+            $organisation->user_id = Auth::user()->id;
+        }
     }
 
     /**

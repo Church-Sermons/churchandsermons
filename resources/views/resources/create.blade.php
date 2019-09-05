@@ -44,5 +44,17 @@
         </div>
     </div>
 </div>
+{{-- Category Modal Partial --}}
+@include('categories.handler', ['category' => 'resource'])
+@endsection
+
+@section('scripts')
+    <script>
+        // Form Persistence
+        const resourcesForm = document.getElementById('resourcesForm');
+        FormPersistence.persist(resourcesForm, {
+            useSessionStorage: true
+        });
+    </script>
 @endsection
 

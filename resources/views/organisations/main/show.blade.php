@@ -42,10 +42,10 @@
                                     <h3 class="card-title font-weight-bold mb-3">Events</h3>
                                 </div>
                                 <div class="col text-right">
-                                    <a href="{{ route('organisations.events.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
                                     @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
-                                        <a href="{{ route('organisations.events.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                        <a href="{{ route('organisations.events.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
                                     @endOwns
+                                    <a href="{{ route('organisations.events.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
                                 </div>
                             </div>
                             @forelse ($organisation->events as $event)
@@ -82,14 +82,14 @@
                                     <h3 class="card-title font-weight-bold mb-3">Resources</h3>
                                 </div>
                                 <div class="col text-right">
-                                    <a href="{{ route('organisations.resources.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
                                     @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
-                                        <a href="{{ route('organisations.resources.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                        <a href="{{ route('organisations.resources.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
                                     @endOwns
+                                    <a href="{{ route('organisations.resources.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
                                 </div>
                             </div>
 
-                            <ul class="nav nav-pills nav-justified">
+                            <ul class="nav nav-pills nav-justified bg-light">
                                 <li class="nav-item">
                                     <a
                                     href="#audio"
@@ -120,7 +120,7 @@
                             </ul>
                             <div class="tab-content mt-4">
                                 <div class="tab-pane active" id="audio">
-                                    @forelse ($organisation->getMedia('audios') as $audio)
+                                    @forelse ($organisation->getMedia('audio') as $audio)
                                         <div class="row">
                                             <div class="col">
                                                 <div class="audio-container d-flex flex-column border rounded">
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="tab-pane fade" id="video">
                                     <div class="row">
-                                        @forelse ($organisation->getMedia('videos') as $video)
+                                        @forelse ($organisation->getMedia('video') as $video)
                                             <div class="col-lg-4 col-sm-6 col-xs-12">
                                                 <div class="card">
                                                     <img src="{{ asset('images/temp/slides/slide-2.jpg') }}" alt="video-placeholder" height="150" class="w-100 rounded">
@@ -198,10 +198,10 @@
                                     <h3 class="card-title font-weight-bold mb-3">Team</h3>
                                 </div>
                                 <div class="col text-right">
-                                    <a href="{{ route('organisations.team.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-user-plus"></i></a>
                                     @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
-                                        <a href="{{ route('organisations.team.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                                        <a href="{{ route('organisations.team.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-user-plus"></i></a>
                                     @endOwns
+                                    <a href="{{ route('organisations.team.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
                                 </div>
                             </div>
 

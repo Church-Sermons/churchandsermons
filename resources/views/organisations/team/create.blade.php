@@ -64,28 +64,9 @@
             </div>
         </div>
     </div>
-    @component('components.modal')
-        @slot('title')
-            Add Profile Category
-        @endslot
-
-        <div class="message-area"></div>
-
-        <form action="#" method="post" id="categoryForm">
-            @csrf
-            @component('categories.form', [
-                            'linked' => old('linked_to', 'profile'),
-                            'links' => ['profile']])
-                @slot('name')
-                    {{ old('name') }}
-                @endslot
-                @slot('submitButtonText')
-                    Add Category
-                @endslot
-            @endcomponent
-        </form>
-    @endcomponent
 </div>
+{{-- Category Modal Partial --}}
+@include('categories.handler', ['category' => 'profile'])
 @endsection
 
 @section('scripts')
@@ -122,70 +103,11 @@
 
             }
 
-            /**
-                <----------- Server Request To Create Categories On The Fly ----->
-
-            **/
-
-            // form
-            const form = document.getElementById('categoryForm');
-
-
-            form.addEventListener('submit', function(e){
-                e.preventDefault();
-
-                // get form data
-                const formData = new FormData(e.target);
-
-                if(formValidation(formData)){
-                    // create data
-                    const category = {
-                        name: formData.get('name'),
-                        linked_to: formData.get('linked_to')
-                    };
-
-                    submitCategory(category);
-                }
-
-            });
-
-            // validate form data
-            function formValidation(data){
-                if(data.get('name') && data.get('linked_to')){
-                    if(data.get('name').length <= 255){
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            // make request to server
-            async function submitCategory(category){
-                try {
-                    const response = await axios.post('{{ route('categories.storejson') }}', category);
-                    const { data } = response;
-
-                    // display server message
-                    const alertBox = `<div class='alert alert-${data.status} fade show'>${data.message}</div>`;
-                    document.querySelector(".message-area").innerHTML = alertBox;
-
-                    // reset form
-                    form.reset();
-
-                    // reload page
-                    setTimeout(() => window.location.reload(), 3000);
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-
-            // Persist form data to avoid loss
+            // Form Persistence
             const teamForm = document.getElementById('teamForm');
             FormPersistence.persist(teamForm, {
-                useSessionStorage: true,
-                exclude: '_token'
+                useSessionStorage: true
             });
-
         });
 
     </script>

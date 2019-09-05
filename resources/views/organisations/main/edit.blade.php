@@ -62,6 +62,9 @@
         </div>
     </div>
 </div>
+{{-- Category Modal Partial --}}
+@include('categories.handler', ['category' => 'organisation'])
+
     <div class="section" style="display:none;">
         <div class="container">
         <div class="columns">

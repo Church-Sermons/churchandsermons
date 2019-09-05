@@ -9,4 +9,5 @@ require("./bootstrap");
 /**
  * Load All Custom Scripts
  */
-require("./scripts/temp");
+require("./scripts/categories");
+require("./scripts/custom");

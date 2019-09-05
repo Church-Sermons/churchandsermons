@@ -7,6 +7,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\Models\Media;
+use App\Traits\Mediable;
 
 class Organisation extends Model implements HasMedia
 {
@@ -84,6 +85,7 @@ class Organisation extends Model implements HasMedia
     {
         // logo collection
         $this->addMediaCollection('logo')
+            ->singleFile()
             ->acceptsFile(function (File $file) {
                 return $file->mimeType == 'image/jpeg' ||
                     $file->mimeType == 'image/png' ||
@@ -102,8 +104,9 @@ class Organisation extends Model implements HasMedia
             });
 
         // resources collection
-        $this->addMediaCollection('videos');
-        $this->addMediaCollection('audios');
-        $this->addMediaCollection('documents');
+        $this->addMediaCollection('video');
+        $this->addMediaCollection('audio');
+        $this->addMediaCollection('document');
+        $this->addMediaCollection('assets');
     }
 }

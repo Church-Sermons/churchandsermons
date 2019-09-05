@@ -27,6 +27,8 @@
 
             <div id="wrapper">
                 @yield('content')
+
+
             </div>
 
 

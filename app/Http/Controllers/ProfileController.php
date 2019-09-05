@@ -12,7 +12,9 @@ class ProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator|author')->except(['index', 'show']);
+        $this->middleware(
+            'role:administrator|superadministrator|author'
+        )->except(['index', 'show']);
     }
 
     /**
@@ -22,7 +24,9 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $profiles = Profile::orderBy('id', 'desc')->with('category')->paginate(10);
+        $profiles = Profile::orderBy('id', 'desc')
+            ->with('category')
+            ->paginate(10);
 
         return view('profiles.main.index')->withProfiles($profiles);
     }
@@ -55,22 +59,29 @@ class ProfileController extends Controller
             'address' => 'required',
             'description' => 'required',
             'category' => 'required|numeric',
-            'profile_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+            'profile_image' =>
+                'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
         ]);
 
-        $profile = new Profile($request->except(['profile_image', 'user_id', 'category']));
-        $profile->profile_image = $request->profile_image->store('uploads', 'public');
+        $profile = new Profile(
+            $request->except(['profile_image', 'user_id', 'category'])
+        );
+        $profile->profile_image = $request->profile_image->store(
+            'uploads',
+            'public'
+        );
         $profile->user_id = Auth::user()->id;
         $profile->category_id = $request->category;
 
-        if($profile->save()){
+        if ($profile->save()) {
             Session::flash('success', 'Profile created successfully');
             return redirect()->route('profiles.index');
-        }else{
-
-            return redirect()->back()->withInput()->withErrors($validator);
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
         }
-
     }
 
     /**
@@ -81,7 +92,9 @@ class ProfileController extends Controller
      */
     public function show($uuid)
     {
-        $profile = Profile::where('uuid', $uuid)->with(['category'])->first();
+        $profile = Profile::where('uuid', $uuid)
+            ->with(['category'])
+            ->first();
 
         return view('profiles.main.show')->withProfile($profile);
     }
@@ -94,16 +107,18 @@ class ProfileController extends Controller
      */
     public function edit($uuid)
     {
-        $profile = Profile::where('uuid', $uuid)->with('category')->first();
+        $profile = Profile::where('uuid', $uuid)
+            ->with('category')
+            ->first();
 
-        if($profile->user_id != Auth::user()->id){
-
+        if ($profile->user_id != Auth::user()->id) {
             return redirect()->route('profiles.index');
         }
 
         $categories = OrganisationCategory::all();
-        return view('profiles.main.edit')->withProfile($profile)
-                            ->withCategories($categories);
+        return view('profiles.main.edit')
+            ->withProfile($profile)
+            ->withCategories($categories);
     }
 
     /**
@@ -117,7 +132,7 @@ class ProfileController extends Controller
     {
         $profile = Profile::where('uuid', $uuid)->first();
 
-        if($profile->user_id != Auth::user()->id){
+        if ($profile->user_id != Auth::user()->id) {
             Session::flash('error', 'Unauthorized Access');
 
             return redirect()->route('profiles.index');
@@ -132,20 +147,28 @@ class ProfileController extends Controller
             'address' => 'required',
             'description' => 'required',
             'category' => 'required|numeric',
-            'profile_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+            'profile_image' =>
+                'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
         ]);
-        $profile->fill($request->except(['profile_image', 'user_id', 'category']));
+        $profile->fill(
+            $request->except(['profile_image', 'user_id', 'category'])
+        );
 
-        $profile->profile_image = $request->profile_image->store('uploads', 'public');
+        $profile->profile_image = $request->profile_image->store(
+            'uploads',
+            'public'
+        );
         $profile->user_id = Auth::user()->id;
         $profile->category_id = $request->category;
 
-        if($profile->save()){
+        if ($profile->save()) {
             Session::flash('success', 'Profile updated successfully');
             return redirect()->route('profiles.index');
-        }else{
-
-            return redirect()->back()->withInput()->withErrors($validator);
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
         }
     }
 
