@@ -1,83 +1,57 @@
+@section('title', 'Log In')
+
 @extends('layouts.app')
+
 @section('content')
 
-<div class="columns m-t-50">
-    <div class="column is-one-third is-offset-one-third">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-header-title">
-                    {{ __('Login') }}
-                </h4>
+<div id="safeguard">
+    <div id="form">
+        <div class="container form-inner my-5">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title font-weight-bold mb-3 text-center">{{ __("Log In") }}</h2>
+                        <p class="card-text text-center">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Voluptatem non, quasi aliquid corporis atque, asperiores
+                            fuga impedit corrupti autem optio fugit modi accusamus ducimus
+                            ut facere. Minus, expedita ut. Odit?
+                        </p>
+                        <form action="{{ route('login') }}" method="post">
+                            @csrf
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                </div>
+                                <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email') }}" required autofocus>
+                                @error('email')
+                                    <p class="invalid-feedback">
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                </div>
+                                <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" value="{{ old('password') }}" required>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" class="custom-control-input" id="remember" name="remember">
+                                <label class="custom-control-label" for="remember">Remember Me</label>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary form-control" type="submit">Log In</button>
+                            </div>
+                        </form>
+                        <h6 class="text-muted mt-3 text-center"><a href="{{ route('password.request') }}">Forgot Password?</a></h6>
+                    </div>
+                </div>
+                <h6 class="text-muted mt-4 text-center">Not A Member? <a href="{{ route('register') }}"> Sign Up</a></h6>
             </div>
-            <div class="card-content">
-                <form action="{{ route('login') }}" method="POST" role="form">
-                    @csrf
-                    <div class="field">
-                        <label for="email" class="label">Email</label>
-                        <div class="control has-icons-left has-icons-right">
-                            <input type="email" name="email" id="email" class="input @error('email') is-danger @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
-                            </span>
-                            @error('email')
-                            <span class="icon is-small is-right">
-                                <i class="fas fa-exclamation-triangle"></i>
-                            </span>
-                            @enderror
-                        </div>
-                        @error('email')
-                        <p class="help is-danger">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="field">
-                        <label for="password" class="label">Password</label>
-                        <div class="control has-icons-left has-icons-right">
-                            <input type="password" name="password" id="password" class="input @error('password') is-danger @enderror" required autocomplete="new-password">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-lock"></i>
-                            </span>
-                            @error('password')
-                            <span class="icon is-small is-right">
-                                <i class="fas fa-exclamation-triangle"></i>
-                            </span>
-                            @enderror
-                        </div>
-                        @error('password')
-                        <p class="help is-danger">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <b-checkbox name="remember" class="m-t-5 m-b-5">Remember Me</b-checkbox>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-primary is-outlined is-fullwidth">Log In</button>
-                        </div>
-                    </div>
-                </form>
-            </div><!-- End of Card Content-->
-
-
         </div>
-        <h5 class="has-text-centered m-t-15">
-            <a href="{{ route('password.request') }}" class="has-text-grey is-muted">Forgot Password</a>
-        </h5>
     </div>
 </div>
+
 @endsection
 
-@section('scripts')
-
-<script>
-    const app = new Vue({
-        el:'#app',
-        data:{
-
-        }
-    });
-</script>
-@endsection

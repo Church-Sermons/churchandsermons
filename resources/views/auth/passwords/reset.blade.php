@@ -1,62 +1,56 @@
+@section('title', 'Reset Password')
+
 @extends('layouts.app')
 
 @section('content')
-<div class="columns m-t-50">
-    <div class="column is-one-third is-offset-one-third">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-header-title">
-                    {{ __('Reset Password') }}
-                </h4>
-            </div>
-            <div class="card-content">
-                <form method="POST" action="{{ route('password.update') }}">
-                    @csrf
-                    <input type="hidden" name="token" value="{{ $token }}">
-                    <div class="field">
-                        <label for="email" class="label">{{ __('E-Mail Address') }}</label>
-                        <div class="control has-icons-left">
-                            <input id="email" type="email" class="input @error('email') is-danger @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
-                            </span>
-                        </div>
-                        @error('email')
-                            <p class="help is-danger">{{ $message }}</p>
-                        @enderror
-                    </div>
 
-                    <div class="field">
-                        <label for="password" class="label">{{ __('Password') }}</label>
-                        <div class="control has-icons-left">
-                            <input id="password" type="password" class="input @error('password') is-danger @enderror" name="password" required autocomplete="new-password">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-lock"></i>
-                            </span>
-                        </div>
-                        @error('password')
-                            <p class="help is-danger">{{ $message }}</p>
-                        @enderror
+<div id="safeguard">
+    <div id="form">
+        <div class="container form-inner my-5">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title font-weight-bold mb-3 text-center">{{ __('Reset Password') }}</h2>
+                        <form action="{{ route('password.update') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="token" value="{{ $token }}">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                </div>
+                                <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email') }}"required autofocus>
+                                @error('email')
+                                    <p class="invalid-feedback">
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                </div>
+                                <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" value="{{ old('password') }}" required>
+                                @error('password')
+                                    <p class="invalid-feedback">
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                </div>
+                                <input type="password" name="password_confirmation" id="confirm-password" class="form-control" placeholder="Confirm Password" value="{{ old('password_confirmation') }}" required>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary form-control" type="submit">{{ __('Reset Password') }}</button>
+                            </div>
+                        </form>
                     </div>
-
-                    <div class="field">
-                        <label for="password-confirm" class="label">{{ __('Confirm Password') }}</label>
-                        <div class="control has-icons-left">
-                            <input id="password-confirm" type="password" class="input" name="password_confirmation" required autocomplete="new-password">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-lock"></i>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <div class="control">
-                            <button type="submit" class="is-primary is-outlined is-fullwidth button">{{ __('Reset Password') }}</button>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 @endsection

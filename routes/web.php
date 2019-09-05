@@ -10,6 +10,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Bind Routes
+
+use App\User;
+
+// Test Routes
+Route::get('/users/{id}', function ($id) {
+    return User::find($id);
+});
+
 // Home Routes
 Route::get('/', 'HomeController@index')->name('home');
 

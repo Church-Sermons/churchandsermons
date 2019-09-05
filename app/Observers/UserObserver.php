@@ -16,7 +16,7 @@ class UserObserver
     public function created(User $user)
     {
         // attach role
-        $user->attachRole(Role::where('name', 'author')->first()->id);
+        // $user->attachRole(Role::where('name', 'author')->first()->id);
     }
 
     /**
@@ -29,6 +29,8 @@ class UserObserver
     {
         // generate api token
         $user->api_token = bin2hex(openssl_random_pseudo_bytes(30));
+
+
     }
 
     /**
