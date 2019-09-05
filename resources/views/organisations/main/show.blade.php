@@ -120,36 +120,38 @@
                             </ul>
                             <div class="tab-content mt-4">
                                 <div class="tab-pane active" id="audio">
-                                    @forelse ($organisation->getMedia('audio') as $audio)
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="audio-container d-flex flex-column border rounded">
-                                                    <div class="container pt-3">
-                                                        <div class="row">
-                                                            <div class="col-md-2 pr-1">
-                                                                <img src="https://via.placeholder.com/300" alt="placeholder-image" class="rounded w-100" height="80"/>
-                                                            </div>
-                                                            <div class="col-md-10 pl-2">
-                                                                <h4 class="font-weight-bold text-capitalize">{{ $audio->name }}</h4>
-                                                                <h5 class="text-capitalize">{{ $organisation->user->name }}</h5>
-                                                                <h6 class="text-uppercase text-muted">{{ $audio->human_readable_size }}</h6>
-                                                            </div>
-                                                        </div>
+                                    @if (count($organisation->getMedia('audio')))
 
-                                                    </div>
-                                                    <audio id="audio-player" class="media-player" controls>
-                                                        <source src="{{ $audio->getUrl() }}" type="{{ $audio->mime_type }}" />
-                                                        {{-- <source src="/path/to/audio.ogg" type="audio/ogg" /> --}}
-                                                    </audio>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {{-- audio details styled component - displays the audio details --}}
+                                        @component('components.audio-details')
+                                            @slot('albumArt')
+                                            {{ __("https://source.unsplash.com/300x300/?music") }}
+                                            @endslot
+                                            @slot('title')
+                                            {{ Helper::media($organisation->getMedia('audio')[0]->getFullUrl())->getTitle() }}
+                                            @endslot
+                                            @slot('artist')
+                                            {{ Helper::media($organisation->getMedia('audio')[0]->getFullUrl())->getArtist() }}
+                                            @endslot
+                                            @slot('size')
+                                            {{ $organisation->getMedia('audio')[0]->human_readable_size }}
+                                            @endslot
+                                        @endcomponent
 
-                                    @empty
+                                        {{-- audio partial - holds the audio element --}}
+                                        @include('_partials.media.audio', ['data' => $organisation->getMedia('audio')])
+
+                                        {{-- audio playlist component - displays the audio  --}}
+                                        @component('components.audio-playlist', ['data' => $organisation->getMedia('audio')])
+                                            @slot('id')
+                                                {{ $organisation->uuid }}
+                                            @endslot
+                                        @endcomponent
+                                    @else
                                         <div class="col">
                                             <p class="lead">No audio resources available</p>
                                         </div>
-                                    @endforelse
+                                    @endif
                                 </div>
                                 <div class="tab-pane fade" id="video">
                                     <div class="row">
@@ -250,7 +252,9 @@
                             <h6 class="h6 font-weight-bold">Email</h6>
                             <p class="lead mini-texts">{{ $organisation->email }}</p>
                             <h6 class="h6 font-weight-bold">Website</h6>
-                            <p class="lead mini-texts">{{ $organisation->website }}</p>
+                            <p class="lead mini-texts">
+                                <a href="{{ $organisation->website }}" target="_blank">{{ $organisation->website }}</a>
+                            </p>
                         </div>
                     </div>
 
