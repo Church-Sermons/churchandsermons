@@ -43,6 +43,7 @@
                                 @component('components.messages')@endcomponent
                                 <div class="tab-content py-2" >
                                     <div class="tab-pane show fade active" id="audio">
+
                                         <div class="audio-container d-flex flex-column border rounded mb-2">
                                             @if (count($organisation->getMedia('audio')))
                                                 <audio class="media-player" id="player" controls>
@@ -76,13 +77,13 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="playlist-container w-100" style="max-height: 500px;overflow-y: auto;">
+                                                <div class="playlist-container w-100">
                                                     <div class="table-responsive">
                                                         <table class="table-hover table mb-0">
                                                             <tbody>
                                                                 @foreach ($organisation->getMedia('audio') as $audio)
                                                                     <tr>
-                                                                        <td class="bg-light">
+                                                                        <td class="active">
                                                                             <div class="d-flex align-items-center">
                                                                                 <div class="col-2 text-center">
                                                                                     <h4 class="font-weight-bold">{{ $loop->iteration }}</h4>
@@ -92,7 +93,7 @@
                                                                                     <p class="my-1 text-muted text-capitalized w-100">{{ $organisation->user->name }}</p>
                                                                                 </div>
                                                                                 <div class="col-2 text-right">
-                                                                                    <h4 class="text-muted">{{ $audio->human_readable_size }}</h4>
+                                                                                    <h4 class="text-muted">{{ gmdate('i:s', Helper::mediaMetadata($audio->getFullUrl())) }}</h4>
                                                                                 </div>
                                                                             </div>
                                                                         </td>

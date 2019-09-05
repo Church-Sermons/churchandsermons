@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use FFMpeg\FFProbe;
 use Illuminate\Support\Facades\Storage;
 
 class Helper
@@ -131,5 +132,22 @@ class Helper
             ->addMedia(request()->file($data['file']))
             ->usingName(request()->input($data['name']))
             ->toMediaCollection($data['collection']);
+    }
+
+    /**
+     *
+     * Return Media Metadata
+     *
+     */
+    public static function mediaMetadata($file)
+    {
+        $ffprobe = FFProbe::create([
+            'ffprobe.binaries' => env(
+                'FFPROBE_PATH',
+                'C:/binaries/ffmpeg/bin/ffprobe.exe'
+            )
+        ]);
+
+        return $ffprobe->format($file)->get('duration');
     }
 }

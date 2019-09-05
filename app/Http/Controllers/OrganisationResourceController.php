@@ -8,6 +8,8 @@ use App\OrganisationCategory;
 use App\Organisation;
 use Session;
 use Auth;
+use FFMpeg\FFMpeg;
+use FFMpeg\FFProbe;
 use Plank\Mediable\MediaUploader;
 
 class OrganisationResourceController extends Controller

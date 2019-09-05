@@ -18625,3 +18625,16 @@ a:hover {
   border-right: solid 3px #3490dc;
 }
 
+.playlist-container {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.playlist-container td:hover {
+  cursor: pointer;
+}
+
+.playlist-container td.active {
+  background: #ccc;
+}
+
