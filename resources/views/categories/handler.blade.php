@@ -1,6 +1,6 @@
 @component('components.modal')
     @slot('title')
-        Add Profile Category
+        Add Category
     @endslot
 
     <div class="message-area"></div>
@@ -8,10 +8,17 @@
     <form action="#" method="post" id="categoryForm">
         @csrf
         @component('categories.form', [
-                        'linked' => old('linked_to', $category),
-                        'links' => [$category]])
+                        'selected' => old('linked_to', $selected),
+                        'parents' => $parents,
+                        'imageOption' => old('imageOption')])
             @slot('name')
                 {{ old('name') }}
+            @endslot
+            @slot('image')
+                {{ old('image') }}
+            @endslot
+            @slot('imageUrl')
+                {{ old('image_url') }}
             @endslot
             @slot('submitButtonText')
                 Add Category

@@ -65,7 +65,7 @@
     </div>
 </div>
  {{-- Category Modal Partial --}}
- @include('categories.handler', ['category' => 'organisation'])
+ @include('categories.handler', ['parents' => ['organisation'], 'selected' => 'organisation'])
 @endsection
 @section('scripts')
     <script>

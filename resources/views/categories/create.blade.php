@@ -1,40 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="section">
-    <div class="container">
-        <div class="columns">
-            <div class="column is-three-fifths is-offset-one-fifth">
-                <div class="card">
-                    <div class="card-content">
-                        <h4 class="title is-4">Create Category</h4>
-                        <hr>
-                        <form action="{{ route('categories.store') }}" method="post">
-                            @csrf
-                            <div class="field">
-                                <label for="name" class="label">Name</label>
-                                <div class="control">
-                                    <input type="text" name="name" id="name_id" class="input">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label for="linked_to" class="label">Linked To</label>
-                                <div class="select is-fullwidth">
-                                    <select name="linked_to" id="linked_to_id">
-                                        <option value="organisation" selected>Organisation</option>
-                                        <option value="profile">Profile</option>
-                                        <option value="resource">Resource</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="control">
-                                    <button class="button is-fullwidth is-primary is-outlined">
-                                        <i class="fas fa-plus m-r-5"></i> Create
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+@php
+    $parents = ['organisation', 'resource', 'profile']
+@endphp
+<div id="safeguard">
+    <div id="form">
+        <div class="container form-inner my-5">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title font-weight-bold mb-3 text-center">Add Category</h2>
+
+                            <form action="{{ route('categories.store') }}" method="post" class="py-2">
+                                @csrf
+                                @component('components.messages')@endcomponent
+                                @component('categories.form', [
+                                                'selected' => old('linked_to'),
+                                                'parents' => $parents,
+                                                'imageOption' => old('imageOption')])
+                                    @slot('name')
+                                        {{ old('name') }}
+                                    @endslot
+                                    @slot('image')
+                                        {{ old('image') }}
+                                    @endslot
+                                    @slot('imageUrl')
+                                        {{ old('image_url') }}
+                                    @endslot
+                                    @slot('submitButtonText')
+                                        Add Category
+                                    @endslot
+                                @endcomponent
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

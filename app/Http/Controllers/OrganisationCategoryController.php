@@ -22,7 +22,7 @@ class OrganisationCategoryController extends Controller
     public function index()
     {
         $categories = OrganisationCategory::orderBy('id', 'desc')->get();
-        return view('categories.index')->withCategories($categories);
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -43,16 +43,30 @@ class OrganisationCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $this->validate($request, [
+        $image = null;
+
+        $rules = [
             'name' => 'required|max:100',
             'linked_to' => 'required|max:50'
-        ]);
+        ];
+
+        if ($request->hasFile('image')) {
+            $rules['image'] = 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000';
+            $image = $request->image;
+        } elseif ($request->has('image_url')) {
+            $rules['image_url'] = 'max:150|url';
+            $image = $request->image_url;
+        }
+
+        $validator = $this->validate($request, $rules);
 
         $category = new OrganisationCategory();
         $category->name = $request->name;
         $category->linked_to = $request->linked_to;
 
         if ($category->save()) {
+            // add successfull event for category
+            // event(new CategoryCreationSuccessfull($category));
             Session::flash('success', 'Category added successfully');
 
             return redirect()->route('categories.index');

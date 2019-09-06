@@ -45,7 +45,7 @@
     </div>
 </div>
 {{-- Category Modal Partial --}}
-@include('categories.handler', ['category' => 'resource'])
+@include('categories.handler', ['parents' => ['resource'], 'selected' => 'resource'])
 @endsection
 
 @section('scripts')

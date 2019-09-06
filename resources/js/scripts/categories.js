@@ -56,4 +56,64 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(error);
         }
     }
+
+    // Toggle Image and Image Url Display
+    const imageCheck = document.querySelectorAll(".image-check");
+    let holder;
+
+    if (imageCheck) {
+        Array.from(imageCheck).forEach(function(v) {
+            // get attribute of checked element
+            if (v.checked) {
+                // store id of checked on page load
+                holder = v.getAttribute("data-target");
+            }
+
+            if (!v.checked) {
+                // console.log(v.getAttribute('data-target'));
+                // hide unchecked elements
+                hideElement(
+                    document.getElementById(v.getAttribute("data-target"))
+                );
+            }
+
+            v.addEventListener("change", function(e) {
+                // use previously stored holder var to hide element
+                hideElement(document.getElementById(holder));
+                // change value of holder var to hold id of currently checked id
+                holder = this.getAttribute("data-target");
+                // display currently checked element
+                displayElement(document.getElementById(holder));
+            });
+        });
+    }
+
+    // function to show element
+    function displayElement(el) {
+        el.style.display = "block";
+    }
+
+    // function to hide element
+    function hideElement(el) {
+        el.style.display = "none";
+    }
+
+    const image = document.querySelector("#image");
+    const imageUrl = document.getElementById("image-url");
+    if (image && imageUrl) {
+        image.addEventListener("change", function(i) {
+            if (this.files[0].name) {
+                // change label
+                document.querySelector(
+                    ".image-label"
+                ).innerHTML = this.files[0].name;
+                // disable textbox
+                imageUrl.disabled = true;
+            }
+        });
+
+        imageUrl.addEventListener("input", function(e) {
+            image.disabled = true;
+        });
+    }
 });

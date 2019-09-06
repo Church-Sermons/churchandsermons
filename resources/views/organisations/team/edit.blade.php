@@ -67,7 +67,7 @@
     </div>
 </div>
 {{-- Category Modal Partial --}}
-@include('categories.handler', ['category' => 'profile'])
+@include('categories.handler', ['parents' => ['profile'], 'selected' => 'profile'])
 @endsection
 
 @section('scripts')

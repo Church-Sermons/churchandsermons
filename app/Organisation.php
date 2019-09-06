@@ -103,7 +103,14 @@ class Organisation extends Model implements HasMedia
             });
 
         // resources collection
-        $this->addMediaCollection('video');
+        $this->addMediaCollection('video')->registerMediaConversions(function (
+            Media $media
+        ) {
+            $this->addMediaConversion('poster')
+                ->width(720)
+                ->height(480)
+                ->extractVideoFrameAtSecond(3);
+        });
         $this->addMediaCollection('audio');
         $this->addMediaCollection('document');
         $this->addMediaCollection('assets');

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Event;
+use App\Observers\CategoryObserver;
 use App\Observers\EventObserver;
 use App\Observers\OrganisationObserver;
 use App\Observers\ProfileObserver;
@@ -12,6 +13,7 @@ use App\Observers\UserObserver;
 use App\User;
 use App\Review;
 use App\Organisation;
+use App\OrganisationCategory;
 use App\Resource;
 use App\Profile;
 use Illuminate\Support\ServiceProvider;
@@ -41,5 +43,6 @@ class ObserverServiceProvider extends ServiceProvider
         Profile::observe(ProfileObserver::class);
         Resource::observe(ResourceObserver::class);
         Event::observe(EventObserver::class);
+        OrganisationCategory::observe(CategoryObserver::class);
     }
 }
