@@ -2,7 +2,9 @@
     @slot('title')
         Add Category
     @endslot
-
+    @slot('size')
+        {{ __(" ")}}
+    @endslot
     <div class="message-area"></div>
 
     <form action="#" method="post" id="categoryForm">

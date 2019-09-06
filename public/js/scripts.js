@@ -42520,7 +42520,8 @@ var videoPlayer = new Plyr("#video-player", {
 
 module.exports = {
   controls: controls,
-  audioPlayer: audioPlayer
+  audioPlayer: audioPlayer,
+  videoPlayer: videoPlayer
 };
 
 /***/ }),
@@ -42535,7 +42536,8 @@ module.exports = {
 // // import player
 // const { player } = require("./custom");
 var _require = __webpack_require__(/*! ./custom */ "./resources/js/scripts/custom.js"),
-    audioPlayer = _require.audioPlayer;
+    audioPlayer = _require.audioPlayer,
+    videoPlayer = _require.videoPlayer;
 
 document.addEventListener("DOMContentLoaded", function () {
   // manage audio media file
@@ -42551,7 +42553,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // get data
         // pass to function to play audio
 
-        playSelectedAudio(getMediaAttributesValue(this)); // update audio display interface
+        playSelectedMedia(audioPlayer, "audio", getMediaAttributesValue(this)); // update audio display interface
 
         updateAudioDisplayInterface(getMediaAttributesValue(this));
       });
@@ -42564,7 +42566,8 @@ document.addEventListener("DOMContentLoaded", function () {
       title: v.getAttribute("data-title"),
       size: v.getAttribute("data-size"),
       artist: v.getAttribute("data-artist"),
-      type: v.getAttribute("data-type")
+      type: v.getAttribute("data-type"),
+      poster: v.getAttribute("data-poster")
     };
   } // music card click
 
@@ -42580,7 +42583,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (thisChild) {
           // get data from this child and play
-          playSelectedAudio(getMediaAttributesValue(thisChild)); // update audio display interface
+          playSelectedMedia(audioPlayer, "audio", getMediaAttributesValue(thisChild)); // update audio display interface
 
           updateAudioDisplayInterface(getMediaAttributesValue(thisChild));
         } // CSS styling
@@ -42597,12 +42600,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function playSelectedAudio(_ref) {
+  function playSelectedMedia(playerType, mediaType, _ref) {
     var src = _ref.src,
         title = _ref.title,
         type = _ref.type;
-    audioPlayer.source = {
-      type: "audio",
+    playerType.source = {
+      type: mediaType,
       title: title,
       sources: [{
         src: src,
@@ -42610,7 +42613,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }]
     }; // play audio
 
-    audioPlayer.play();
+    if (mediaType == "audio") {
+      playerType.play();
+    }
   }
 
   function updateAudioDisplayInterface(_ref2) {
@@ -42632,6 +42637,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function addClassActive(el) {
     el.classList.add("active");
+  } // Logic for video player, will be separated later
+
+
+  var videoElement = document.querySelectorAll(".video");
+  var vPlayer = document.getElementById("video-player");
+  var modal = document.getElementById("categoryModal");
+  var modalTitle = document.querySelector(".modal-title");
+
+  if (videoElement && videoElement.length > 0) {
+    Array.from(videoElement).forEach(function (v) {
+      // event listener for clicks
+      v.addEventListener("click", function (e) {
+        var mediaData = getMediaAttributesValue(this);
+
+        if (vPlayer) {
+          // populate videoplayer
+          playSelectedMedia(videoPlayer, "video", mediaData);
+        }
+
+        if (modalTitle) {
+          modalTitle.innerHTML = mediaData.title;
+        }
+      });
+    });
+  }
+
+  if (modal && vPlayer) {
+    $(modal).on("hide.bs.modal", function (e) {
+      // close video player on modal hide
+      videoPlayer.pause();
+    });
   }
 });
 

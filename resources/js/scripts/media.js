@@ -1,6 +1,6 @@
 // // import player
 // const { player } = require("./custom");
-const { audioPlayer } = require("./custom");
+const { audioPlayer, videoPlayer } = require("./custom");
 
 document.addEventListener("DOMContentLoaded", function() {
     // manage audio media file
@@ -17,7 +17,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Remove active class and place in now playing area
                 // get data
                 // pass to function to play audio
-                playSelectedAudio(getMediaAttributesValue(this));
+                playSelectedMedia(
+                    audioPlayer,
+                    "audio",
+                    getMediaAttributesValue(this)
+                );
                 // update audio display interface
                 updateAudioDisplayInterface(getMediaAttributesValue(this));
             });
@@ -30,7 +34,8 @@ document.addEventListener("DOMContentLoaded", function() {
             title: v.getAttribute("data-title"),
             size: v.getAttribute("data-size"),
             artist: v.getAttribute("data-artist"),
-            type: v.getAttribute("data-type")
+            type: v.getAttribute("data-type"),
+            poster: v.getAttribute("data-poster")
         };
     }
 
@@ -44,7 +49,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 const thisChild = this.querySelector(".meta-container");
                 if (thisChild) {
                     // get data from this child and play
-                    playSelectedAudio(getMediaAttributesValue(thisChild));
+                    playSelectedMedia(
+                        audioPlayer,
+                        "audio",
+                        getMediaAttributesValue(thisChild)
+                    );
                     // update audio display interface
                     updateAudioDisplayInterface(
                         getMediaAttributesValue(thisChild)
@@ -63,9 +72,9 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function playSelectedAudio({ src, title, type }) {
-        audioPlayer.source = {
-            type: "audio",
+    function playSelectedMedia(playerType, mediaType, { src, title, type }) {
+        playerType.source = {
+            type: mediaType,
             title: title,
             sources: [
                 {
@@ -76,7 +85,9 @@ document.addEventListener("DOMContentLoaded", function() {
         };
 
         // play audio
-        audioPlayer.play();
+        if (mediaType == "audio") {
+            playerType.play();
+        }
     }
 
     function updateAudioDisplayInterface({ title, artist, size }) {
@@ -93,5 +104,34 @@ document.addEventListener("DOMContentLoaded", function() {
     // add active class to now playing
     function addClassActive(el) {
         el.classList.add("active");
+    }
+
+    // Logic for video player, will be separated later
+    const videoElement = document.querySelectorAll(".video");
+    const vPlayer = document.getElementById("video-player");
+    const modal = document.getElementById("categoryModal");
+    const modalTitle = document.querySelector(".modal-title");
+    if (videoElement && videoElement.length > 0) {
+        Array.from(videoElement).forEach(function(v) {
+            // event listener for clicks
+            v.addEventListener("click", function(e) {
+                const mediaData = getMediaAttributesValue(this);
+                if (vPlayer) {
+                    // populate videoplayer
+                    playSelectedMedia(videoPlayer, "video", mediaData);
+                }
+
+                if (modalTitle) {
+                    modalTitle.innerHTML = mediaData.title;
+                }
+            });
+        });
+    }
+
+    if (modal && vPlayer) {
+        $(modal).on("hide.bs.modal", function(e) {
+            // close video player on modal hide
+            videoPlayer.pause();
+        });
     }
 });

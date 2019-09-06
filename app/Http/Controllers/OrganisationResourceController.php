@@ -85,9 +85,9 @@ class OrganisationResourceController extends Controller
         // attach file here based on collection
         $result = $organisation
             ->addMedia($request->file_name)
-            ->usingName($request->name)
             ->withCustomProperties([
-                'description' => $request->description
+                'description' => $request->description,
+                'name' => $request->name
             ])
             ->toMediaCollection($tag);
 

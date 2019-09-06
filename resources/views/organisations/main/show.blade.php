@@ -156,16 +156,23 @@
                                 <div class="tab-pane fade" id="video">
                                     <div class="row">
                                         @forelse ($organisation->getMedia('video') as $video)
-                                            <div class="col-lg-4 col-sm-6 col-xs-12">
-                                                <div class="card">
-                                                    <img src="{{ asset('images/temp/slides/slide-2.jpg') }}" alt="video-placeholder" height="150" class="w-100 rounded">
-                                                    <div class="dark-overlay d-flex justify-content-center align-items-center">
-                                                        <a href="#" class="btn btn-success btn-lg" data-video-access="{'url': {{ $video->getFullUrl() }},'name': {{ $video->name }},'mime': {{ $video->mime_type }}}">
-                                                            <i class="fas fa-play"></i>
-                                                        </a>
+                                            @if ($loop->iteration <= 6)
+                                                <div class="col-lg-4 col-sm-6 col-xs-12">
+                                                    <div class="card mb-2">
+                                                        <img src="{{ $video->getUrl('small') }}" alt="video-placeholder" height="150" class="w-100 rounded">
+                                                        <div class="dark-overlay d-flex justify-content-center align-items-center">
+                                                            <a href="#" class="video btn btn-success btn-lg" data-toggle="modal" data-target="#categoryModal" data-poster="{!! $video->getUrl('small') !!}" data-src="{!! $video->getFullUrl() !!}" data-title="{!! str_replace("-", " ", pathinfo($video->file_name, PATHINFO_FILENAME)) !!}" data-type="{!! $video->mime_type !!}">
+                                                                <i class="fas fa-play"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
+                                                    {{-- <div class="card">
+                                                        <h6 class="text-capitalize py-2 px-2">
+                                                            <a href="#" data-toggle="modal" data-target="#categoryModal">{{ str_replace("-", " ",pathinfo($video->file_name, PATHINFO_FILENAME)) }}</a>
+                                                        </h6>
+                                                    </div> --}}
                                                 </div>
-                                            </div>
+                                            @endif
                                         @empty
                                             <div class="col">
                                                 <p class="lead">No video resources available</p>
@@ -309,6 +316,22 @@
     </section>
 </div><!-- End of safeguard wrapper -->
 
+{{-- Modal Component --}}
+@component('components.modal')
+@slot('title')
+    <span class="modal-title">{{ __("Video Player") }}</span>
+@endslot
+@slot('size')
+    {{ __("modal-lg") }}
+@endslot
+<video poster="#" id="video-player" playsinline controls>
+    <source src="#" type="#" />
+    {{-- <source src="/path/to/video.webm" type="video/webm" /> --}}
+
+    <!-- Captions are optional -->
+    {{-- <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default /> --}}
+</video>
+@endcomponent
 @endsection
 
 @section('styles')
@@ -317,8 +340,4 @@
     </style>
 @endsection
 
-@section('scripts')
-    <script>
-        const player = new Plyr("#player");
-    </script>
-@endsection
+

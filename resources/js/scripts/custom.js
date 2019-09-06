@@ -28,5 +28,6 @@ const videoPlayer = new Plyr("#video-player", { controls });
 
 module.exports = {
     controls,
-    audioPlayer
+    audioPlayer,
+    videoPlayer
 };

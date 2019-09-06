@@ -1,5 +1,5 @@
 <div class="modal fade" tab-index="-1" role="dialog" id="categoryModal">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog @if($size) {{ $size }} @endif" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="font-weight-bold">{{ $title }}</h4>
