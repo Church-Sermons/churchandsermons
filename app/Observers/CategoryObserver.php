@@ -26,27 +26,6 @@ class CategoryObserver
      */
     public function creating(OrganisationCategory $category)
     {
-        // check if request was provided
-        if (request()->hasFile('image')) {
-            $category
-                ->addMediaFromRequest(request()->image)
-                ->preservingOriginal()
-                ->withCustomProperties([
-                    'description' => request()->description
-                ])
-                ->usingName(request()->name)
-                ->toMediaCollection('uploads');
-        } elseif (request()->has('image_url')) {
-            // download media with jobs
-            $category
-                ->addMediaFromUrl(request()->image_url)
-                ->preservingOriginal()
-                ->withCustomProperties([
-                    'description' => request()->description
-                ])
-                ->usingName(request()->name)
-                ->toMediaCollection('downloads');
-        }
     }
 
     /**

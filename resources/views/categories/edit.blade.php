@@ -1,7 +1,46 @@
+@section('title', 'Edit Category')
+
 @extends('layouts.app')
 
 @section('content')
-    <div class="section">
+@php
+    $parents = ['organisation', 'resource', 'profile']
+@endphp
+<div id="safeguard">
+    <div id="form">
+        <div class="container form-inner my-5">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title font-weight-bold mb-3 text-center">Edit Category</h2>
+
+                            <form action="{{ route('categories.update', $category->id) }}" method="post" class="py-2">
+                                @csrf
+                                @method('PUT')
+                                @component('components.messages')@endcomponent
+                                @component('categories.form', [
+                                                'selected' => old('linked_to', $category->linked_to),
+                                                'parents' => $parents,
+                                                ])
+                                    @slot('name')
+                                        {{ old('name', $category->name) }}
+                                    @endslot
+
+                                    @slot('submitButtonText')
+                                        Edit Category
+                                    @endslot
+                                @endcomponent
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section d-none">
         <div class="container">
         <div class="columns">
             <div class="column is-three-fifths is-offset-one-fifth">

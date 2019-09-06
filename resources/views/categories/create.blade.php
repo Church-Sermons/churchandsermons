@@ -1,3 +1,5 @@
+@section('title', 'Add Category')
+
 @extends('layouts.app')
 
 @section('content')
@@ -19,16 +21,11 @@
                                 @component('categories.form', [
                                                 'selected' => old('linked_to'),
                                                 'parents' => $parents,
-                                                'imageOption' => old('imageOption')])
+                                                ])
                                     @slot('name')
                                         {{ old('name') }}
                                     @endslot
-                                    @slot('image')
-                                        {{ old('image') }}
-                                    @endslot
-                                    @slot('imageUrl')
-                                        {{ old('image_url') }}
-                                    @endslot
+
                                     @slot('submitButtonText')
                                         Add Category
                                     @endslot

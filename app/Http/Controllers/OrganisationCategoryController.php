@@ -43,30 +43,16 @@ class OrganisationCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $image = null;
-
-        $rules = [
+        $validator = $this->validate($request, [
             'name' => 'required|max:100',
             'linked_to' => 'required|max:50'
-        ];
-
-        if ($request->hasFile('image')) {
-            $rules['image'] = 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000';
-            $image = $request->image;
-        } elseif ($request->has('image_url')) {
-            $rules['image_url'] = 'max:150|url';
-            $image = $request->image_url;
-        }
-
-        $validator = $this->validate($request, $rules);
+        ]);
 
         $category = new OrganisationCategory();
         $category->name = $request->name;
         $category->linked_to = $request->linked_to;
 
         if ($category->save()) {
-            // add successfull event for category
-            // event(new CategoryCreationSuccessfull($category));
             Session::flash('success', 'Category added successfully');
 
             return redirect()->route('categories.index');
@@ -88,7 +74,7 @@ class OrganisationCategoryController extends Controller
     {
         $category = OrganisationCategory::findOrFail($id);
 
-        return view('categories.show')->withCategory($category);
+        return view('categories.show', compact('category'));
     }
 
     /**
@@ -101,7 +87,7 @@ class OrganisationCategoryController extends Controller
     {
         $category = OrganisationCategory::findOrFail($id);
 
-        return view('categories.edit')->withCategory($category);
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -113,7 +99,7 @@ class OrganisationCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $validator = $this->validate($request, [
             'name' => 'required|max:100',
             'linked_to' => 'required|max:50'
         ]);
@@ -125,10 +111,11 @@ class OrganisationCategoryController extends Controller
         if ($category->save()) {
             Session::flash('success', 'Category edited successfully');
 
-            return redirect()->route('categories.show', $id);
+            return redirect()->route('categories.index');
         } else {
             return redirect()
-                ->route('categories.edit')
+                ->back()
+                ->withErrors($validator)
                 ->withInput();
         }
     }
@@ -141,7 +128,17 @@ class OrganisationCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = OrganisationCategory::findOrFail($id);
+
+        if ($category->delete()) {
+            Session::flash('success', 'Category Deleted Successfully');
+
+            return redirect()->route('categories.index');
+        } else {
+            Session::flash('danger', 'Categories Failed To Delete');
+
+            return redirect()->route('categories.index');
+        }
     }
 
     /**
