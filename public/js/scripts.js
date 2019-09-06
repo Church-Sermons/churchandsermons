@@ -42567,7 +42567,9 @@ document.addEventListener("DOMContentLoaded", function () {
       size: v.getAttribute("data-size"),
       artist: v.getAttribute("data-artist"),
       type: v.getAttribute("data-type"),
-      poster: v.getAttribute("data-poster")
+      poster: v.getAttribute("data-poster"),
+      description: v.getAttribute("data-description"),
+      published: v.getAttribute("data-published")
     };
   } // music card click
 
@@ -42658,7 +42660,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (modalTitle) {
           modalTitle.innerHTML = mediaData.title;
-        }
+        } // populate elements
+
+
+        var vme = getVideoModalElements();
+        populateVideoModalElements(vme, mediaData);
       });
     });
   }
@@ -42669,6 +42675,72 @@ document.addEventListener("DOMContentLoaded", function () {
       videoPlayer.pause();
     });
   }
+
+  function getVideoModalElements() {
+    // get elements
+    var videoTitle = document.getElementById("video-title"),
+        videoDescription = document.getElementById("video-description"),
+        videoPoster = document.getElementById("video-poster"),
+        videoSize = document.getElementById("video-size"),
+        videoPublished = document.getElementById("video-published");
+    return {
+      videoTitle: videoTitle,
+      videoDescription: videoDescription,
+      videoPoster: videoPoster,
+      videoSize: videoSize,
+      videoPublished: videoPublished
+    };
+  }
+
+  function populateVideoModalElements(elements, data) {
+    var title = data.title,
+        description = data.description,
+        poster = data.poster,
+        size = data.size,
+        published = data.published;
+    var videoTitle = elements.videoTitle,
+        videoDescription = elements.videoDescription,
+        videoPoster = elements.videoPoster,
+        videoSize = elements.videoSize,
+        videoPublished = elements.videoPublished; // image area, populate src and alt
+
+    if (videoPoster) {
+      videoPoster.src = poster;
+      videoPoster.alt = "".concat(title, "-Poster");
+    } // set icon
+
+
+    var icon = setPublishedDateIcon(splitDate(published, " ")[1]); // fill values
+
+    videoTitle.innerHTML = title;
+    videoDescription.innerHTML = description;
+    videoSize.innerHTML = "<i class=\"far fa-hdd\"></i> ".concat(size);
+    videoPublished.innerHTML = "".concat(icon, " ").concat(published);
+  } // set icon for modal video date and video size description
+
+
+  function setPublishedDateIcon(published) {
+    var icon;
+
+    switch (true) {
+      case /hours?/.test(published):
+      case /minutes?/.test(published):
+      case /seconds?/.test(published):
+        icon = "<i class=\"far fa-clock\"></i>";
+        break;
+
+      default:
+        icon = "<i class=\"far fa-calendar-alt\"></i>";
+        break;
+    }
+
+    return icon;
+  } // may be applied in other situations thus being kept separate from setPublished
+
+
+  var splitDate = function splitDate(i, by) {
+    return typeof i == "string" && i.length > 0 ? i.split(by) : i.length > 0 ? i.toString().split(by) : null;
+  };
 });
 
 /***/ }),

@@ -21,6 +21,7 @@
 
     <section id="details">
         <div class="details-inner container my-5">
+            @component('components.messages')@endcomponent
             <div class="row">
                 <div class="col-md-8">
                     <div class="card">
@@ -160,8 +161,21 @@
                                                 <div class="col-lg-4 col-sm-6 col-xs-12">
                                                     <div class="card mb-2">
                                                         <img src="{{ $video->getUrl('small') }}" alt="video-placeholder" height="150" class="w-100 rounded">
-                                                        <div class="dark-overlay d-flex justify-content-center align-items-center">
-                                                            <a href="#" class="video btn btn-success btn-lg" data-toggle="modal" data-target="#categoryModal" data-poster="{!! $video->getUrl('small') !!}" data-src="{!! $video->getFullUrl() !!}" data-title="{!! str_replace("-", " ", pathinfo($video->file_name, PATHINFO_FILENAME)) !!}" data-type="{!! $video->mime_type !!}">
+                                                        <div class="dark-overlay d-flex flex-column justify-content-between align-items-end" title="{{ $video->getCustomProperty('description')}}">
+                                                            <div class="mx-1 mt-1">
+                                                                <form class="d-inline" action="{{ route('organisations.resources.destroy', [$organisation->uuid, $video->id]) }}" method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button class="btn btn-outline-danger btn-sm" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                                                                </form>
+                                                                <a title="Edit" href="{{ route('organisations.resources.edit', [$organisation->uuid, $video->id])}}" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                                            </div>
+                                                            <a href="#" class="video mr-1 mb-1 btn btn-outline-success" title="Play" data-toggle="modal"
+                                                                data-target="#categoryModal"
+                                                                data-poster="{!! $video->getUrl('small') !!}" data-src="{!! $video->getFullUrl() !!}"
+                                                                data-title="{!! str_replace("-", " ", $video->name) !!}" data-type="{!! $video->mime_type !!}"
+                                                                data-size="{!! $video->human_readable_size !!}" data-description="{!! $video->getCustomProperty('description') !!}"
+                                                                data-published="{!! $video->created_at?$video->created_at->diffForHumans():null !!}">
                                                                 <i class="fas fa-play"></i>
                                                             </a>
                                                         </div>
@@ -316,28 +330,22 @@
     </section>
 </div><!-- End of safeguard wrapper -->
 
-{{-- Modal Component --}}
-@component('components.modal')
-@slot('title')
-    <span class="modal-title">{{ __("Video Player") }}</span>
-@endslot
-@slot('size')
-    {{ __("modal-lg") }}
-@endslot
-<video poster="#" id="video-player" playsinline controls>
-    <source src="#" type="#" />
-    {{-- <source src="/path/to/video.webm" type="video/webm" /> --}}
-
-    <!-- Captions are optional -->
-    {{-- <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default /> --}}
-</video>
+{{-- Video Modal Component --}}
+{{-- @include('_partials.media.video') --}}
+@component('_partials.media.video')
+    <div class="media mt-4">
+        <img src="#" alt="#" height="64" id="video-poster" width="64" class="rounded-circle mr-2 align-self-start">
+        <div class="media-body">
+            <h4 class="text-capitalize mb-0 font-weight-bold" id="video-title"></h4>
+            <p class="my-1 lead" id="video-description"></p>
+            <h4 class="mini-texts text-muted">
+                <span class="text-uppercase mr-1" id="video-size"></span>{{ __("|") }}
+                <span id="video-published" class="ml-1 text-capitalized"></span>
+            </h4>
+        </div>
+    </div>
 @endcomponent
-@endsection
 
-@section('styles')
-    <style>
-
-    </style>
 @endsection
 
 

@@ -1,4 +1,4 @@
-@component('components.modal')
+@component('components.modal', ['header' => true])
     @slot('title')
         Add Category
     @endslot

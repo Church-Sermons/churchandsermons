@@ -35,7 +35,9 @@ document.addEventListener("DOMContentLoaded", function() {
             size: v.getAttribute("data-size"),
             artist: v.getAttribute("data-artist"),
             type: v.getAttribute("data-type"),
-            poster: v.getAttribute("data-poster")
+            poster: v.getAttribute("data-poster"),
+            description: v.getAttribute("data-description"),
+            published: v.getAttribute("data-published")
         };
     }
 
@@ -124,6 +126,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (modalTitle) {
                     modalTitle.innerHTML = mediaData.title;
                 }
+
+                // populate elements
+                const vme = getVideoModalElements();
+                populateVideoModalElements(vme, mediaData);
             });
         });
     }
@@ -134,4 +140,72 @@ document.addEventListener("DOMContentLoaded", function() {
             videoPlayer.pause();
         });
     }
+
+    function getVideoModalElements() {
+        // get elements
+        let videoTitle = document.getElementById("video-title"),
+            videoDescription = document.getElementById("video-description"),
+            videoPoster = document.getElementById("video-poster"),
+            videoSize = document.getElementById("video-size"),
+            videoPublished = document.getElementById("video-published");
+
+        return {
+            videoTitle,
+            videoDescription,
+            videoPoster,
+            videoSize,
+            videoPublished
+        };
+    }
+
+    function populateVideoModalElements(elements, data) {
+        const { title, description, poster, size, published } = data;
+        const {
+            videoTitle,
+            videoDescription,
+            videoPoster,
+            videoSize,
+            videoPublished
+        } = elements;
+
+        // image area, populate src and alt
+        if (videoPoster) {
+            videoPoster.src = poster;
+            videoPoster.alt = `${title}-Poster`;
+        }
+
+        // set icon
+        const icon = setPublishedDateIcon(splitDate(published, " ")[1]);
+
+        // fill values
+        videoTitle.innerHTML = title;
+        videoDescription.innerHTML = description;
+        videoSize.innerHTML = `<i class="far fa-hdd"></i> ${size}`;
+        videoPublished.innerHTML = `${icon} ${published}`;
+    }
+
+    // set icon for modal video date and video size description
+    function setPublishedDateIcon(published) {
+        let icon;
+        switch (true) {
+            case /hours?/.test(published):
+            case /minutes?/.test(published):
+            case /seconds?/.test(published):
+                icon = `<i class="far fa-clock"></i>`;
+                break;
+            default:
+                icon = `<i class="far fa-calendar-alt"></i>`;
+                break;
+        }
+
+        return icon;
+    }
+
+    // may be applied in other situations thus being kept separate from setPublished
+    const splitDate = (i, by) =>
+        typeof i == "string" && i.length > 0
+            ? i.split(by)
+            : i.length > 0
+            ? i.toString().split(by)
+            : null;
 });
