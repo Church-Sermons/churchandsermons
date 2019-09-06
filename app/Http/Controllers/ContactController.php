@@ -47,6 +47,10 @@ class ContactController extends Controller
      */
     public function store(Request $request, $uuid)
     {
+        // get route prefix
+        $route = $request->route()->getPrefix();
+        $prefix = explode("/", $route)[0];
+
         $validator = $this->validate($request, [
             'name' => 'required|max:150',
             'email' => 'required|max:150',

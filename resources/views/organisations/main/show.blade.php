@@ -149,8 +149,10 @@
                                             @endslot
                                         @endcomponent
                                     @else
-                                        <div class="col">
-                                            <p class="lead">No audio resources available</p>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="lead">No audio resources found</p>
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
@@ -173,7 +175,7 @@
                                                             <a href="#" class="video mr-1 mb-1 btn btn-outline-success" title="Play" data-toggle="modal"
                                                                 data-target="#categoryModal"
                                                                 data-poster="{!! $video->getUrl('small') !!}" data-src="{!! $video->getFullUrl() !!}"
-                                                                data-title="{!! str_replace("-", " ", $video->name) !!}" data-type="{!! $video->mime_type !!}"
+                                                                data-title="{!! $video->name !!}" data-type="{!! $video->mime_type !!}"
                                                                 data-size="{!! $video->human_readable_size !!}" data-description="{!! $video->getCustomProperty('description') !!}"
                                                                 data-published="{!! $video->created_at?$video->created_at->diffForHumans():null !!}">
                                                                 <i class="fas fa-play"></i>
@@ -188,28 +190,59 @@
                                                 </div>
                                             @endif
                                         @empty
-                                            <div class="col">
-                                                <p class="lead">No video resources available</p>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p class="lead">No video resources found</p>
+                                                </div>
                                             </div>
                                         @endforelse
 
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="document">
-                                    <div class="col-lg-3 col-sm-6 col-xs-12">
-                                        <div class="card border-0">
-                                        <img
-                                            src="https://via.placeholder.com/100"
-                                            alt="audio-placeholder"
-                                        />
-                                        <a href="#" class="h4 mini-texts mt-2 mb-1"
-                                            >Lorem, ipsum dolor.</a
-                                        >
-                                        <h4 class="h4 text-muted mini-texts">
-                                            2.4 MB
-                                        </h4>
+                                    @if (count($organisation->getMedia('document')))
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead class="bg-light">
+                                                    <tr class="d-flex">
+                                                        <th class="col-3">Name</th>
+                                                        <th class="col-6">Description</th>
+                                                        <th class="col-2">Size</th>
+                                                        <th class="col-1"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($organisation->getMedia('document') as $document)
+                                                        @if ($loop->iteration <= 6)
+                                                            <tr class="d-flex">
+                                                                <td class="col-3">
+                                                                    <a href="{{ $document->getFullUrl() }}">{{ $document->name }}</a>
+                                                                </td>
+                                                                <td class="col-6 mini-texts">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum aliquam facere eius, perspiciatis dolorum fuga?</td>
+                                                                <td class="col-2">{{ $document->human_readable_size }}</td>
+                                                                <td class="col-1">
+                                                                    <div class="mx-1 mt-1 text-right">
+                                                                        <form class="d-inline" action="{{ route('organisations.resources.destroy', [$organisation->uuid, $document->id]) }}" method="POST">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button class="btn btn-outline-danger btn-sm" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                                                                        </form>
+                                                                        <a title="Edit" href="{{ route('organisations.resources.edit', [$organisation->uuid, $document->id])}}" class="btn mt-1 btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
-                                    </div>
+                                    @else
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="lead">No documents found</p>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

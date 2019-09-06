@@ -106,7 +106,7 @@ class Organisation extends Model implements HasMedia
             ->width(480)
             ->height(320)
             ->extractVideoFrameAtSecond(5)
-            ->performOnCollections('video');
+            ->performOnCollections('video', 'document');
 
         $this->addMediaConversion('medium')
             ->width(720)
@@ -114,11 +114,11 @@ class Organisation extends Model implements HasMedia
             ->extractVideoFrameAtSecond(5)
             ->performOnCollections('video');
 
-        $this->addMediaConversion('large')
+        $this->addMediaConversion('large', 'document')
             ->width(1080)
             ->height(720)
             ->extractVideoFrameAtSecond(5)
-            ->performOnCollections('video');
+            ->performOnCollections('video', 'document');
 
         $this->addMediaConversion('small')
             ->width(300)
