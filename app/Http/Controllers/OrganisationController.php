@@ -8,6 +8,7 @@ use App\OrganisationCategory;
 use Session;
 use Auth;
 use App\User;
+use Storage;
 
 class OrganisationController extends Controller
 {
@@ -59,7 +60,7 @@ class OrganisationController extends Controller
             'address' => 'required',
             'description' => 'required',
             'category' => 'required|numeric',
-            'logo' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
         ]);
 
         // store to db
@@ -67,7 +68,7 @@ class OrganisationController extends Controller
             $request->except(['category', 'logo'])
         );
         $organisation->category_id = $request->category;
-        // $organisation->logo = $request->logo->store('uploads', 'public');
+        $organisation->logo = $request->logo->store('uploads/images', 'public');
 
         if ($organisation->save()) {
             Session::flash('success', 'Organisation created successfully');
@@ -132,12 +133,15 @@ class OrganisationController extends Controller
             'address' => 'required',
             'description' => 'required',
             'category' => 'required|numeric',
-            'logo' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
         ]);
 
+        // get old file name
+        $oldFile = $organisation->logo;
         // merge for update
-        $data = array_merge($request->except(['category', 'logo']), [
-            'category_id' => $request->category
+        $data = array_merge($request->except(['category']), [
+            'category_id' => $request->category,
+            'logo' => $request->logo->store('uploads/images', 'public')
         ]);
 
         if ($organisation->update($data)) {

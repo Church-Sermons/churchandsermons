@@ -98,22 +98,22 @@ document.addEventListener("DOMContentLoaded", function() {
         el.style.display = "none";
     }
 
-    const image = document.querySelector("#image");
+    const image = document.querySelector("input[type='file']");
     const imageUrl = document.getElementById("image-url");
-    if (image && imageUrl) {
-        image.addEventListener("change", function(i) {
+    if (image) {
+        image.addEventListener("change", function(e) {
             if (this.files[0].name) {
                 // change label
                 document.querySelector(
-                    ".image-label"
+                    `#${e.target.id} + label`
                 ).innerHTML = this.files[0].name;
                 // disable textbox
-                imageUrl.disabled = true;
+                // imageUrl.disabled = true;
             }
         });
 
-        imageUrl.addEventListener("input", function(e) {
-            image.disabled = true;
-        });
+        // imageUrl.addEventListener("input", function(e) {
+        //     image.disabled = true;
+        // });
     }
 });

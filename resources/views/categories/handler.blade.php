@@ -10,7 +10,7 @@
         @component('categories.form', [
                         'selected' => old('linked_to', $selected),
                         'parents' => $parents,
-                        )])
+                        ])
             @slot('name')
                 {{ old('name') }}
             @endslot

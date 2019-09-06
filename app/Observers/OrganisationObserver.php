@@ -9,6 +9,7 @@ use Storage;
 
 class OrganisationObserver
 {
+    private $oldFile;
     /**
      * Handle the organisation "created" event.
      *
@@ -17,11 +18,6 @@ class OrganisationObserver
      */
     public function created(Organisation $organisation)
     {
-        // associate with media library
-        $organisation
-            ->addMedia(request()->logo)
-            ->usingName(request()->name . '-Logo')
-            ->toMediaCollection('logo');
     }
 
     /**
@@ -42,17 +38,6 @@ class OrganisationObserver
     }
 
     /**
-     * Handle the organisation "updated" event.
-     *
-     * @param  \App\Organisation  $organisation
-     * @return void
-     */
-    public function updated(Organisation $organisation)
-    {
-        //
-    }
-
-    /**
      * Handle the organisation "updating" event.
      *
      * @param  \App\Organisation  $organisation
@@ -60,28 +45,29 @@ class OrganisationObserver
      */
     public function updating(Organisation $organisation)
     {
-        // Deleting file on update
-        if (empty(request()->logo)) {
-            // empty request use already existing file in db
-            $organisation->logo = $organisation->getOriginal('logo');
-        } else {
-            $mediaFile = $organisation->getFirstMediaUrl('logo');
-
-            // save new logo image
-            $organisation
-                ->addMedia(request()->logo)
-                ->usingName(request()->name . '-Logo')
-                ->toMediaCollection('logo');
-
-            // check if file exists in storage before delete
-            $pathReplace = str_replace("/storage", "", $mediaFile);
-
-            if (Storage::disk('public')->exists($pathReplace)) {
-                $organisation->getMedia('logo')[0]->delete();
+        if (request()->hasFile('logo')) {
+            // delete image
+            if (
+                Storage::disk('public')->exists(
+                    $organisation->getOriginal('logo')
+                )
+            ) {
+                Storage::disk('public')->delete(
+                    $organisation->getOriginal('logo')
+                );
             }
         }
-
         $organisation->user_id = Auth::user()->id;
+    }
+
+    /**
+     * Handle the organisation "updated" event.
+     *
+     * @param  \App\Organisation  $organisation
+     * @return void
+     */
+    public function updated(Organisation $organisation)
+    {
     }
 
     /**

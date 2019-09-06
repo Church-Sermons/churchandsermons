@@ -91,28 +91,26 @@ class Organisation extends Model implements HasMedia
                     $file->mimeType == 'image/jpg' ||
                     $file->mimeType == 'image/svg' ||
                     $file->mimeType == 'image/gif';
-            })
-            ->registerMediaConversions(function (Media $media) {
-                $this->addMediaConversion('thumb')
-                    ->height(100)
-                    ->width(100);
-
-                $this->addMediaConversion('main')
-                    ->height(300)
-                    ->width(300);
             });
 
         // resources collection
-        $this->addMediaCollection('video')->registerMediaConversions(function (
-            Media $media
-        ) {
-            $this->addMediaConversion('poster')
-                ->width(720)
-                ->height(480)
-                ->extractVideoFrameAtSecond(3);
-        });
+        $this->addMediaCollection('video');
         $this->addMediaCollection('audio');
         $this->addMediaCollection('document');
         $this->addMediaCollection('assets');
+    }
+
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->addMediaConversion('small')
+            ->width(368)
+            ->height(232)
+            ->extractVideoFrameAtSecond(20)
+            ->performOnCollections('video');
+
+        $this->addMediaConversion('small')
+            ->width(300)
+            ->height(300)
+            ->performOnCollections('logo');
     }
 }
