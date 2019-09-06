@@ -11,6 +11,8 @@ use Auth;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use Plank\Mediable\MediaUploader;
+use App\Events\ResourceCreationSuccessful;
+use Spatie\MediaLibrary\Models\Media;
 
 class OrganisationResourceController extends Controller
 {
@@ -67,11 +69,11 @@ class OrganisationResourceController extends Controller
                 $tag = "audio";
             } elseif ($category->name == 'video') {
                 $rules['file_name'] = 'required|file|mimes:mp4,flv,3gp,mkv,qt';
-                $tag = "videos";
+                $tag = "video";
             } elseif ($category->name = 'document') {
                 $rules['file_name'] =
                     'required|file|mimes:txt,html,doc,docx,ppt,pdf,csv';
-                $tag = "documents";
+                $tag = "document";
             }
         }
 
@@ -90,6 +92,11 @@ class OrganisationResourceController extends Controller
             ->toMediaCollection($tag);
 
         if ($result) {
+            // create event here
+            // $media = Media::findOrFail($result->id);
+            // event(new ResourceCreationSuccessful($media));
+
+            // flash message
             Session::flash('success', 'Resource created successfully');
 
             return redirect()->back();
@@ -99,14 +106,6 @@ class OrganisationResourceController extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
-
-        // $resource->file_name = $request->file_name->storeAs(
-        //     'uploads/resources',
-        //     time() .
-        //         '.' .
-        //         $request->file('file_name')->getClientOriginalExtension(),
-        //     'public'
-        // );
     }
 
     /**

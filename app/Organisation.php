@@ -103,9 +103,21 @@ class Organisation extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('small')
-            ->width(368)
-            ->height(232)
-            ->extractVideoFrameAtSecond(20)
+            ->width(480)
+            ->height(320)
+            ->extractVideoFrameAtSecond(5)
+            ->performOnCollections('video');
+
+        $this->addMediaConversion('medium')
+            ->width(720)
+            ->height(480)
+            ->extractVideoFrameAtSecond(5)
+            ->performOnCollections('video');
+
+        $this->addMediaConversion('large')
+            ->width(1280)
+            ->height(720)
+            ->extractVideoFrameAtSecond(5)
             ->performOnCollections('video');
 
         $this->addMediaConversion('small')

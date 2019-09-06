@@ -9,7 +9,7 @@
             <div class="dark-overlay py-5">
                 <div class="container d-flex justify-content-center w-100 h-100 align-items-center flex-column">
                     <!-- Logo Image-->
-                    <img src="{{ Helper::setFallbackLogoImage($organisation->getFirstMediaUrl('logo', 'main')) }}" alt="{{ $organisation->name.__("-Logo") }}" width="200" height="200" class="rounded">
+                    <img src="{{ Helper::displayImage($organisation->logo)->fromOwnTable() }}" alt="{{ $organisation->name.__("-Logo") }}" width="200" height="200" class="rounded">
                     <h4 class="text-center display-4 text-uppercase font-weight-bold my-2">
                         {{ ucwords($organisation->name) }}
                     </h4>

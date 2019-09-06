@@ -64,7 +64,7 @@
                     <div class="col-md-4 col-sm-6 col-xs-12 mb-3">
                         <div class="card bg-light h-100">
                             <div class="card-image-handler">
-                                <img src="{{ asset('images/default-image.png') }}" alt="{{ $organisation->name.__("-Logo") }}" class="w-100 h-100">
+                                <img src="{{ asset('storage/'.$organisation->logo) }}" alt="{{ $organisation->name.__("-Logo") }}" class="w-100 h-100">
                                 <div class="card-image-overlay rounded-top d-flex align-items-start justify-content-end p-3">
                                     @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
                                         <form class="d-inline mr-1" action="{{ route('organisations.destroy', $organisation->uuid) }}" method="POST">

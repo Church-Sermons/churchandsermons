@@ -55,21 +55,34 @@ class Helper
     /**
      * Helper to set default image if returns empty
      */
-
-    public static function setFallbackLogoImage($imagePath)
+    public static $imagePath = null;
+    public static function displayImage($imagePath)
     {
-        // check if not null and exists in disk
-        if (
-            $imagePath &&
-            Storage::disk('public')->exists(
-                str_replace("/storage", "", $imagePath)
-            )
-        ) {
-            return $imagePath;
+        // check if null
+        if ($imagePath) {
+            static::$imagePath = $imagePath;
         }
 
-        // if error return image path for default image
-        return asset('images/default-logo.png');
+        return new static();
+    }
+
+    public function fromMediaLibrary()
+    {
+        // do ops based on path
+        if (
+            Storage::disk('public')->exists(
+                str_replace("/storage", "", static::$imagePath)
+            )
+        ) {
+            return static::$imagePath;
+        }
+
+        return null;
+    }
+
+    public function fromOwnTable()
+    {
+        return '/storage/' . static::$imagePath;
     }
 
     /**
