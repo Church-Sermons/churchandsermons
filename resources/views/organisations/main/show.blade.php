@@ -25,16 +25,42 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-image-handler-lg">
-                            <img src="{{ asset('images/temp/slides/slide-1.jpg') }}" alt="slide-image-holder" class="rounded-top w-100 h-100">
-                        </div>
                         <div class="card-body">
-                            <h3 class="card-title font-weight-bold">About</h3>
+                            @if (count($organisation->getMedia('slides')))
+                                @include('components.carousel', ['slides' => $organisation->getMedia('slides')])
+                            @else
+                            <div class="card-image-handler-lg">
+                                <img src="{{ asset('images/temp/slides/slide-1.jpg') }}" alt="slide-image-holder" class="rounded-top w-100 h-100">
+                            </div>
+                            @endif
+                            <h3 class="card-title font-weight-bold mt-3">About</h3>
                             <p class="card-text">
                                 {{ $organisation->description }}
                             </p>
                         </div>
                     </div>
+                    <style>
+                        #appCarousel .carousel-item{
+                            width: 100%;
+                            height: 350px;
+                            position: relative;
+                        }
+                        #appCarousel .carousel-item::after{
+                            background: rgba(0, 0, 0, 0.25);
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            left: 0;
+                            bottom: 0;
+                            content: '';
+                            z-index: 2;
+                        }
+
+                        .carousel-control{
+                            z-index: 5;
+                        }
+
+                    </style>
                     <div class="card mt-3">
                         <div class="card-body">
                             {{-- <span class="d-block my-3 border border-bottom w-100"></span> --}}

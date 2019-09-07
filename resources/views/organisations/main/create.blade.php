@@ -52,6 +52,9 @@
                                     @slot('logo')
                                         {{ old('logo') }}
                                     @endslot
+                                    @slot('slides')
+                                        {{ old('slides') }}
+                                    @endslot
                                     @slot('submitButtonText')
                                         Create Organisation
                                     @endslot

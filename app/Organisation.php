@@ -98,6 +98,7 @@ class Organisation extends Model implements HasMedia
         $this->addMediaCollection('audio');
         $this->addMediaCollection('document');
         $this->addMediaCollection('assets');
+        $this->addMediaCollection('slides');
     }
 
     public function registerMediaConversions(Media $media = null)

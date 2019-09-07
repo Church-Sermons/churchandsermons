@@ -50,6 +50,9 @@
                                     @slot('logo')
                                         {{ old('logo', $organisation->logo) }}
                                     @endslot
+                                    @slot('slides')
+                                        {{ old('slides') }}
+                                    @endslot
                                     @slot('submitButtonText')
                                         Edit Organisation
                                     @endslot

@@ -93,8 +93,19 @@
 <div class="form-group">
     <div class="custom-file">
         <input type="file" name="logo" class="custom-file-input @error('logo') is-invalid @enderror" id="logo" value="{{ $logo }}">
-        <label for="logo" class="custom-file-label">Upload Logo</label>
+        <label for="logo" class="mr-1 custom-file-label">Upload Logo</label>
         @error('logo')
+            <p class="invalid-feedback">
+                {{ $message }}
+            </p>
+        @enderror
+    </div>
+</div>
+<div class="form-group">
+    <div class="custom-file">
+        <input type="file" name="slides[]" class="custom-file-input @error('slides') is-invalid @enderror" id="slides" value="{{ $slides }}" multiple>
+        <label for="slides" class="custom-file-label">Upload Slide Images</label>
+        @error('slides')
             <p class="invalid-feedback">
                 {{ $message }}
             </p>

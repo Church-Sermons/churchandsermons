@@ -60,15 +60,31 @@ class OrganisationController extends Controller
             'address' => 'required',
             'description' => 'required',
             'category' => 'required|numeric',
-            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
+            'slides' => 'array'
         ]);
 
         // store to db
         $organisation = new Organisation(
-            $request->except(['category', 'logo'])
+            $request->except(['category', 'logo', 'slides'])
         );
         $organisation->category_id = $request->category;
         $organisation->logo = $request->logo->store('uploads/images', 'public');
+
+        // check if slides exists then upload them
+        if (count($request->slides)) {
+            // upload files
+            $organisation
+                ->addMultipleMediaFromRequest(['slides'])
+                ->each(function ($fileAdder) {
+                    $fileAdder
+                        ->withCustomProperties([
+                            'name' => request()->name,
+                            'description' => request()->description
+                        ])
+                        ->toMediaCollection('slides');
+                });
+        }
 
         if ($organisation->save()) {
             Session::flash('success', 'Organisation created successfully');
