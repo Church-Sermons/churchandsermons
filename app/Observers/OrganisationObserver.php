@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Organisation;
+use App\WorkingSchedule;
 use Str;
 use Auth;
 use Storage;
@@ -18,6 +19,29 @@ class OrganisationObserver
      */
     public function created(Organisation $organisation)
     {
+        // Logic on multiple working schedules here
+        // get data
+        if (
+            request()->has('day_of_week') &&
+            request()->has('time_open') &&
+            request()->has('work_duration')
+        ) {
+            // iterate through array make table
+            foreach (request()->day_of_week as $key => $value) {
+                // create an array for delivery
+                $workingHours = array(
+                    'day_of_week' => $value,
+                    'time_open' => request()->time_open[$key],
+                    'work_duration' => request()->work_duration[$key]
+                );
+
+                // add to db
+                $ws = new WorkingSchedule($workingHours);
+                $ws->uuid_link = $organisation->uuid;
+                // save
+                $ws->save();
+            }
+        }
     }
 
     /**

@@ -201,4 +201,28 @@ class Helper
 
         return static::$artist;
     }
+
+    // org show calculate time
+    public static $total;
+    public static function sumTime($time, $duration)
+    {
+        static::$total = 0;
+        $limit = 24;
+
+        if ($time && $duration) {
+            static::$total = $time + $duration;
+
+            // if > 24
+            if (static::$total > $limit) {
+                static::$total = $limit - static::$total;
+            }
+        }
+
+        return new static();
+    }
+
+    public function isFullyFormatted()
+    {
+        return strval(number_format(static::$total, 2, ':', ''));
+    }
 }

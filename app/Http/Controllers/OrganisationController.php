@@ -61,13 +61,22 @@ class OrganisationController extends Controller
             'description' => 'required',
             'category' => 'required|numeric',
             'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
-            'slides' => 'array'
+            'slides' => 'array',
+            'day_of_week' => 'array',
+            'time_open' => 'array',
+            'work_duration' => 'array'
         ]);
 
+        $except = [
+            'category',
+            'logo',
+            'slides',
+            'day_of_week',
+            'time_open',
+            'work_duration'
+        ];
         // store to db
-        $organisation = new Organisation(
-            $request->except(['category', 'logo', 'slides'])
-        );
+        $organisation = new Organisation($request->except($except));
         $organisation->category_id = $request->category;
         $organisation->logo = $request->logo->store('uploads/images', 'public');
 

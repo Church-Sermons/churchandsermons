@@ -57,6 +57,15 @@ class Organisation extends Model implements HasMedia
         );
     }
 
+    public function schedules()
+    {
+        return $this->hasMany(
+            'App\WorkingSchedule',
+            'uuid_link',
+            'uuid'
+        )->orderBy('day_of_week', 'asc');
+    }
+
     public function profiles()
     {
         return $this->belongsToMany(

@@ -335,6 +335,31 @@
                             <p class="lead mini-texts">
                                 <a href="{{ $organisation->website }}" target="_blank">{{ $organisation->website }}</a>
                             </p>
+                            {{-- {{ dd(date('g:i a', strtotime('1:00'))) }} --}}
+                            <h6 class="h6 font-weight-bold mb-0">Working Hours</h6>
+                            @if (count($organisation->schedules))
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-sm my-0">
+                                        <tbody>
+                                            @foreach ($organisation->schedules as $schedule)
+                                                <tr>
+                                                    <td>{{ Config::get('site_variables.days')[$schedule->day_of_week] }}</td>
+                                                    <td>{{ date('g:i a', strtotime("{$schedule->time_open}:00")) }}</td>
+
+                                                    <td>{{ date('g:i a', strtotime(Helper::sumTime($schedule->time_open, $schedule->work_duration)->isFullyFormatted())) }}</td>
+                                                </tr>
+                                                <p class="lead mini-texts">
+
+
+                                                    {{-- {{ date('g:i a', strtotime(".($schedule->time_open + $schedule->work_duration).")) }} --}}
+                                                </p>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <p class="lead mini-texts">No work schedule added yet</p>
+                            @endif
                         </div>
                     </div>
 
