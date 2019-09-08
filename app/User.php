@@ -47,9 +47,13 @@ class User extends Authenticatable
     }
 
     // Role assignment
-    public function isTribrid($thing)
+    public function isTribrid($thing, $fk = null)
     {
-        if ($this->hasRoleAndOwns('author', $thing)) {
+        $logic = $this->hasRoleAndOwns('author', $thing, [
+            'foreignKeyName' => $fk
+        ]);
+
+        if ($logic) {
             return true;
         }
 

@@ -28,8 +28,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // @isTribrid($user) @endIsTribrid
         // custom blade directive -owner admin
-        Blade::if('isTribrid', function ($expression, $model, $fk = null) {
-            return $this->isTribrid($expression, $model, $fk);
+        Blade::if('isTribrid', function ($model, $fk = null) {
+            return $this->isTribrid($model, $fk);
         });
 
         // setting categories available in all views
@@ -37,18 +37,24 @@ class AppServiceProvider extends ServiceProvider
         View::share('categories', $categories);
     }
 
-    public function isTribrid($expression, $thing, $fk = null)
+    public function isTribrid($thing, $fk = null)
     {
-        $logic = $expression->hasRoleAndOwns('author', $thing, [
-            'foreignKeyName' => $fk
-        ]);
+        if (Auth::check()) {
+            $expression = Auth::user();
 
-        if ($logic) {
-            return true;
-        }
+            $logic = $expression->hasRoleAndOwns('author', $thing, [
+                'foreignKeyName' => $fk
+            ]);
 
-        if ($expression->hasRole(['administrator', 'superadministrator'])) {
-            return true;
+            if ($logic) {
+                return true;
+            }
+
+            if ($expression->hasRole(['administrator', 'superadministrator'])) {
+                return true;
+            }
+
+            return false;
         }
 
         return false;

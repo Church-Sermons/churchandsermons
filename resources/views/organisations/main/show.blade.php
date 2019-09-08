@@ -47,9 +47,9 @@
                                     <h3 class="card-title font-weight-bold mb-3">Events</h3>
                                 </div>
                                 <div class="col text-right">
-                                    @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
+                                    @isTribrid($organisation)
                                         <a href="{{ route('organisations.events.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
-                                    @endOwns
+                                    @endisTribrid
                                     <a href="{{ route('organisations.events.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                                     <h3 class="card-title font-weight-bold mb-3">Resources</h3>
                                 </div>
                                 <div class="col text-right">
-                                    @isTribrid(Auth::user(), $organisation)
+                                    @isTribrid($organisation)
                                         <a href="{{ route('organisations.resources.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
                                     @endisTribrid
                                     <a href="{{ route('organisations.resources.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
@@ -251,9 +251,9 @@
                                     <h3 class="card-title font-weight-bold mb-3">Team</h3>
                                 </div>
                                 <div class="col text-right">
-                                    @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
+                                    @isTribrid($organisation)
                                         <a href="{{ route('organisations.team.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-user-plus"></i></a>
-                                    @endOwns
+                                    @endisTribrid
                                     <a href="{{ route('organisations.team.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
                                 </div>
                             </div>
