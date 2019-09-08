@@ -157,4 +157,22 @@ a:hover {
     background: #ddd;
 }
 
-//
+/* profile section pages*/
+// show page
+.mini-line {
+    border: solid 2px;
+    width: 40px;
+}
+.social-container {
+    width: 30px;
+    height: 30px;
+    border: solid $blue 1px;
+}
+
+.social-container:hover {
+    background: $blue;
+}
+
+.social-container a:hover {
+    color: #fff;
+}

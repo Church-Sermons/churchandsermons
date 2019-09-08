@@ -1,27 +1,7 @@
 @section('title', "{$profile->name} {$profile->surname}")
+
 @extends('layouts.app')
 
-@section('styles')
-    <style>
-        .mini-line{
-            border: solid 2px;
-            width: 40px;
-        }
-        .social-container{
-            width: 30px;
-            height: 30px;
-            border:solid rgb(0, 102, 204) 1px;
-        }
-
-        .social-container:hover{
-            background: rgb(0, 102, 204);
-        }
-
-        .social-container a:hover{
-            color: #fff;
-        }
-    </style>
-@endsection
 @section('content')
 
 <div id="safeguard">
