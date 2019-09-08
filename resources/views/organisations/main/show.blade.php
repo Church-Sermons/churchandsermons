@@ -87,9 +87,9 @@
                                     <h3 class="card-title font-weight-bold mb-3">Resources</h3>
                                 </div>
                                 <div class="col text-right">
-                                    @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
+                                    @isTribrid(Auth::user(), $organisation)
                                         <a href="{{ route('organisations.resources.create', $organisation->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
-                                    @endOwns
+                                    @endisTribrid
                                     <a href="{{ route('organisations.resources.index', $organisation->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
                                 </div>
                             </div>
