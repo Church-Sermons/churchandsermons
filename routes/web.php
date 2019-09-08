@@ -70,8 +70,9 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
     Route::resource('/team', 'TeamController', ['as' => 'organisations']);
 
     // organisation contact
-    Route::resource('/contacts', 'ContactController', [
-        'as' => 'organisations'
+    Route::resource('/contacts', 'Organisation\OrganisationContactController', [
+        'as' => 'organisations',
+        'except' => ['update', 'edit']
     ]);
 
     // organisation claims
@@ -101,7 +102,10 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
     Route::resource('/events', 'EventController', ['as' => 'profiles']);
 
     // profile contact
-    Route::resource('/contacts', 'ContactController', ['as' => 'profiles']);
+    Route::resource('/contacts', 'Profile\ProfileContactController', [
+        'as' => 'profiles',
+        'except' => ['update', 'edit']
+    ]);
 
     // profile claims
     Route::resource('/claims', 'Profile\ProfileClaimController', [

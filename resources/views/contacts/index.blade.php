@@ -1,4 +1,4 @@
-@section('title', $organisation->name.__(" Messages"))
+@section('title', $model->name.__(" Messages"))
 
 @extends('layouts.app')
 
@@ -18,7 +18,7 @@
                     <div class="accordion my-3" id="accordionParent">
                         @component('components.messages')@endcomponent
 
-                        @forelse ($organisation->contacts as $message)
+                        @forelse ($model->contacts as $message)
                             <div class="card mb-1 {{ $loop->last?'border':null }}">
                                 <div class="card-header d-flex justify-content-between py-1 px-1" id="{{ __('heading').$message->id }}">
                                     <p class="font-weight-bold my-1">

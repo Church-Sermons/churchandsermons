@@ -21,6 +21,22 @@ class Profile extends Model
         );
     }
 
+    public function reviews()
+    {
+        return $this->hasMany('App\Review', 'uuid_link', 'uuid')->orderBy(
+            'id',
+            'desc'
+        );
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany('App\Contact', 'uuid_link', 'uuid')->orderBy(
+            'id',
+            'desc'
+        );
+    }
+
     public function organisations()
     {
         return $this->belongsToMany(
