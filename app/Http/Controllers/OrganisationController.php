@@ -8,6 +8,7 @@ use App\OrganisationCategory;
 use Session;
 use Auth;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Storage;
 
 class OrganisationController extends Controller
@@ -40,8 +41,11 @@ class OrganisationController extends Controller
     public function create()
     {
         $categories = OrganisationCategory::distinctCategoryNames();
-
-        return view('organisations.main.create', compact(['categories']));
+        $sites = DB::table('social_media')->get();
+        return view(
+            'organisations.main.create',
+            compact(['categories', 'sites'])
+        );
     }
 
     /**
@@ -64,7 +68,10 @@ class OrganisationController extends Controller
             'slides' => 'array',
             'day_of_week' => 'array',
             'time_open' => 'array',
-            'work_duration' => 'array'
+            'work_duration' => 'array',
+            'social_id' => 'required_with:share_link,page_link',
+            'share_link' => 'required_with:social_id',
+            'page_link' => 'required_with:social_id'
         ]);
 
         $except = [
@@ -73,7 +80,10 @@ class OrganisationController extends Controller
             'slides',
             'day_of_week',
             'time_open',
-            'work_duration'
+            'work_duration',
+            'social_id',
+            'share_link',
+            'page_link'
         ];
         // store to db
         $organisation = new Organisation($request->except($except));

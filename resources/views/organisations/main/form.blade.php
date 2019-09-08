@@ -112,6 +112,35 @@
         @enderror
     </div>
 </div>
+<div class="form-group">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <select name="social_id" id="social-id" class="form-control text-capitalize @error('social_id') is-invalid @enderror">
+                <option value disabled selected>Select Social Site</option>
+                @foreach ($sites as $site)
+                    <option value="{{ $site->id }}" {{ $site->id == $socialId?'selected':null }}>{{ $site->name }}</option>
+                @endforeach
+            </select>
+            @error('social_id')
+                <p class="invalid-feedback">
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
+        <input type="url" name="page_link" class="form-control @error('page_link') is-invalid @enderror" id="page-link" placeholder="Social Page Link" pattern="https?://.*" value="{{ $pageLink }}">
+        @error('page_link')
+            <p class="invalid-feedback">
+                {{ $message }}
+            </p>
+        @enderror
+        <input type="url" name="share_link" class="form-control @error('share_link') is-invalid @enderror" id="share-link" placeholder="Social Share Link" pattern="https?://.*" value="{{ $shareLink }}">
+        @error('share_link')
+            <p class="invalid-feedback">
+                {{ $message }}
+            </p>
+        @enderror
+    </div>
+</div>
 <div class="form-group" id="working-hours">
     <div class="d-flex justify-content-between mb-3">
         <span class="font-weight-bold">
@@ -119,9 +148,6 @@
         </span>
         <button type="button" id="input-generator" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></button>
     </div>
-    {{-- <div id="working-hours" class="w-100">
-
-    </div> --}}
 </div>
 {{ $slot }}
 <div class="form-group">

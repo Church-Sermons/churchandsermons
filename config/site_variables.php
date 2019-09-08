@@ -9,5 +9,11 @@ return [
         4 => 'Thursday',
         5 => 'Friday',
         6 => 'Satuday'
+    ],
+    'social' => [
+        'fb' => 'fa-facebook-f',
+        'twitter' => 'fa-twitter',
+        'linked-in' => 'linkedin-in',
+        'ig' => 'instagram'
     ]
 ];

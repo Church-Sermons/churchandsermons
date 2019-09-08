@@ -336,23 +336,19 @@
                                 <a href="{{ $organisation->website }}" target="_blank">{{ $organisation->website }}</a>
                             </p>
                             {{-- {{ dd(date('g:i a', strtotime('1:00'))) }} --}}
-                            <h6 class="h6 font-weight-bold mb-0">Working Hours</h6>
+                            <h6 class="h6 font-weight-bold">Work Schedule</h6>
                             @if (count($organisation->schedules))
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-sm my-0">
+                                    <table class="table table-bordered table-sm ">
                                         <tbody>
                                             @foreach ($organisation->schedules as $schedule)
                                                 <tr>
-                                                    <td>{{ Config::get('site_variables.days')[$schedule->day_of_week] }}</td>
+                                                    <td class="font-weight-bold">{{ Config::get('site_variables.days')[$schedule->day_of_week] }}</td>
                                                     <td>{{ date('g:i a', strtotime("{$schedule->time_open}:00")) }}</td>
 
                                                     <td>{{ date('g:i a', strtotime(Helper::sumTime($schedule->time_open, $schedule->work_duration)->isFullyFormatted())) }}</td>
                                                 </tr>
-                                                <p class="lead mini-texts">
 
-
-                                                    {{-- {{ date('g:i a', strtotime(".($schedule->time_open + $schedule->work_duration).")) }} --}}
-                                                </p>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -360,6 +356,30 @@
                             @else
                                 <p class="lead mini-texts">No work schedule added yet</p>
                             @endif
+                            <h6 class="h6 font-weight-bold">Social Media</h6>
+                            <p class="lead mini-texts">
+                                @forelse ($organisation->social as $social)
+                                    @if ($social->page_link)
+                                        <a href="{{ $social->page_link }}" target="_blank">
+                                            <i class="fab {{ Config::get('site_variables.social')[$social->social->tag] }}"></i>
+                                        </a>
+                                    @endif
+                                @empty
+                                    No social media links available
+                                @endforelse
+                            </p>
+                            <h6 class="h6 font-weight-bold">Share</h6>
+                            <p class="lead mini-texts">
+                                @forelse ($organisation->social as $social)
+                                    @if ($social->share_link)
+                                        <a href="{{ $social->share_link }}" target="_blank">
+                                            <i class="fab {{ Config::get('site_variables.social')[$social->social->tag] }}"></i>
+                                        </a>
+                                    @endif
+                                @empty
+                                    No share links available
+                                @endforelse
+                            </p>
                         </div>
                     </div>
 
@@ -372,11 +392,9 @@
                                 </div>
                                 <div class="col-8">
                                     <span class="d-block text-right">
-                                        @forelse (Helper::starRating($organisation->average_review) as $rating)
+                                        @foreach (Helper::starRating($organisation->average_review) as $rating)
                                             <i class="{{ $rating }}"></i>
-                                        @empty
-                                            <p class="small text-muted"></p>
-                                        @endforelse
+                                        @endforeach
                                         <span class="text-muted ml-1">{{ $organisation->average_review?$organisation->average_review:'0.0' }} ({{ $organisation->reviews->count() }})</span>
                                     </span>
 

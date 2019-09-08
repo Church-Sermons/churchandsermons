@@ -66,6 +66,14 @@ class Organisation extends Model implements HasMedia
         )->orderBy('day_of_week', 'asc');
     }
 
+    public function social()
+    {
+        return $this->hasMany('App\SocialLink', 'uuid_link', 'uuid')->orderBy(
+            'id',
+            'desc'
+        );
+    }
+
     public function profiles()
     {
         return $this->belongsToMany(

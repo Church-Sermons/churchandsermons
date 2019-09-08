@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Organisation;
+use App\SocialLink;
 use App\WorkingSchedule;
 use Str;
 use Auth;
@@ -40,6 +41,18 @@ class OrganisationObserver
                 $ws->uuid_link = $organisation->uuid;
                 // save
                 $ws->save();
+            }
+        }
+
+        // Logic to input social links
+        if (request()->has('social_id')) {
+            //either of the two inputs must exist
+            if (request()->has('share_link') || request()->has('page_link')) {
+                // populate db
+                $social = new SocialLink(request()->except('social_id'));
+                $social->social_id = request()->social_id;
+                $social->uuid_link = $organisation->uuid;
+                $social->save();
             }
         }
     }

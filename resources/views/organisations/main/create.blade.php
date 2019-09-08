@@ -41,7 +41,8 @@
                                             'categories' => $categories, 'oldCategory' => old('category'),
                                             'weekDays' => $weekDays, 'dayTimes' => $dayTimes,
                                             'timeSelected' => old('time_open'), 'daySelected' => old('day_of_week'),
-                                            'durationSelected' => old('work_duration')])
+                                            'durationSelected' => old('work_duration'), 'sites' => $sites->toArray(),
+                                            'socialId' => old('social_id')])
                                      @slot('name')
                                         {{ old('name') }}
                                     @endslot
@@ -71,6 +72,12 @@
                                     @endslot
                                     @slot('slides')
                                         {{ old('slides') }}
+                                    @endslot
+                                    @slot('pageLink')
+                                        {{ old('page_link') }}
+                                    @endslot
+                                    @slot('shareLink')
+                                        {{ old('share_link') }}
                                     @endslot
                                     @slot('submitButtonText')
                                         Create Organisation
