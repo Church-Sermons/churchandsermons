@@ -3,28 +3,31 @@
 namespace App\Observers;
 
 use App\Review;
-use App\Organisation;
+use Auth;
 
 class ReviewObserver
 {
-     /**
-     * Handle the review "created" event.
-     *
-     * @param  \App\User  $user
-     * @return void
-     */
     public function created(Review $review)
     {
         // once review created, calculate total then get average
-        $review_average = number_format($review->where('uuid_link', $review->uuid_link)->avg('rating'), 2, '.', '');
+        $reviewAvg = $review
+            ->where('uuid_link', $review->uuid_link)
+            ->avg('rating');
 
-        // find organisation based on id
-        $organisation = Organisation::where('uuid', $review->uuid_link)->first();
+        $review_average = number_format($reviewAvg, 2, '.', '');
 
-        // attach review to organisation
-        $organisation->average_review = $review_average;
+        // find model data based on uuid
+        $model = $review->model::getByUuid($review->uuid_link);
+
+        // attach review to model
+        $model->average_review = $review_average;
 
         // save changes
-        $organisation->save();
+        $model->save();
+    }
+
+    public function creating(Review $review)
+    {
+        $review->user_id = Auth::user()->id;
     }
 }

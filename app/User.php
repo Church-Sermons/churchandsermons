@@ -45,4 +45,18 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Organisation');
     }
+
+    // Role assignment
+    public function isTribrid($thing)
+    {
+        if ($this->hasRoleAndOwns('author', $thing)) {
+            return true;
+        }
+
+        if ($this->hasRole(['administrator', 'superadministrator'])) {
+            return true;
+        }
+
+        return false;
+    }
 }

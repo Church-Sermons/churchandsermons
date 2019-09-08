@@ -1,5 +1,5 @@
 
-@section('title', $organisation->name.__(" Reviews"))
+@section('title', $model->name.__(" Reviews"))
 
 @extends('layouts.app')
 
@@ -19,7 +19,7 @@
                     <div class="accordion my-3" id="accordionParent">
                         @component('components.messages')@endcomponent
 
-                        @forelse ($organisation->reviews as $review)
+                        @forelse ($model->reviews as $review)
                             <div class="card mb-1 {{ $loop->last?'border':null }}">
                                 <div class="card-header d-flex justify-content-between py-1 px-1" id="{{ __('heading').$review->id }}">
                                     <p class="font-weight-bold my-1">

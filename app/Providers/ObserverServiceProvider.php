@@ -17,6 +17,9 @@ use App\OrganisationCategory;
 use App\Resource;
 use App\Profile;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Container\Container;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Database\Eloquent\Model;
 
 class ObserverServiceProvider extends ServiceProvider
 {

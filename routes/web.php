@@ -87,7 +87,10 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
     ]);
 
     // organisation reviews
-    Route::resource('/reviews', 'ReviewController', ['as' => 'organisations']);
+    Route::resource('/reviews', 'Organisation\OrganisationReviewController', [
+        'as' => 'organisations',
+        'except' => ['edit', 'update']
+    ]);
 });
 
 /**
@@ -119,7 +122,10 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
     ]);
 
     // profile reviews
-    Route::resource('/reviews', 'ReviewController', ['as' => 'profiles']);
+    Route::resource('/reviews', 'Profile\ProfileReviewController', [
+        'as' => 'profiles',
+        'except' => ['update', 'edit']
+    ]);
 });
 
 /**
@@ -129,14 +135,6 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
  *
  */
 // Route::resource('/resources', 'ResourceController');
-
-/**
- *
- * Standalone Routes
- * Claims, Contacts, Reviews
- *
- */
-Route::resource('claims', 'ClaimController');
 
 // Auth Routes
 Auth::routes(['verify' => true]);

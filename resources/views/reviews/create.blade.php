@@ -1,4 +1,4 @@
-@section('title', __("Reviews For ").$organisation->name)
+@section('title', __("Reviews For ").$model->name)
 
 @extends('layouts.app')
 
@@ -17,7 +17,7 @@
                                 fuga impedit corrupti autem optio fugit modi accusamus ducimus
                                 ut facere. Minus, expedita ut. Odit?
                             </p>
-                            <form action="{{ route('organisations.reviews.store', $organisation->uuid) }}" method="post" class="py-2">
+                            <form action="{{ route("{$name}.reviews.store", $model->uuid) }}" method="post" class="py-2">
                                 @csrf
                                 @component('components.messages')@endcomponent
                                 @component('reviews.form')
@@ -39,7 +39,7 @@
                     <hr>
                     <div class="card border-0">
                         <div class="card-body p-0">
-                            @forelse ($organisation->reviews as $review)
+                            @forelse ($model->reviews as $review)
                                 <div class="media mb-3 bg-light rounded p-2">
                                     <img src="https://via.placeholder.com/64" class="rounded-circle mr-2" alt="avatar-image" height="64" width="64">
                                     <div class="media-body d-flex justify-content-between">
