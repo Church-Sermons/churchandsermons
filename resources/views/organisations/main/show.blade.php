@@ -39,28 +39,6 @@
                             </p>
                         </div>
                     </div>
-                    <style>
-                        #appCarousel .carousel-item{
-                            width: 100%;
-                            height: 350px;
-                            position: relative;
-                        }
-                        #appCarousel .carousel-item::after{
-                            background: rgba(0, 0, 0, 0.25);
-                            position: absolute;
-                            width: 100%;
-                            height: 100%;
-                            left: 0;
-                            bottom: 0;
-                            content: '';
-                            z-index: 2;
-                        }
-
-                        .carousel-control{
-                            z-index: 5;
-                        }
-
-                    </style>
                     <div class="card mt-3">
                         <div class="card-body">
                             {{-- <span class="d-block my-3 border border-bottom w-100"></span> --}}
@@ -326,8 +304,11 @@
                         <div class="card-body">
                             <h4 class="card-title text-uppercase h5 font-weight-bold">contact information</h4>
                             <h6 class="h6 font-weight-bold">Location</h6>
-                            <p class="lead mini-texts">{{ $organisation->address }}</p>
-                            <h6 class="h6 font-weight-bold">Phone</h6>
+                            <p class="lead mini-texts mb-0">{{ $organisation->address }}</p>
+                            {{-- Map Div --}}
+                            <div id="map" class="my-3" data-latitude="{{ $organisation->lat }}" data-longitude="{{ $organisation->lon }}"></div>
+
+                            <h6 class="h6 font-weight-bold mt-0">Phone</h6>
                             <p class="lead mini-texts">{{ $organisation->phone }}</p>
                             <h6 class="h6 font-weight-bold">Email</h6>
                             <p class="lead mini-texts">{{ $organisation->email }}</p>
@@ -348,7 +329,6 @@
 
                                                     <td>{{ date('g:i a', strtotime(Helper::sumTime($schedule->time_open, $schedule->work_duration)->isFullyFormatted())) }}</td>
                                                 </tr>
-
                                             @endforeach
                                         </tbody>
                                     </table>

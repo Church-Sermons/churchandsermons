@@ -18620,6 +18620,33 @@ a:hover {
   position: relative;
 }
 
+#appCarousel .carousel-item {
+  width: 100%;
+  height: 350px;
+  position: relative;
+}
+
+#appCarousel .carousel-item::after {
+  background: rgba(0, 0, 0, 0.25);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  content: "";
+  z-index: 2;
+}
+
+.carousel-control {
+  z-index: 5;
+}
+
+#map {
+  height: 200px;
+  border: solid 1px rgba(0, 0, 0, 0.125);
+  background: #f1f1f1;
+}
+
 .event-card {
   border: none;
   border-right: solid 3px #3490dc;

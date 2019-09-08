@@ -30,6 +30,9 @@ window.Dropzone = require("dropzone/dist/dropzone");
 
 // Moment
 window.Moment = require("moment");
+
+// Google Maps
+window.GoogleMapsApi = require("load-google-maps-api");
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the

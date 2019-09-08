@@ -21233,6 +21233,61 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
+/***/ "./node_modules/load-google-maps-api/index.js":
+/*!****************************************************!*\
+  !*** ./node_modules/load-google-maps-api/index.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+const API_URL = 'https://maps.googleapis.com/maps/api/js'
+const CALLBACK_NAME = '__googleMapsApiOnLoadCallback'
+
+const optionsKeys = ['channel', 'client', 'key', 'language', 'region', 'v']
+
+let promise = null
+
+module.exports = function (options = {}) {
+  promise =
+    promise ||
+    new Promise(function (resolve, reject) {
+      // Reject the promise after a timeout
+      const timeoutId = setTimeout(function () {
+        window[CALLBACK_NAME] = function () {} // Set the on load callback to a no-op
+        reject(new Error('Could not load the Google Maps API'))
+      }, options.timeout || 10000)
+
+      // Hook up the on load callback
+      window[CALLBACK_NAME] = function () {
+        if (timeoutId !== null) {
+          clearTimeout(timeoutId)
+        }
+        resolve(window.google.maps)
+        delete window[CALLBACK_NAME]
+      }
+
+      // Prepare the `script` tag to be inserted into the page
+      const scriptElement = document.createElement('script')
+      const params = [`callback=${CALLBACK_NAME}`]
+      optionsKeys.forEach(function (key) {
+        if (options[key]) {
+          params.push(`${key}=${options[key]}`)
+        }
+      })
+      if (options.libraries && options.libraries.length) {
+        params.push(`libraries=${options.libraries.join(',')}`)
+      }
+      scriptElement.src = `${options.apiUrl || API_URL}?${params.join('&')}`
+
+      // Insert the `script` tag
+      document.body.appendChild(scriptElement)
+    })
+  return promise
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/lodash.js":
 /*!***************************************!*\
   !*** ./node_modules/lodash/lodash.js ***!
@@ -59868,7 +59923,9 @@ window.StarRatingSVG = __webpack_require__(/*! star-rating-svg/src/jquery.star-r
 
 window.Dropzone = __webpack_require__(/*! dropzone/dist/dropzone */ "./node_modules/dropzone/dist/dropzone.js"); // Moment
 
-window.Moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+window.Moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"); // Google Maps
+
+window.GoogleMapsApi = __webpack_require__(/*! load-google-maps-api */ "./node_modules/load-google-maps-api/index.js");
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -59931,6 +59988,8 @@ __webpack_require__(/*! ./scripts/custom */ "./resources/js/scripts/custom.js");
 __webpack_require__(/*! ./scripts/media */ "./resources/js/scripts/media.js");
 
 __webpack_require__(/*! ./scripts/work-schedule-form */ "./resources/js/scripts/work-schedule-form.js");
+
+__webpack_require__(/*! ./scripts/map-handler */ "./resources/js/scripts/map-handler.js");
 
 /***/ }),
 
@@ -60132,6 +60191,46 @@ module.exports = {
   audioPlayer: audioPlayer,
   videoPlayer: videoPlayer
 };
+
+/***/ }),
+
+/***/ "./resources/js/scripts/map-handler.js":
+/*!*********************************************!*\
+  !*** ./resources/js/scripts/map-handler.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function () {
+  GoogleMapsApi({
+    key: "AIzaSyD-UgvAr46AOs_pnTWgSNAah9FuFKyjJ8M"
+  }).then(function initMap(googleMaps) {
+    // elements
+    var mapContainer = document.getElementById("map"); // get location
+
+    if (mapContainer) {
+      // lat and lon
+      var location = {
+        lat: 40.7484405,
+        lng: -73.9944191
+      };
+      console.log(location); // use location
+      // create map
+
+      var map = new googleMaps.Map(mapContainer, {
+        zoom: 4,
+        center: location
+      }); // The marker, positioned at Uluru
+
+      var marker = new googleMaps.Marker({
+        position: location,
+        map: map
+      });
+    }
+  })["catch"](function (error) {
+    return console.log(error);
+  });
+})();
 
 /***/ }),
 
@@ -60531,7 +60630,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\churchandsermons\src\resources\js\scripts.js */"./resources/js/scripts.js");
+module.exports = __webpack_require__(/*! c:\xampp\htdocs\churchandsermons\src\resources\js\scripts.js */"./resources/js/scripts.js");
 
 
 /***/ })
