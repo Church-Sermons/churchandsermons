@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // setting categories available in all views
-        $categories = OrganisationCategory::all();
+        $categories = OrganisationCategory::distinctCategoryNames();
         View::share('categories', $categories);
     }
 

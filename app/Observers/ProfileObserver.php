@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Profile;
 use App\Organisation;
+use App\ProfileLink;
 use Str;
 use Route;
 use Auth;
@@ -20,15 +21,22 @@ class ProfileObserver
     public function created(Profile $profile)
     {
         // check if route exists
-        if (Route::current()->parameters['organisation_id']) {
-            // syncing with other related table
-            $organisation = Organisation::where(
-                'uuid',
-                Route::current()->parameters['organisation_id']
-            )->first();
+        // code for team syncing with profiles page
+        // check if name is same as team
+        $logic = request()
+            ->route()
+            ->getName();
+        // a small hack, might find a better way later
+        // saves profiles to profiles table from organisation team if route is the same
+        if ($logic == 'organisations.team.store') {
+            $route = Route::current()->parameters['organisation_id'];
+            if ($route) {
+                // syncing with other related table
+                $organisation = Organisation::where('uuid', $route)->first();
 
-            // link to relation
-            $organisation->profiles()->syncWithoutDetaching($profile);
+                // link to relation
+                $organisation->profiles()->syncWithoutDetaching($profile);
+            }
         }
     }
 
@@ -74,19 +82,11 @@ class ProfileObserver
      */
     public function updating(Profile $profile)
     {
-        // Deleting file on update
-        if (empty(request()->profile_image)) {
-            // empty request use already existing file in db
-            $profile->profile_image = $profile->getOriginal('profile_image');
-        } else {
+        if ($profile->isDirty('profile_image')) {
             // get old profile image
-            $oldProfile = $profile->profile_image;
+            $oldProfile = $profile->getOriginal('profile_image');
 
-            // save new profile image
-            $profile->profile_image = request()->profile_image->store(
-                'uploads',
-                'public'
-            );
+            // $oldProfile = "{$oldProfile[0]}/images/{$oldProfile[1]}";
 
             if (is_file(public_path('storage/' . $oldProfile))) {
                 // delete old profile image
@@ -103,7 +103,6 @@ class ProfileObserver
      */
     public function deleted(Profile $profile)
     {
-        //
     }
 
     /**

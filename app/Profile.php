@@ -73,4 +73,12 @@ class Profile extends Model
     {
         return $query->where('uuid', $uuid)->first();
     }
+
+    public function scopeLoadWithRelations($query, $uuid)
+    {
+        return $query
+            ->where('uuid', $uuid)
+            ->with(['category'])
+            ->first();
+    }
 }

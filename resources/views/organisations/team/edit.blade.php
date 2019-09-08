@@ -43,16 +43,16 @@
                                         {{ old('address', $profile->address) }}
                                     @endslot
                                     @slot('latitude')
-                                        {{ old('latitude', $profile->lat) }}
+                                        {{ old('lat', $profile->lat) }}
                                     @endslot
                                     @slot('longitude')
-                                        {{ old('longitude', $profile->lon) }}
+                                        {{ old('lon', $profile->lon) }}
                                     @endslot
                                     @slot('description')
                                         {{ old('description', $profile->description) }}
                                     @endslot
                                     @slot('profile')
-                                        {{ old('profile', $profile->profile_image) }}
+                                        {{ old('profile_image', $profile->profile_image) }}
                                     @endslot
                                     @slot('submitButtonText')
                                         Update Member
@@ -75,36 +75,6 @@
         document.addEventListener('DOMContentLoaded', function(){
             // phone number add dashes
             const phone = document.getElementById('phone');
-
-
-            // check value length on keyup
-            phone.addEventListener('keyup', function(e){
-                if(this.value.length >= 9){
-                    const cleansedValue = this.value.replace(/\D[^\.]/g, "");
-                    this.value = addDashes(cleansedValue, e);
-                }
-
-            });
-
-            function addDashes(cv, e){
-                // handling keys like del or backspace
-                const key = e.which || e.keyCode || e.charCode;
-
-                if(key != 8 && key != 46){
-                    // create dashes
-                    const firstPart = cv.slice(0,3);
-                    const secondPart = cv.slice(3,6);
-                    const thirdPart = cv.slice(6);
-
-                    // return string combining all three parts
-                    return `${firstPart}-${secondPart}-${thirdPart}`;
-                }
-
-                return;
-
-            }
-
-
 
         });
 

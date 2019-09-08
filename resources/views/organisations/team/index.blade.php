@@ -9,12 +9,12 @@
             <div class="row">
                 <div class="col">
                     <h2 class="font-weight-bold mb-4 text-center">{{ $organisation->name.__(" Team Members") }}</h2>
-                    @component('components.messages')@endcomponent
+                    @include('components.messages')
                     <div class="row">
                         @forelse ($organisation->profiles as $team)
                             <div class="col-md-3 col-sm-6 col-xs-12 mb-2">
                                 <div class="card h-100">
-                                    @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
+                                    @isTribrid($organisation)
                                     <span class="d-block text-right mt-2 mr-2">
                                         <form class="d-inline" action="{{ route('organisations.team.destroy', [$organisation->uuid, $team->id]) }}" method="POST">
                                             @csrf
@@ -23,7 +23,7 @@
                                         </form>
                                         <a href="{{ route('organisations.team.edit', [$organisation->uuid, $team->id]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
                                     </span>
-                                    @endOwns
+                                    @endisTribrid
                                     <div class="card-body d-flex flex-column align-items-center">
                                         <img style="object-fit: cover;" src="{{ asset('storage/'.$team->profile_image) }}" alt="avatar" class="rounded-circle mr-2 mt-2" height="100" width="100">
                                         <h4 class="text-capitalize font-weight-bold mt-1">

@@ -151,6 +151,7 @@ Route::get('/fake', function () {
             'phone' => $faker->e164PhoneNumber,
             'website' => 'https://' . $faker->domainName,
             'address' => $faker->address,
+            'skill' => $faker->jobTitle,
             'coordinates' => array(
                 'latitude' => $faker->latitude,
                 'longitude' => $faker->longitude

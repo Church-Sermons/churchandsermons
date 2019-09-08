@@ -16,7 +16,7 @@
                         ut facere. Minus, expedita ut. Odit?
                     </p>
                     <div class="accordion my-3" id="accordionParent">
-                        @component('components.messages')@endcomponent
+                        @include('components.messages')
 
                         @forelse ($model->claims as $claim)
                             <div class="card mb-1 {{ $loop->last?'border':null }}">

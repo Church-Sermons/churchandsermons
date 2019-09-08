@@ -2,19 +2,6 @@
 
 @extends('layouts.app')
 
-@php
-    $weekDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-    $dayTimes = [];
-    foreach(range(1, 24) as $number){
-        if($number < 12){
-            $dayTimes [] = "{$number}:00 AM";
-        }else if($number >=12 && $number < 24){
-            $dayTimes [] = "{$number}:00 PM";
-        }else{
-            $dayTimes [] = "{$number}:00 AM";
-        }
-    }
-@endphp
 @section('content')
 
 <div id="safeguard">
@@ -39,10 +26,10 @@
 
                                 @component('organisations.main.form', [
                                             'categories' => $categories, 'oldCategory' => old('category'),
-                                            'weekDays' => $weekDays, 'dayTimes' => $dayTimes,
-                                            'timeSelected' => old('time_open'), 'daySelected' => old('day_of_week'),
-                                            'durationSelected' => old('work_duration'), 'sites' => $sites->toArray(),
-                                            'socialId' => old('social_id')])
+                                            'weekDays' => array_values(Config::get('site_variables.days')),
+                                            'dayTimes' => generateHours(),'timeSelected' => old('time_open'),
+                                            'daySelected' => old('day_of_week'), 'durationSelected' => old('work_duration'),
+                                            'sites' => $sites, 'socialId' => old('social_id')])
                                      @slot('name')
                                         {{ old('name') }}
                                     @endslot

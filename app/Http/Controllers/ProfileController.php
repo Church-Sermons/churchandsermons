@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProfileRequest;
 use Illuminate\Http\Request;
 use App\OrganisationCategory;
 use App\Profile;
+use App\Traits\ProfileTrait;
 use Auth;
 use Session;
+use DB;
 
 class ProfileController extends Controller
 {
+    use ProfileTrait;
+
+    private $_excepts;
+
     public function __construct()
     {
         $this->middleware(
             'role:administrator|superadministrator|author'
         )->except(['index', 'show']);
+
+        $this->_excepts = ['profile_image', 'user_id', 'category'];
     }
 
     /**
@@ -28,7 +37,7 @@ class ProfileController extends Controller
             ->with('category')
             ->paginate(10);
 
-        return view('profiles.main.index')->withProfiles($profiles);
+        return view('profiles.main.index', compact('profiles'));
     }
 
     /**
@@ -38,8 +47,8 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        $categories = OrganisationCategory::all();
-        return view('profiles.main.create')->withCategories($categories);
+        $sites = DB::table('social_media')->get();
+        return view('profiles.main.create', compact('sites'));
     }
 
     /**
@@ -48,39 +57,18 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProfileRequest $request)
     {
-        $validator = $this->validate($request, [
-            'name' => 'required|max:255',
-            'surname' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:profiles,email',
-            'phone' => 'required|max:20',
-            'website' => 'required|max:150|url',
-            'address' => 'required',
-            'description' => 'required',
-            'category' => 'required|numeric',
-            'profile_image' =>
-                'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
-        ]);
+        $response = $this->storeProfile($request, $this->_excepts);
 
-        $profile = new Profile(
-            $request->except(['profile_image', 'user_id', 'category'])
-        );
-        $profile->profile_image = $request->profile_image->store(
-            'uploads',
-            'public'
-        );
-        $profile->user_id = Auth::user()->id;
-        $profile->category_id = $request->category;
-
-        if ($profile->save()) {
+        if ($response['profile']->save()) {
             Session::flash('success', 'Profile created successfully');
             return redirect()->route('profiles.index');
         } else {
             return redirect()
                 ->back()
                 ->withInput()
-                ->withErrors($validator);
+                ->withErrors($response['validator']);
         }
     }
 
@@ -92,11 +80,10 @@ class ProfileController extends Controller
      */
     public function show($uuid)
     {
-        $profile = Profile::where('uuid', $uuid)
-            ->with(['category'])
-            ->first();
+        // eager load relationships
+        $profile = Profile::loadWithRelations($uuid);
 
-        return view('profiles.main.show')->withProfile($profile);
+        return view('profiles.main.show', compact('profile'));
     }
 
     /**
@@ -107,18 +94,14 @@ class ProfileController extends Controller
      */
     public function edit($uuid)
     {
-        $profile = Profile::where('uuid', $uuid)
-            ->with('category')
-            ->first();
+        $profile = Profile::loadWithRelations($uuid);
 
-        if ($profile->user_id != Auth::user()->id) {
-            return redirect()->route('profiles.index');
+        // restrict editing view to auth creators of the profile or admins or superadmins
+        if (Auth::check() && Auth::user()->isTribrid($profile)) {
+            return view('profiles.main.edit', compact('profile'));
         }
 
-        $categories = OrganisationCategory::all();
-        return view('profiles.main.edit')
-            ->withProfile($profile)
-            ->withCategories($categories);
+        return redirect()->route('profiles.index');
     }
 
     /**
@@ -128,47 +111,34 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $uuid)
+    public function update(StoreProfileRequest $request, $uuid)
     {
-        $profile = Profile::where('uuid', $uuid)->first();
+        $profile = Profile::getByUuid($uuid);
 
-        if ($profile->user_id != Auth::user()->id) {
-            Session::flash('error', 'Unauthorized Access');
+        // restrict editing view to auth creators of the profile or admins or superadmins
+        if (Auth::check() && Auth::user()->isTribrid($profile)) {
+            $response = $this->updateProfile(
+                $profile,
+                $request,
+                $this->_excepts
+            );
 
-            return redirect()->route('profiles.index');
-        }
-
-        $validator = $this->validate($request, [
-            'name' => 'required|max:255',
-            'surname' => 'required|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|max:20',
-            'website' => 'required|max:150|url',
-            'address' => 'required',
-            'description' => 'required',
-            'category' => 'required|numeric',
-            'profile_image' =>
-                'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
-        ]);
-        $profile->fill(
-            $request->except(['profile_image', 'user_id', 'category'])
-        );
-
-        $profile->profile_image = $request->profile_image->store(
-            'uploads',
-            'public'
-        );
-        $profile->user_id = Auth::user()->id;
-        $profile->category_id = $request->category;
-
-        if ($profile->save()) {
-            Session::flash('success', 'Profile updated successfully');
-            return redirect()->route('profiles.index');
+            if ($response['profile']->save()) {
+                Session::flash('success', 'Profile updated successfully');
+                return redirect()->route('profiles.index');
+            } else {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors($response['validator']);
+            }
         } else {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors($validator);
+            // redirect to index
+            Session::flash(
+                'danger',
+                'Your are not authorized to perform this action'
+            );
+            return redirect()->route('profiles.index');
         }
     }
 
@@ -178,8 +148,27 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($uuid)
     {
-        //
+        // detach
+        $profile = Profile::getByUuid($uuid);
+        if (Auth::check() && Auth::user()->isTribrid($profile)) {
+            // if user is tribrid can delete
+            if ($profile->delete()) {
+                Session::flash('success', 'Profile deleted successfully');
+
+                return redirect()->back();
+            } else {
+                Session::flash('danger', 'Profile failed to delete');
+
+                return redirect()->back();
+            }
+        } else {
+            Session::flash(
+                'danger',
+                'You are not authorized to perform this action'
+            );
+            return redirect()->back();
+        }
     }
 }

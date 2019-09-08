@@ -6,7 +6,7 @@ use App\Review;
 
 trait ReviewTrait
 {
-    public function storeReviews($uuid, $request, $uModel)
+    protected function storeReviews($uuid, $request, $uModel)
     {
         $validator = $request->validated();
 

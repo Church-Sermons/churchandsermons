@@ -74,7 +74,7 @@ class TeamController extends Controller
 
         if ($profile->save()) {
             Session::flash('success', 'Member created successfully');
-            return redirect()->back();
+            return redirect()->route('organisations.show', $uuid);
         } else {
             return redirect()
                 ->back()
