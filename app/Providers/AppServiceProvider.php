@@ -2,10 +2,9 @@
 
 namespace App\Providers;
 
+use App\OrganisationCategory;
 use Illuminate\Support\ServiceProvider;
-
-use Hashids\Hashids;
-
+use View;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -15,7 +14,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        
     }
 
     /**
@@ -25,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $categories = OrganisationCategory::all();
+        View::share('categories', $categories);
     }
 }

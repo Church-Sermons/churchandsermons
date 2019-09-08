@@ -13,6 +13,14 @@ class Profile extends Model
         return $this->hasOne('App\OrganisationCategory', 'id', 'category_id');
     }
 
+    public function claims()
+    {
+        return $this->hasMany('App\Claim', 'uuid_link', 'uuid')->orderBy(
+            'id',
+            'desc'
+        );
+    }
+
     public function organisations()
     {
         return $this->belongsToMany(
@@ -42,5 +50,11 @@ class Profile extends Model
             'resource_id',
             'uuid'
         )->orderBy('id', 'desc');
+    }
+
+    // scopes
+    public function scopeGetByUuid($query, $uuid)
+    {
+        return $query->where('uuid', $uuid)->first();
     }
 }

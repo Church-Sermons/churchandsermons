@@ -186,18 +186,11 @@
                                                             </a>
                                                         </div>
                                                     </div>
-                                                    {{-- <div class="card">
-                                                        <h6 class="text-capitalize py-2 px-2">
-                                                            <a href="#" data-toggle="modal" data-target="#categoryModal">{{ str_replace("-", " ",pathinfo($video->file_name, PATHINFO_FILENAME)) }}</a>
-                                                        </h6>
-                                                    </div> --}}
                                                 </div>
                                             @endif
                                         @empty
-                                            <div class="row">
-                                                <div class="col">
-                                                    <p class="lead">No video resources found</p>
-                                                </div>
+                                            <div class="col">
+                                                <p class="lead">No video resources found</p>
                                             </div>
                                         @endforelse
 
@@ -405,7 +398,6 @@
                                 <p class="mini-texts">Something In Mind? <a href="{{ route('organisations.reviews.create', $organisation->uuid) }}">Write Review</a></p>
                             @endauth
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

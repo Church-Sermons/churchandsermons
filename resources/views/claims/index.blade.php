@@ -1,4 +1,4 @@
-@section('title', $organisation->name.__(" Claims"))
+@section('title', $model->name.__(" Claims"))
 
 @extends('layouts.app')
 
@@ -8,7 +8,7 @@
         <div class="explore-inner container my-5">
             <div class="row">
                 <div class="col">
-                    <h2 class="font-weight-bold mb-3 text-center">Messages</h2>
+                    <h2 class="font-weight-bold mb-3 text-center">Claims</h2>
                     <p class="text-center">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Voluptatem non, quasi aliquid corporis atque, asperiores
@@ -18,7 +18,7 @@
                     <div class="accordion my-3" id="accordionParent">
                         @component('components.messages')@endcomponent
 
-                        @forelse ($organisation->claims as $claim)
+                        @forelse ($model->claims as $claim)
                             <div class="card mb-1 {{ $loop->last?'border':null }}">
                                 <div class="card-header d-flex justify-content-between py-1 px-1" id="{{ __('heading').$claim->id }}">
                                     <p class="font-weight-bold my-1">

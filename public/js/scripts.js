@@ -60211,8 +60211,8 @@ module.exports = {
     if (mapContainer) {
       // lat and lon
       var location = {
-        lat: 40.7484405,
-        lng: -73.9944191
+        lat: 40.74,
+        lng: -73.99
       };
       console.log(location); // use location
       // create map

@@ -96,6 +96,12 @@ class Organisation extends Model implements HasMedia
         )->orderBy('id', 'desc');
     }
 
+    // scopes
+    public function scopeGetByUuid($query, $uuid)
+    {
+        return $query->where('uuid', $uuid)->first();
+    }
+
     // media collections
     public function registerMediaCollections()
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Claim;
+use App\Http\Requests\StoreMessageRequest;
 use App\Organisation;
 use Auth;
 use Session;
@@ -12,33 +13,22 @@ class ClaimController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(
-            'role:administrator|superadministrator|author'
-        )->except(['create']);
+        $this->middleware('role:administrator|superadministrator|author');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($uuid)
+    // Explode route prefix
+    public function getRoutePrefix()
     {
-        $organisation = Organisation::where('uuid', $uuid)->first();
+        $customPrefix = "/";
+        $prefix = request()
+            ->route()
+            ->getPrefix();
 
-        return view('claims.index')->withOrganisation($organisation);
-    }
+        if ($prefix) {
+            $customPrefix = explode("/", $prefix)[0];
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($uuid)
-    {
-        $organisation = Organisation::where('uuid', $uuid)->first();
-
-        return view('claims.create')->withOrganisation($organisation);
+        return $customPrefix;
     }
 
     /**
@@ -47,12 +37,11 @@ class ClaimController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $uuid)
+    public function store(StoreMessageRequest $request, $uuid)
     {
-        $validator = $this->validate($request, [
-            'subject' => 'required|max:255',
-            'message' => 'required'
-        ]);
+        dd($this->getRoutePrefix());
+
+        $validator = $request->validated();
 
         $claim = new Claim($request->all());
         $claim->sender_id = Auth::user()->id;
@@ -61,7 +50,14 @@ class ClaimController extends Controller
         if ($claim->save()) {
             Session::flash('success', 'Claim sent successfully');
 
-            return redirect()->back();
+            // redirect accordingly
+            if ($this->getRoutePrefix() == 'profiles') {
+                return redirect()->route('profiles.show', $uuid);
+            } elseif ($this->getRoutePrefix() == 'organisations') {
+                return redirect()->route('organisations.show', $uuid);
+            } else {
+                return redirect()->back();
+            }
         } else {
             return redirect()
                 ->back()
@@ -80,7 +76,7 @@ class ClaimController extends Controller
     {
         $claim = Claim::findOrFail($id);
 
-        return view('claims.show')->withClaim($claim);
+        return view('claims.show', compact('claim'));
     }
 
     /**

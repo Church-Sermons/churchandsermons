@@ -1,4 +1,4 @@
-@section('title', __("Tell ").$organisation->name)
+@section('title', __("Tell ").$model->name)
 
 @extends('layouts.app')
 
@@ -17,7 +17,7 @@
                                 fuga impedit corrupti autem optio fugit modi accusamus ducimus
                                 ut facere. Minus, expedita ut. Odit?
                             </p>
-                            <form action="{{ route('organisations.claims.store', $organisation->uuid) }}" method="post" class="py-2">
+                            <form action="{{ route("{$name}.claims.store", $model->uuid) }}" method="post" class="py-2">
                                 @csrf
                                 @component('components.messages')@endcomponent
                                 @component('claims.form')

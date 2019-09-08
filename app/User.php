@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;
 use Balping\HashSlug\HasHashSlug;
+use Laratrust\Laratrust;
 
 class User extends Authenticatable
 {

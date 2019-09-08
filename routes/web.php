@@ -75,7 +75,10 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
     ]);
 
     // organisation claims
-    Route::resource('/claims', 'ClaimController', ['as' => 'organisations']);
+    Route::resource('/claims', 'Organisation\OrganisationClaimController', [
+        'as' => 'organisations',
+        'except' => ['update', 'edit']
+    ]);
 
     // organisation resource
     Route::resource('/resources', 'OrganisationResourceController', [
@@ -101,7 +104,10 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
     Route::resource('/contacts', 'ContactController', ['as' => 'profiles']);
 
     // profile claims
-    Route::resource('/claims', 'ClaimController', ['as' => 'profiles']);
+    Route::resource('/claims', 'Profile\ProfileClaimController', [
+        'as' => 'profiles',
+        'except' => ['update', 'edit']
+    ]);
 
     // profile resource
     Route::resource('/resources', 'ProfileResourceController', [
@@ -119,6 +125,14 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
  *
  */
 // Route::resource('/resources', 'ResourceController');
+
+/**
+ *
+ * Standalone Routes
+ * Claims, Contacts, Reviews
+ *
+ */
+Route::resource('claims', 'ClaimController');
 
 // Auth Routes
 Auth::routes(['verify' => true]);

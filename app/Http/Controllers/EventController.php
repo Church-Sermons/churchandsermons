@@ -25,7 +25,7 @@ class EventController extends Controller
     {
         $organisation = Organisation::where('uuid', $uuid)->first();
 
-        return view('events.index')->withOrganisation($organisation);
+        return view('events.index', compact('organisations'));
     }
 
     /**
@@ -36,7 +36,7 @@ class EventController extends Controller
     public function create($uuid)
     {
         $organisation = Organisation::where('uuid', $uuid)->first();
-        return view('events.create')->withOrganisation($organisation);
+        return view('events.create', compact('organisation'));
     }
 
     /**
@@ -89,7 +89,7 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
-        return view('events.show')->withEvent($event);
+        return view('events.show', compact('event'));
     }
 
     /**

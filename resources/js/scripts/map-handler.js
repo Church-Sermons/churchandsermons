@@ -9,8 +9,8 @@
             if (mapContainer) {
                 // lat and lon
                 const location = {
-                    lat: 40.7484405,
-                    lng: -73.9944191
+                    lat: 40.74,
+                    lng: -73.99
                 };
 
                 console.log(location);

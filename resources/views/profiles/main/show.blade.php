@@ -48,6 +48,7 @@
 @section('content')
 <div class="section">
     <div class="container">
+        @include('components.messages')
         <div class="card">
             <div class="card-content">
                 <div class="columns">
