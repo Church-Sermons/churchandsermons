@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Profile;
 
+use App\Events\ResouceUploadSuccessfull;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreResourceRequest;
 use App\Profile;
@@ -44,6 +45,10 @@ class ProfileResourceController extends Controller
         $response = $this->storeResources($request, $uuid, 'App\Profile');
 
         if ($response['resource']) {
+            // get media
+            // add event to resources
+            event(new ResouceUploadSuccessfull($response['resource']));
+
             Session::flash('success', 'Resource added successfully');
 
             return redirect()->route('profiles.show', $uuid);
@@ -59,16 +64,33 @@ class ProfileResourceController extends Controller
     {
         $resource = Media::findOrFail($id);
 
-        return view('resources.edit', compact('resource'))->withName(
+        return view('resources.edit', compact(['resource', 'uuid']))->withName(
             $this->name
         );
     }
 
     public function update(StoreResourceRequest $request, $uuid, $id)
     {
-        $resource = Media::findOrFail($id);
+        $model = Profile::getByUuid($uuid);
 
-        $validator = $request->validated();
+        $response = $this->updateResources($request, $model);
+
+        if ($response['resource']) {
+            // add event to get metadata
+            event(new ResouceUploadSuccessfull($response['resource']));
+
+            // delete resource - deletes db record and corresponding file - will update to $model->deleteMedia()
+            $model->deleteMedia($id);
+
+            Session::flash('success', 'Resource update successfull');
+
+            return redirect()->route('profiles.show', $uuid);
+        } else {
+            redirect()
+                ->back()
+                ->withErrors($response['validator'])
+                ->withInput();
+        }
     }
 
     public function destroy($uuid, $id)
@@ -77,7 +99,7 @@ class ProfileResourceController extends Controller
         $model = Profile::getByUuid($uuid);
 
         // delete using media library package
-        if ($model->deleteMedia($id)) {
+        if (empty($model->deleteMedia($id))) {
             Session::flash('success', 'Media deletion was successfull');
             return redirect()->back();
         } else {

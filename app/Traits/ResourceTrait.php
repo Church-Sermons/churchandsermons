@@ -19,7 +19,29 @@ trait ResourceTrait
             ->addMedia($request->file_name)
             ->withCustomProperties([
                 'description' => $request->description,
-                'name' => $request->name
+                'name' => $request->name,
+                'category' => $request->category
+            ])
+            ->toMediaCollection($tag['tag']);
+
+        return [
+            'resource' => $result,
+            'validator' => $validator
+        ];
+    }
+
+    protected function updateResources($request, $model)
+    {
+        $validator = $request->validated();
+
+        $tag = $this->getTag($request);
+
+        $result = $model
+            ->addMedia($request->file_name)
+            ->withCustomProperties([
+                'description' => $request->description,
+                'name' => $request->name,
+                'category' => $request->category
             ])
             ->toMediaCollection($tag['tag']);
 

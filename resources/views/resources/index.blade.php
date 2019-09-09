@@ -55,10 +55,10 @@
                                                         {{ __("https://source.unsplash.com/300x300/?music") }}
                                                     @endslot
                                                     @slot('title')
-                                                        {{ Helper::media($model->getMedia('audio')[0]->getFullUrl())->getTitle() }}
+                                                        {{ $model->getMedia('audio')[0]->name }}
                                                     @endslot
                                                     @slot('artist')
-                                                        {{ Helper::media($model->getMedia('audio')[0]->getFullUrl())->getArtist() }}
+                                                        {{ $model->getMedia('audio')[0]->getCustomProperty('name') }}
                                                     @endslot
                                                     @slot('size')
                                                         {{ $model->getMedia('audio')[0]->human_readable_size }}
@@ -68,6 +68,9 @@
                                                 @component('components.audio-playlist', ['data' => $model->getMedia('audio')])
                                                     @slot('id')
                                                         {{ $model->uuid }}
+                                                    @endslot
+                                                    @slot('name')
+                                                        {{ $name }}
                                                     @endslot
                                                 @endcomponent
                                             @else
@@ -97,6 +100,12 @@
                                                                     <h4 class="font-weight-bold text-capitalize">{{ $resource->name }}</h4>
                                                                     <h5 class="text-capitalize">{{ $model->user->name }}</h5>
                                                                     <h6 class="text-uppercase text-muted">{{ $resource->human_readable_size }}</h6>
+                                                                    <form class="d-inline mr-1" action='{{ route("{$name}.resources.destroy", [$model->uuid, $resource->id])}}' method="post">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button class="btn btn-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i></button>
+                                                                    </form>
+                                                                    <a href='{{ route("{$name}.resources.edit", [$model->uuid, $resource->id])}}' class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
                                                                 </div>
                                                             </div>
                                                         </div>

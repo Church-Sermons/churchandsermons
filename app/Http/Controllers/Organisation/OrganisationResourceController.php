@@ -8,6 +8,7 @@ use App\Organisation;
 use App\Traits\ResourceTrait;
 use Spatie\MediaLibrary\Models\Media;
 use Session;
+use App\Events\ResouceUploadSuccessfull;
 
 class OrganisationResourceController extends Controller
 {
@@ -27,24 +28,29 @@ class OrganisationResourceController extends Controller
     {
         $model = Organisation::getByUuid($uuid);
 
-        return view('resources.index', compact('model'));
+        return view('resources.index', compact('model'))->withName($this->name);
     }
 
     public function create($uuid)
     {
         $model = Organisation::getByUuid($uuid);
 
-        return view('resources.index', compact('model'))->withName($this->name);
+        return view('resources.create', compact('model'))->withName(
+            $this->name
+        );
     }
 
     public function store(StoreResourceRequest $request, $uuid)
     {
-        $response = $this->storeResources($request, $uuid, 'App\Profile');
+        $response = $this->storeResources($request, $uuid, 'App\Organisation');
 
         if ($response['resource']) {
+            // events to be executed later
+            event(new ResouceUploadSuccessfull($response['resource']));
+
             Session::flash('success', 'Resource added successfully');
 
-            return redirect()->route('profiles.show', $uuid);
+            return redirect()->route('organisations.show', $uuid);
         } else {
             return redirect()
                 ->back()
@@ -57,16 +63,33 @@ class OrganisationResourceController extends Controller
     {
         $resource = Media::findOrFail($id);
 
-        return view('resources.edit', compact('resource'))->withName(
+        return view('resources.edit', compact(['resource', 'uuid']))->withName(
             $this->name
         );
     }
 
     public function update(StoreResourceRequest $request, $uuid, $id)
     {
-        $resource = Media::findOrFail($id);
+        $model = Organisation::getByUuid($uuid);
 
-        $validator = $request->validated();
+        $response = $this->updateResources($request, $model);
+
+        if ($response['resource']) {
+            // add event to get metadata
+            event(new ResouceUploadSuccessfull($response['resource']));
+
+            // delete resource - deletes db record and corresponding file - will update to $model->deleteMedia()
+            $model->deleteMedia($id);
+
+            Session::flash('success', 'Resource update successfull');
+
+            return redirect()->route('organisations.show', $uuid);
+        } else {
+            redirect()
+                ->back()
+                ->withErrors($response['validator'])
+                ->withInput();
+        }
     }
 
     public function destroy($uuid, $id)
@@ -75,7 +98,7 @@ class OrganisationResourceController extends Controller
         $model = Organisation::getByUuid($uuid);
 
         // delete using media library package
-        if ($model->deleteMedia($id)) {
+        if (empty($model->deleteMedia($id))) {
             Session::flash('success', 'Media deletion was successfull');
             return redirect()->back();
         } else {

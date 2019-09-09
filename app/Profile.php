@@ -19,6 +19,11 @@ class Profile extends Model implements HasMedia
         return $this->hasOne('App\OrganisationCategory', 'id', 'category_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     public function claims()
     {
         return $this->hasMany('App\Claim', 'uuid_link', 'uuid')->orderBy(

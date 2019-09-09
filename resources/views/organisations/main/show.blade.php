@@ -151,6 +151,9 @@
                                             @slot('id')
                                                 {{ $organisation->uuid }}
                                             @endslot
+                                            @slot('name')
+                                                {{ $name }}
+                                            @endslot
                                         @endcomponent
                                     @else
                                         <div class="row">

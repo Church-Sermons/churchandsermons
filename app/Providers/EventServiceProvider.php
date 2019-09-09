@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Listeners\CategoryCreationSuccessfullListener;
 use App\Events\CategoryCreationSuccessfull;
+use App\Events\ResouceUploadSuccessfull;
 use App\Events\ResourceCreationSuccessful;
 use App\Listeners\MediaLogger;
 use App\Listeners\ResourceCreationSuccessfulListener;
+use App\Listeners\ResourceUploadSuccessfullListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,13 +24,9 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Registered::class => [SendEmailVerificationNotification::class],
-        CategoryCreationSuccessfull::class => [
-            CategoryCreationSuccessfullListener::class
-        ],
-        ResourceCreationSuccessful::class => [
-            ResourceCreationSuccessfulListener::class
-        ],
-        MediaHasBeenAdded::class => [MediaLogger::class]
+        ResouceUploadSuccessfull::class => [
+            ResourceUploadSuccessfullListener::class
+        ]
     ];
 
     /**

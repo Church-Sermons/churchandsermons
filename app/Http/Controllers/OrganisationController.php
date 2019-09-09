@@ -13,11 +13,15 @@ use Storage;
 
 class OrganisationController extends Controller
 {
+    protected $name;
+
     public function __construct()
     {
         $this->middleware(
             'role:administrator|superadministrator|author'
         )->except(['index', 'show']);
+
+        $this->name = 'organisations';
     }
     /**
      * Display a listing of the resource.
@@ -124,7 +128,10 @@ class OrganisationController extends Controller
             ->with(['category', 'reviews'])
             ->first();
 
-        return view('organisations.main.show', compact(['organisation']));
+        return view(
+            'organisations.main.show',
+            compact(['organisation'])
+        )->withName($this->name);
     }
 
     /**
