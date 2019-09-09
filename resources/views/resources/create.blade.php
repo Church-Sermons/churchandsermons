@@ -1,4 +1,4 @@
-@section('title', 'Add Resource')
+"@section('title',"Add Resource For {$model->name} {$model->surname}")
 
 @extends('layouts.app')
 
@@ -17,8 +17,8 @@
                                 fuga impedit corrupti autem optio fugit modi accusamus ducimus
                                 ut facere. Minus, expedita ut. Odit?
                             </p> --}}
-                            @component('components.messages')@endcomponent
-                            <form action="{{ route('organisations.resources.store', $organisation->uuid) }}"
+                            @include('components.messages')
+                            <form action="{{ route("{$name}.resources.store", $model->uuid) }}"
                                 method="post" enctype="multipart/form-data"
                                 class="py-2" id="resourcesForm">
                                 @csrf

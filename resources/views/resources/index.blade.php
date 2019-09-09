@@ -1,4 +1,4 @@
-@section('title', 'Resources')
+@section('title', "{$model->name} {$model->surname} Resources")
 
 @extends('layouts.app')
 
@@ -13,7 +13,7 @@
                         <div class="col-md-6 offset-md-3">
                             <div class="row mb-3">
                                 <div class="col">
-                                    <a href="{{ route('organisations.resources.create', $organisation->uuid) }}" class="btn btn-success w-100">
+                                    <a href="{{ route("{$name}.resources.create", $model->uuid) }}" class="btn btn-primary w-100">
                                         <i class="fas fa-plus mr-1"></i> Add Media
                                     </a>
                                 </div>
@@ -40,14 +40,14 @@
                     <div class="row my-3">
                         <div class="col-md-8 offset-md-2">
                             <div class="container">
-                                @component('components.messages')@endcomponent
+                                @include('components.messages')
                                 <div class="tab-content py-2" >
                                     <div class="tab-pane show fade active" id="audio">
 
                                         <div class="audio-container d-flex flex-column border rounded mb-2">
-                                            @if (count($organisation->getMedia('audio')))
+                                            @if (count($model->getMedia('audio')))
                                                 {{-- audio partial - holds the audio element --}}
-                                                @include('_partials.media.audio', ['data' => $organisation->getMedia('audio')])
+                                                @include('_partials.media.audio', ['data' => $model->getMedia('audio')])
 
                                                 {{-- audio details styled component - displays the audio details --}}
                                                 @component('components.audio-details')
@@ -55,19 +55,19 @@
                                                         {{ __("https://source.unsplash.com/300x300/?music") }}
                                                     @endslot
                                                     @slot('title')
-                                                        {{ Helper::media($organisation->getMedia('audio')[0]->getFullUrl())->getTitle() }}
+                                                        {{ Helper::media($model->getMedia('audio')[0]->getFullUrl())->getTitle() }}
                                                     @endslot
                                                     @slot('artist')
-                                                        {{ Helper::media($organisation->getMedia('audio')[0]->getFullUrl())->getArtist() }}
+                                                        {{ Helper::media($model->getMedia('audio')[0]->getFullUrl())->getArtist() }}
                                                     @endslot
                                                     @slot('size')
-                                                        {{ $organisation->getMedia('audio')[0]->human_readable_size }}
+                                                        {{ $model->getMedia('audio')[0]->human_readable_size }}
                                                     @endslot
                                                 @endcomponent
                                                 {{-- audio playlist component - displays the audio  --}}
-                                                @component('components.audio-playlist', ['data' => $organisation->getMedia('audio')])
+                                                @component('components.audio-playlist', ['data' => $model->getMedia('audio')])
                                                     @slot('id')
-                                                        {{ $organisation->uuid }}
+                                                        {{ $model->uuid }}
                                                     @endslot
                                                 @endcomponent
                                             @else
@@ -79,13 +79,13 @@
                                         <div class="container">
                                             <div style="width: 100%;height: 480px;" class="border video-container">
                                                 <video class="media-player" id="video-player" playsinline controls>
-                                                    <source src="{{ $organisation->getFirstMediaUrl('video') }}" type="video/mp4" />
+                                                    <source src="{{ $model->getFirstMediaUrl('video') }}" type="video/mp4" />
                                                     {{-- <source src="/path/to/video.webm" type="video/webm" /> --}}
 
                                                     {{-- <!-- Captions are optional -->
                                                     <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default /> --}}
                                                 </video>
-                                                @forelse ($organisation->getMedia('video') as $resource)
+                                                @forelse ($model->getMedia('video') as $resource)
                                                     <div class="card mt-3">
                                                         <div class="card-body">
                                                             <div class="row">
@@ -95,7 +95,7 @@
                                                                 </div>
                                                                 <div class="col-md-10 pl-2">
                                                                     <h4 class="font-weight-bold text-capitalize">{{ $resource->name }}</h4>
-                                                                    <h5 class="text-capitalize">{{ $organisation->user->name }}</h5>
+                                                                    <h5 class="text-capitalize">{{ $model->user->name }}</h5>
                                                                     <h6 class="text-uppercase text-muted">{{ $resource->human_readable_size }}</h6>
                                                                 </div>
                                                             </div>

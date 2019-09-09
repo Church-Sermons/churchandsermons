@@ -84,9 +84,13 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
     ]);
 
     // organisation resource
-    Route::resource('/resources', 'OrganisationResourceController', [
-        'as' => 'organisations'
-    ]);
+    Route::resource(
+        '/resources',
+        'Organisation\OrganisationResourceController',
+        [
+            'as' => 'organisations'
+        ]
+    );
 
     // organisation reviews
     Route::resource('/reviews', 'Organisation\OrganisationReviewController', [
@@ -121,7 +125,7 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
     ]);
 
     // profile resource
-    Route::resource('/resources', 'ProfileResourceController', [
+    Route::resource('/resources', 'Profile\ProfileResourceController', [
         'as' => 'profiles'
     ]);
 

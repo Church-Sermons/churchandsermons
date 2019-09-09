@@ -2,10 +2,16 @@
 
 namespace App;
 
+use App\Traits\CustomMediaTrait;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 
-class Profile extends Model
+class Profile extends Model implements HasMedia
 {
+    use HasMediaTrait, CustomMediaTrait;
+
     protected $guarded = ["category_id", "user_id"];
 
     public function category()
@@ -80,5 +86,17 @@ class Profile extends Model
             ->where('uuid', $uuid)
             ->with(['category'])
             ->first();
+    }
+
+    // Laravel Media Library
+    // media collections
+    public function registerMediaCollections()
+    {
+        $this->sharedMediaCollections('profile_image');
+    }
+
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->sharedMediaConversions('profile_image');
     }
 }

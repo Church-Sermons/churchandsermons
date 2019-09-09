@@ -117,6 +117,63 @@
         </div>
     </div>
 
+    <div id="personal">
+        <div class="personal-inner container py-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="text-capitalize font-weight-bold mb-4">resources</h3>
+                        </div>
+                        <div class="col text-right">
+                            @isTribrid($profile)
+                                <a href="{{ route('profiles.resources.create', $profile->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
+                            @endisTribrid
+                            <a href="{{ route('profiles.resources.index', $profile->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="text-capitalize font-weight-bold mb-4">events</h3>
+                        </div>
+                        <div class="col text-right">
+                            @isTribrid($profile)
+                                <a href="{{ route('profiles.events.create', $profile->uuid) }}" class="btn btn-primary mr-1 btn-sm" title="Create"><i class="fas fa-plus"></i></a>
+                            @endisTribrid
+                            <a href="{{ route('profiles.events.index', $profile->uuid) }}" class="btn btn-success btn-sm" title="View All"><i class="fas fa-list-ul"></i></a>
+                        </div>
+                    </div>
+                    @forelse ($profile->events as $event)
+                        <div class="card border-right bg-light mb-2">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2 pr-2">
+                                        <span class="w-100 h-100 bg-primary text-white rounded p-1 d-flex flex-column align-items-center justify-content-center">
+                                            <h1 class="font-weight-bold">{{ Helper::dateFormatter($event->created_at)[1] }}</h1>
+                                            <h5 class="text-capitalize">{{ Helper::dateFormatter($event->created_at)[0] }}</h5>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-10 pl-2">
+                                        <h3 class="h4 mb-1 font-weight-bold">{{ $event->title }}</h3>
+                                        <p class="mini-texts my-2 lead">
+                                            <i class="fas fa-map-marker-alt mr-1 text-primary"></i> {{ $event->address }}
+                                        </p>
+                                        <p class="mini-texts mt-1">
+                                            {{ $event->description }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="lead">There are no events coming up</p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="contact">
         <div class="contact-inner container py-5">
             <div class="row">
