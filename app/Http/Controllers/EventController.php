@@ -25,7 +25,7 @@ class EventController extends Controller
     {
         $organisation = Organisation::where('uuid', $uuid)->first();
 
-        return view('events.index', compact('organisations'));
+        return view('events.index', compact('organisation'));
     }
 
     /**
@@ -47,12 +47,7 @@ class EventController extends Controller
      */
     public function store(Request $request, $uuid)
     {
-        $validator = $this->validate($request, [
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'address' => 'required',
-            'poster' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
-        ]);
+        $validator = $this->validate($request, []);
 
         $event = new Event($request->except(['poster']));
 

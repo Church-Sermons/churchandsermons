@@ -225,6 +225,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Helper' => App\Helpers\Helper::class,
         'Hasher' => App\Helpers\Hasher::class,
-        'Formatter' => App\Helpers\Formatter::class
+        'Formatter' => App\Helpers\Formatter::class,
+        'Handler' => App\Helpers\Handler::class
     ]
 ];

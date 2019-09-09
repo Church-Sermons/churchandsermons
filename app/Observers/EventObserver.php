@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Event;
+use App\Helpers\Handler;
 use Storage;
 
 class EventObserver
@@ -52,39 +53,22 @@ class EventObserver
      */
     public function updating(Event $event)
     {
-        // Deleting file on update
-        if (empty(request()->poster)) {
-            // empty request use already existing file in db
-            $event->poster = $event->getOriginal('poster');
-        } else {
-            // get old poster
-            $oldPoster = $event->poster;
-
-            // save new poster
-            $event->poster = request()->poster->store('uploads', 'public');
-
-            if (is_file(public_path('storage/' . $oldPoster))) {
-                // delete old poster
-                Storage::disk('public')->delete($oldPoster);
-            }
-        }
+        Handler::model($event)
+            ->whileUpdating('poster')
+            ->deleteImage();
     }
 
     /**
-     * Handle the event "deleting" event.
+     * Handle the "deleting" event.
      *
      * @param  \App\Event  $event
      * @return void
      */
     public function deleting(Event $event)
     {
-        // get poster
-        $poster = $event->poster;
-
-        if (is_file(public_path('storage/' . $poster))) {
-            // delete old poster
-            Storage::disk('public')->delete($poster);
-        }
+        Handler::model($event)
+            ->whileDeleting('poster')
+            ->deleteImage();
     }
 
     /**

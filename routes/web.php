@@ -64,7 +64,9 @@ Route::resource('/organisations', 'OrganisationController');
 // Organisation&Events
 Route::prefix('/organisations/{organisation_id}')->group(function () {
     // organisation events
-    Route::resource('/events', 'EventController', ['as' => 'organisations']);
+    Route::resource('/events', 'Organisation\OrganisationEventController', [
+        'as' => 'organisations'
+    ]);
 
     // organisation team
     Route::resource('/team', 'TeamController', ['as' => 'organisations']);
@@ -102,7 +104,9 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
 Route::resource('/profiles', 'ProfileController');
 Route::prefix('/profiles/{profile_id}')->group(function () {
     // profile events
-    Route::resource('/events', 'EventController', ['as' => 'profiles']);
+    Route::resource('/events', 'Profile\ProfileEventController', [
+        'as' => 'profiles'
+    ]);
 
     // profile contact
     Route::resource('/contacts', 'Profile\ProfileContactController', [

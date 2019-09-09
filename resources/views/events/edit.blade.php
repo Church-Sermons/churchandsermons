@@ -1,4 +1,4 @@
-@section('title', 'Edit Event')
+@section('title', "Edit Event")
 
 @extends('layouts.app')
 
@@ -17,7 +17,7 @@
                                 fuga impedit corrupti autem optio fugit modi accusamus ducimus
                                 ut facere. Minus, expedita ut. Odit?
                             </p> --}}
-                            <form action="{{ route('organisations.events.update', [$event->uuid_link, $event->id]) }}"
+                            <form action="{{ route("{$name}.events.update", [$event->uuid_link, $event->id]) }}"
                                 method="post" enctype="multipart/form-data"
                                 class="py-2" id="eventForm">
                                 @csrf

@@ -40,12 +40,8 @@ class OrganisationController extends Controller
      */
     public function create()
     {
-        $categories = OrganisationCategory::distinctCategoryNames();
         $sites = DB::table('social_media')->get();
-        return view(
-            'organisations.main.create',
-            compact(['categories', 'sites'])
-        );
+        return view('organisations.main.create', compact('sites'));
     }
 
     /**

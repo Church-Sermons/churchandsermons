@@ -10,11 +10,11 @@
                     <h4 class="text-center display-4 text-uppercase font-weight-bold">
                         organisations
                     </h4>
-                    @isTribrid($organisation)
+                    @auth
                         <a href="{{ route('organisations.create') }}" class="btn btn-primary btn-lg text-uppercase">
                             <i class="fas fa-plus"></i> create organisation
                         </a>
-                    @endisTribrid
+                    @endauth
                 </div>
             </div>
         </div>

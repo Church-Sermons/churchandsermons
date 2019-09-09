@@ -1,4 +1,4 @@
-@section('title', 'Events')
+@section('title', "{$model->name} {$model->surname} Events")
 
 @extends('layouts.app')
 
@@ -8,9 +8,13 @@
             <div class="explore-inner container my-5">
                 <div class="row">
                     <div class="col">
-                        <h2 class="font-weight-bold mb-3 text-center">Events</h2>
+                        <h2 class="font-weight-bold mb-3 text-center">{{ "$model->name $model->surname"}} Events</h2>
+
                         <div class="row">
                             <div class="col-md-6 offset-md-3">
+                                @isTribrid($model)
+                                    <a href='{{ route("$name.events.create", $model->uuid) }}' class="mb-3 d-block btn btn-primary">Add Event</a>
+                                @endisTribrid
                                 <ul class="nav nav-pills bg-light nav-justified">
                                     <li class="nav-item">
                                         <a class="nav-link active text-uppercase mini-texts" data-toggle="pill" href="#upcoming">Upcoming Events</a>
@@ -24,10 +28,10 @@
                         <div class="row my-3">
                             <div class="col-md-8 offset-md-2">
                                 <div class="container">
-                                    @component('components.messages')@endcomponent
+                                    @include('components.messages')
                                     <div class="tab-content py-2" >
                                         <div class="tab-pane show fade active" id="upcoming">
-                                            @forelse ($organisation->events as $event)
+                                            @forelse ($model->events as $event)
                                                 <div class="card event-card shadow-sm bg-light mb-3">
                                                     <div class="card-body">
                                                         <div class="row">
@@ -40,16 +44,16 @@
                                                             <div class="col-md-10 pl-2">
                                                                 <div class="d-flex justify-content-between">
                                                                     <h3 class="h4 mb-1 font-weight-bold w-100">{{ $event->title }}</h3>
-                                                                    @hasRoleAndOwns(['administrator', 'author', 'superadministrator'], $organisation)
+                                                                    @isTribrid($model)
                                                                     <span class="w-25 text-right">
-                                                                        <form class="d-inline" action="{{ route('organisations.events.destroy', [$event->uuid_link, $event->id]) }}" method="POST">
+                                                                        <form class="d-inline" action="{{ route("$name.events.destroy", [$event->uuid_link, $event->id]) }}" method="POST">
                                                                             @csrf
                                                                             @method('DELETE')
                                                                             <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
                                                                         </form>
-                                                                        <a href="{{ route('organisations.events.edit', [$event->uuid_link, $event->id]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                                                        <a href="{{ route("$name.events.edit", [$event->uuid_link, $event->id]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
                                                                     </span>
-                                                                    @endOwns
+                                                                    @endisTribrid
                                                                 </div>
                                                                 <p class="mini-texts my-2 lead">
                                                                     <i class="fas fa-map-marker-alt mr-1 text-primary"></i> {{ $event->address }}

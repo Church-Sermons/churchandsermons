@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Helpers\Handler;
 use App\Profile;
 use App\Organisation;
 use App\ProfileLink;
@@ -82,17 +83,9 @@ class ProfileObserver
      */
     public function updating(Profile $profile)
     {
-        if ($profile->isDirty('profile_image')) {
-            // get old profile image
-            $oldProfile = $profile->getOriginal('profile_image');
-
-            // $oldProfile = "{$oldProfile[0]}/images/{$oldProfile[1]}";
-
-            if (is_file(public_path('storage/' . $oldProfile))) {
-                // delete old profile image
-                Storage::disk('public')->delete($oldProfile);
-            }
-        }
+        Handler::model($profile)
+            ->whileUpdating('profile_image')
+            ->deleteImage();
     }
 
     /**

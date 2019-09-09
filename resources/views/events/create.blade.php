@@ -1,4 +1,4 @@
-@section('title', 'Create Event')
+@section('title', "Create Event")
 
 @extends('layouts.app')
 
@@ -17,8 +17,8 @@
                                 fuga impedit corrupti autem optio fugit modi accusamus ducimus
                                 ut facere. Minus, expedita ut. Odit?
                             </p> --}}
-                            @component('components.messages')@endcomponent
-                            <form action="{{ route('organisations.events.store', $organisation->uuid) }}"
+                            @include('components.messages')
+                            <form action="{{ route("$name.events.store", $model->uuid) }}"
                                 method="post" enctype="multipart/form-data"
                                 class="py-2" id="eventForm">
                                 @csrf
