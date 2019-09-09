@@ -178,6 +178,11 @@ class Helper
         return new static();
     }
 
+    public function getAllData()
+    {
+        return static::$ffprobe;
+    }
+
     // return duration
     public function getDuration()
     {

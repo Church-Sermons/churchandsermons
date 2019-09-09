@@ -130,13 +130,13 @@
                                         {{-- audio details styled component - displays the audio details --}}
                                         @component('components.audio-details')
                                             @slot('albumArt')
-                                            {{ __("https://source.unsplash.com/300x300/?music") }}
+                                            {{ asset('images/app/audio-icon.png') }}
                                             @endslot
                                             @slot('title')
-                                            {{ Helper::media($organisation->getMedia('audio')[0]->getFullUrl())->getTitle() }}
+                                            {{ $organisation->getMedia('audio')[0]->getCustomProperty('title') }}
                                             @endslot
                                             @slot('artist')
-                                            {{ Helper::media($organisation->getMedia('audio')[0]->getFullUrl())->getArtist() }}
+                                            {{ $organisation->getMedia('audio')[0]->getCustomProperty('artist') }}
                                             @endslot
                                             @slot('size')
                                             {{ $organisation->getMedia('audio')[0]->human_readable_size }}

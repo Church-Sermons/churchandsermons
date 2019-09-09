@@ -13,24 +13,24 @@
                                     <a href="#" class="meta-container"
                                         data-src="{{ $audio->getFullUrl() }}"
                                         data-type="{{ $audio->mime_type }}"
-                                        data-title="{{ $audio->name }}"
+                                        data-title="{{ $audio->getCustomProperty('title') }}"
                                         data-size="{{ $audio->human_readable_size }}"
-                                        data-artist="{{ $audio->getCustomProperty('name') }}">
+                                        data-artist="{{ $audio->getCustomProperty('artist') }}">
 
-                                        {{ $audio->name }}
+                                        {{ $audio->getCustomProperty('title') }}
                                     </a>
                                 </h6>
-                                <p class="my-1 text-muted text-capitalized w-100"></p>
+                                <p class="my-1 text-muted text-capitalized w-100">{{ $audio->getCustomProperty('artist') }}</p>
                             </div>
                             <div class="col-2 text-right">
-                                <h4 class="text-muted">{{ $audio->human_readable_size }}</h4>
+                                <h4 class="text-muted">{{ $audio->getCustomProperty('duration') }}</h4>
                                 <div>
                                     <form class="d-inline" action="{{ route("{$name}.resources.destroy", [$id, $audio->id]) }}" method="POST" class="delete">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm" title="Delete"><i class="fas text-danger fa-trash-alt"></i></button>
+                                        <button class="btn btn-outline-danger btn-sm" title="Delete"><i class="fas fa-trash-alt"></i></button>
                                     </form>
-                                    <a title="Edit" href="{{ route("{$name}.resources.edit", [$id, $audio->id]) }}" class="btn btn-sm"><i class="fas text-primary fa-edit edit"></i></a>
+                                    <a title="Edit" href="{{ route("{$name}.resources.edit", [$id, $audio->id]) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit edit"></i></a>
                                 </div>
                             </div>
                         </td>

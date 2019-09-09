@@ -52,7 +52,7 @@
                                                 {{-- audio details styled component - displays the audio details --}}
                                                 @component('components.audio-details')
                                                     @slot('albumArt')
-                                                        {{ __("https://source.unsplash.com/300x300/?music") }}
+                                                        {{ asset('images/app/audio-icon.png') }}
                                                     @endslot
                                                     @slot('title')
                                                         {{ $model->getMedia('audio')[0]->name }}
@@ -74,7 +74,7 @@
                                                     @endslot
                                                 @endcomponent
                                             @else
-                                                <p class="lead">There are no audio files</p>
+                                                <p class="lead pt-2 pl-1">There are no audio files</p>
                                             @endif
                                         </div>
                                     </div>
@@ -111,7 +111,7 @@
                                                         </div>
                                                     </div>
                                                 @empty
-                                                    <p class="lead">There are no video files</p>
+                                                    <p class="lead pt-2 pl-1">There are no video files</p>
                                                 @endforelse
                                             </div>
                                         </div>

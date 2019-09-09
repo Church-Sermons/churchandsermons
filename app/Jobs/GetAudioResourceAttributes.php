@@ -15,14 +15,16 @@ class GetAudioResourceAttributes implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $media;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Media $media)
     {
-        //
+        // $this->media = $media;
+        // dd($this->media);
     }
 
     /**
@@ -30,34 +32,7 @@ class GetAudioResourceAttributes implements ShouldQueue
      *
      * @return void
      */
-    public function handle(Media $media)
+    public function handle()
     {
-        $type = $media->collection_name;
-
-        if ($type == 'audio' || $type == 'video') {
-            // get audio attributes
-            $title = Helper::media($media->getFullUrl())->getTitle();
-            $artist = Helper::media($media->getFullUrl())->getArtist();
-            $duration = Helper::media($media->getFullUrl())->getDuration();
-
-            // store in db slowly
-            if ($title || $artist || $duration) {
-                // prepare
-                $data = [
-                    'title' => $title,
-                    'artist' => $artist,
-                    'duration' => $duration
-                ];
-
-                // might come in handy later
-                $data = json_encode($data);
-
-                $media->setCustomProperty('title', $title);
-                $media->setCustomProperty('artist', $artist);
-                $media->setCustomProperty('duration', $duration);
-
-                Log::info('GetAudioResourceAttribute Job Completed');
-            }
-        }
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Spatie\MediaLibrary\Models\Media;
+use Illuminate\Support\Facades\Log;
 
 class ResouceUploadSuccessfull
 {
@@ -24,6 +25,9 @@ class ResouceUploadSuccessfull
     public function __construct(Media $media)
     {
         $this->media = $media;
+
+        // dd($this->media);
+        Log::channel('custom')->info('ResourceUploadSuccessfull event class');
     }
 
     /**
