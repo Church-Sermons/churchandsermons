@@ -59,47 +59,46 @@
                                 <div class="tab-content mt-4">
                                     <div class="tab-pane active" id="audio">
                                          @if (count($sermon->getMedia('audio')))
-                                            @foreach ($sermon->getMedia('audio') as $audio)
-                                                <tr>
-                                                    <td>
-                                                        <a href="{{ $audio->getFullUrl() }}">{{ $audio->name }}</a>
-                                                    </td>
-                                                    <td class="text-muted">
-                                                        {{ $audio->human_readable_size }}
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-outline-primary btn-sm"><i class="fas fa-play-circle"></i></button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                            {{-- audio details styled component - displays the audio details --}}
+                                            @component('components.audio-details')
+                                                @slot('albumArt')
+                                                {{ asset('images/app/audio-icon.png') }}
+                                                @endslot
+                                                @slot('title')
+                                                {{ $sermon->getMedia('audio')[0]->getCustomProperty('title') }}
+                                                @endslot
+                                                @slot('artist')
+                                                {{ $sermon->getMedia('audio')[0]->getCustomProperty('artist') }}
+                                                @endslot
+                                                @slot('size')
+                                                {{ $sermon->getMedia('audio')[0]->human_readable_size }}
+                                                @endslot
+                                            @endcomponent
+
+                                            {{-- audio partial - holds the audio element --}}
+                                            @include('_partials.media.audio', ['data' => $sermon->getMedia('audio')])
+
+                                            {{-- audio playlist component - displays the audio  --}}
+                                            @component('components.audio-playlist', ['data' => $sermon->getMedia('audio')])
+                                                @slot('id')
+                                                    {{ $sermon->uuid }}
+                                                @endslot
+                                                @slot('name')
+                                                    {{ $name }}
+                                                @endslot
+                                            @endcomponent
+                                        @else
+                                            <p class="lead">There are no audio resources available</p>
                                         @endif
                                     </div>
                                     <div class="tab-pane fade" id="video">
-
+                                        <p class="lead">There are no video resources available</p>
                                     </div>
                                     <div class="tab-pane fade" id="document">
-
+                                        <p class="lead">There are no documents available</p>
                                     </div>
                                 </div>
-                                @if (count($sermon->getMedia('audio')) || count($sermon->getMedia('video')) || count($sermon->getMedia('document')))
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Size</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
 
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                @else
-
-                                @endif
                             </div>
                         </div>
 

@@ -16,11 +16,15 @@ class SermonController extends Controller
 {
     use ResourceTrait;
 
+    protected $name;
+
     public function __construct()
     {
         $this->middleware(
             'role:administrator|superadministrator|author'
         )->except(['index', 'show']);
+
+        $this->name = 'sermons';
     }
 
     public function index()
@@ -74,7 +78,9 @@ class SermonController extends Controller
     {
         $sermon = Sermon::getByUuid($uuid);
 
-        return view('sermons.main.show', compact('sermon'));
+        return view('sermons.main.show', compact('sermon'))->withName(
+            $this->name
+        );
     }
 
     public function edit($uuid)
