@@ -68,11 +68,11 @@
 </div>
 <div class="input-group mb-3">
     @if (Helper::categoryExtractor($categories, 'organisation'))
-        <select name="category" id="category" class="form-control @error('category') is-invalid @enderror" required>
+        <select name="category" id="category" class="text-capitalize form-control @error('category') is-invalid @enderror" required>
             <option value disabled selected>Select Category</option>
             @foreach ($categories as $category)
                 @if ($category->linked_to == 'organisation')
-                    <option value="{{ $category->id }}" @if($oldCategory == $category->id) selected @endif class="text-capitalize">{{ $category->name }}</option>
+                    <option value="{{ $category->id }}" @if($oldCategory == $category->id) selected @endif>{{ $category->name }}</option>
                 @endif
             @endforeach
         </select>

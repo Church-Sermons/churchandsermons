@@ -11,9 +11,30 @@ return [
         6 => 'Satuday'
     ],
     'social' => [
-        'fb' => 'fa-facebook-f',
-        'twitter' => 'fa-twitter',
-        'linked-in' => 'linkedin-in',
-        'ig' => 'instagram'
+        'fb' => [
+            'color' => '3b5998',
+            'icon' => 'fa-facebook-f'
+        ],
+        'twitter' => [
+            'color' => '00aced',
+            'icon' => 'fa-twitter'
+        ],
+        'linked-in' => [
+            'color' => '007bb6',
+            'icon' => 'fa-linkedin-in'
+        ],
+        'ig' => [
+            'color' => '517fa4',
+            'icon' => 'fa-instagram'
+        ],
+        'pinterest' => [
+            'color' => 'cb2027',
+            'icon' => 'fa-pinterest',
+            'icon-o' => 'fa-pinterest-p'
+        ],
+        'tumblr' => [
+            'color' => '32506d',
+            'icon' => 'fa-tumblr'
+        ]
     ]
 ];

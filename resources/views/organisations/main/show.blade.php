@@ -11,9 +11,11 @@
                     <!-- Logo Image-->
                     <img src="{{ Helper::displayImage($organisation->logo)->fromOwnTable() }}" alt="{{ $organisation->name.__("-Logo") }}" width="200" height="200" class="rounded">
                     <h4 class="text-center display-4 text-uppercase font-weight-bold my-2">
-                        {{ ucwords($organisation->name) }}
+                        {{ $organisation->name }}
                     </h4>
-
+                    <h4 class="text-center font-weight-bold">
+                        {{ strtoupper($organisation->category->name) }}
+                    </h4>
                 </div>
             </div>
         </div>
@@ -337,7 +339,7 @@
                                 @forelse ($organisation->social as $social)
                                     @if ($social->page_link)
                                         <a href="{{ $social->page_link }}" target="_blank">
-                                            <i class="fab {{ Config::get('site_variables.social')[$social->social->tag] }}"></i>
+                                            <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
                                         </a>
                                     @endif
                                 @empty
@@ -349,7 +351,7 @@
                                 @forelse ($organisation->social as $social)
                                     @if ($social->share_link)
                                         <a href="{{ $social->share_link }}" target="_blank">
-                                            <i class="fab {{ Config::get('site_variables.social')[$social->social->tag] }}"></i>
+                                            <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
                                         </a>
                                     @endif
                                 @empty

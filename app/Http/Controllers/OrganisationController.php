@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrganisationRequest;
 use Illuminate\Http\Request;
 use App\Organisation;
-use App\OrganisationCategory;
+use App\Traits\OrganisationTrait;
 use Session;
-use Auth;
-use App\User;
 use Illuminate\Support\Facades\DB;
-use Storage;
+use Illuminate\Support\Facades\Log;
+use Spatie\MediaLibrary\Models\Media;
 
 class OrganisationController extends Controller
 {
+    use OrganisationTrait;
+
     protected $name;
+    private $_excepts;
 
     public function __construct()
     {
@@ -22,6 +25,17 @@ class OrganisationController extends Controller
         )->except(['index', 'show']);
 
         $this->name = 'organisations';
+        $this->_excepts = [
+            'category',
+            'logo',
+            'slides',
+            'day_of_week',
+            'time_open',
+            'work_duration',
+            'social_id',
+            'share_link',
+            'page_link'
+        ];
     }
     /**
      * Display a listing of the resource.
@@ -34,7 +48,7 @@ class OrganisationController extends Controller
             ->with('category')
             ->paginate(10);
 
-        return view('organisations.main.index', compact(['organisations']));
+        return view('organisations.main.index', compact('organisations'));
     }
 
     /**
@@ -54,65 +68,18 @@ class OrganisationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreOrganisationRequest $request)
     {
-        $validator = $this->validate($request, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:organisations,email',
-            'phone' => 'required|max:20',
-            'website' => 'required|max:150|url',
-            'address' => 'required',
-            'description' => 'required',
-            'category' => 'required|numeric',
-            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
-            'slides' => 'array',
-            'day_of_week' => 'array',
-            'time_open' => 'array',
-            'work_duration' => 'array',
-            'social_id' => 'required_with:share_link,page_link',
-            'share_link' => 'required_with:social_id',
-            'page_link' => 'required_with:social_id'
-        ]);
+        $response = $this->storeOrganisation($request, $this->_excepts);
 
-        $except = [
-            'category',
-            'logo',
-            'slides',
-            'day_of_week',
-            'time_open',
-            'work_duration',
-            'social_id',
-            'share_link',
-            'page_link'
-        ];
-        // store to db
-        $organisation = new Organisation($request->except($except));
-        $organisation->category_id = $request->category;
-        $organisation->logo = $request->logo->store('uploads/images', 'public');
-
-        // check if slides exists then upload them
-        if (count($request->slides)) {
-            // upload files
-            $organisation
-                ->addMultipleMediaFromRequest(['slides'])
-                ->each(function ($fileAdder) {
-                    $fileAdder
-                        ->withCustomProperties([
-                            'name' => request()->name,
-                            'description' => request()->description
-                        ])
-                        ->toMediaCollection('slides');
-                });
-        }
-
-        if ($organisation->save()) {
+        if ($response['organisation']->save()) {
             Session::flash('success', 'Organisation created successfully');
             return redirect()->route('organisations.index');
         } else {
             return redirect()
                 ->back()
                 ->withInput()
-                ->withErrors($validator);
+                ->withErrors($response['validator']);
         }
     }
 
@@ -142,13 +109,12 @@ class OrganisationController extends Controller
      */
     public function edit($uuid)
     {
-        $organisation = Organisation::where('uuid', $uuid)->first();
-
-        $categories = OrganisationCategory::distinctCategoryNames();
+        $organisation = Organisation::getByUuid($uuid);
+        $sites = DB::table('social_media')->get();
 
         return view(
             'organisations.main.edit',
-            compact(['organisation', 'categories'])
+            compact(['organisation', 'sites'])
         );
     }
 
@@ -161,35 +127,34 @@ class OrganisationController extends Controller
      */
     public function update(Request $request, $uuid)
     {
-        $organisation = Organisation::where('uuid', $uuid)->first();
+        $organisation = Organisation::getByUuid($uuid);
 
-        $validator = $this->validate($request, [
-            'name' => 'required|max:255',
-            'email' => "required|email|max:255|unique:organisations,email,$organisation->id",
-            'phone' => 'required|max:20',
-            'website' => 'required|max:150|url',
-            'address' => 'required',
-            'description' => 'required',
-            'category' => 'required|numeric',
-            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
-        ]);
+        $response = $this->updateOrganisation(
+            $request,
+            $organisation,
+            $this->_excepts
+        );
 
-        // get old file name
-        $oldFile = $organisation->logo;
-        // merge for update
-        $data = array_merge($request->except(['category']), [
-            'category_id' => $request->category,
-            'logo' => $request->logo->store('uploads/images', 'public')
-        ]);
+        if ($organisation->update($response['data'])) {
+            // delete old data slides - get old slides
+            $oldSlides = $response['slides']['oldSlides'];
+            if (is_array($oldSlides) && count($oldSlides)) {
+                // delete
+                $destorySlides = Media::destroy($oldSlides);
+                // log it
+                Log::channel('custom')->info(
+                    "Old slides deleted. Dump => {$destorySlides}"
+                );
+            }
 
-        if ($organisation->update($data)) {
             Session::flash('success', 'Organisation updated successfully');
+
             return redirect()->route('organisations.index');
         } else {
             return redirect()
                 ->back()
                 ->withInput()
-                ->withErrors($validator);
+                ->withErrors($response['validator']);
         }
     }
 
@@ -201,7 +166,7 @@ class OrganisationController extends Controller
      */
     public function destroy($uuid)
     {
-        $organisation = Organisation::where('uuid', $uuid)->first();
+        $organisation = Organisation::getByUuid($uuid);
 
         if ($organisation->delete()) {
             Session::flash('success', 'Organisation deleted successfully');

@@ -16,7 +16,9 @@ class SocialMediaTableSeeder extends Seeder
             ['name' => 'facebook', 'tag' => 'fb'],
             ['name' => 'twitter', 'tag' => 'twitter'],
             ['name' => 'instagram', 'tag' => 'ig'],
-            ['name' => 'linked-in', 'tag' => 'linked-in']
+            ['name' => 'linked-in', 'tag' => 'linked-in'],
+            ['name' => 'pinterest', 'tag' => 'pinterest'],
+            ['name' => 'tumblr', 'tag' => 'tumblr']
         ]);
     }
 }

@@ -7,11 +7,10 @@ use App\SocialLink;
 use App\WorkingSchedule;
 use Str;
 use Auth;
-use Storage;
+use App\Helpers\Handler;
 
 class OrganisationObserver
 {
-    private $oldFile;
     /**
      * Handle the organisation "created" event.
      *
@@ -20,29 +19,8 @@ class OrganisationObserver
      */
     public function created(Organisation $organisation)
     {
-        // Logic on multiple working schedules here
-        // get data
-        if (
-            request()->has('day_of_week') &&
-            request()->has('time_open') &&
-            request()->has('work_duration')
-        ) {
-            // iterate through array make table
-            foreach (request()->day_of_week as $key => $value) {
-                // create an array for delivery
-                $workingHours = array(
-                    'day_of_week' => $value,
-                    'time_open' => request()->time_open[$key],
-                    'work_duration' => request()->work_duration[$key]
-                );
-
-                // add to db
-                $ws = new WorkingSchedule($workingHours);
-                $ws->uuid_link = $organisation->uuid;
-                // save
-                $ws->save();
-            }
-        }
+        // store working hours
+        $this->storeWorkingSchedule($organisation);
 
         // Logic to input social links
         if (request()->has('social_id')) {
@@ -82,18 +60,10 @@ class OrganisationObserver
      */
     public function updating(Organisation $organisation)
     {
-        if (request()->hasFile('logo')) {
-            // delete image
-            if (
-                Storage::disk('public')->exists(
-                    $organisation->getOriginal('logo')
-                )
-            ) {
-                Storage::disk('public')->delete(
-                    $organisation->getOriginal('logo')
-                );
-            }
-        }
+        Handler::model($organisation)
+            ->whileUpdating('logo')
+            ->deleteImage();
+
         $organisation->user_id = Auth::user()->id;
     }
 
@@ -149,5 +119,27 @@ class OrganisationObserver
     public function forceDeleted(Organisation $organisation)
     {
         //
+    }
+
+    public function storeWorkingSchedule($model)
+    {
+        $dayOfWeek = request()->day_of_week;
+        $timeOpen = request()->time_open;
+        $workDuration = request()->work_duration;
+        // Logic on multiple working schedules here
+        // get data
+        if ($dayOfWeek && $timeOpen && $workDuration) {
+            $workingHours = [];
+            foreach ($dayOfWeek as $key => $value) {
+                $workingHours[] = [
+                    'day_of_week' => $value,
+                    'time_open' => $timeOpen[$key],
+                    'work_duration' => $workDuration[$key]
+                ];
+            }
+
+            // use one to many associate
+            $model->schedules()->createMany($workingHours);
+        }
     }
 }

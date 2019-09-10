@@ -1,3 +1,5 @@
+@section('title', "Edit {$organisation->name}")
+
 @extends('layouts.app')
 
 @section('content')
@@ -22,7 +24,12 @@
                                 class="py-2" id="organisationForm">
                                 @csrf
                                 @method('PUT')
-                                @component('organisations.main.form', ['categories' => $categories, 'oldCategory' => old('category', $organisation->category_id)])
+                                @component('organisations.main.form', [
+                                            'categories' => $categories, 'oldCategory' => old('category', $organisation->category_id),
+                                            'weekDays' => array_values(Config::get('site_variables.days')),
+                                            'dayTimes' => generateHours(),'timeSelected' => old('time_open'),
+                                            'daySelected' => old('day_of_week'), 'durationSelected' => old('work_duration'),
+                                            'sites' => $sites, 'socialId' => old('social_id')])
                                     @slot('name')
                                         {{ old('name', $organisation->name) }}
                                     @endslot
@@ -52,6 +59,12 @@
                                     @endslot
                                     @slot('slides')
                                         {{ old('slides') }}
+                                    @endslot
+                                    @slot('pageLink')
+                                        {{ old('page_link') }}
+                                    @endslot
+                                    @slot('shareLink')
+                                        {{ old('share_link') }}
                                     @endslot
                                     @slot('submitButtonText')
                                         Edit Organisation
