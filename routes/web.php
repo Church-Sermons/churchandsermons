@@ -138,11 +138,35 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
 
 /**
  *
- * Resources Routes
+ * Sermon Routes
  *
  *
  */
-// Route::resource('/resources', 'ResourceController');
+Route::resource('/sermons', 'Sermon\SermonController');
+Route::prefix('/sermons/{sermon_id}')->group(function () {
+    // sermon claims
+    Route::resource('/claims', 'Sermon\SermonClaimController', [
+        'as' => 'sermons',
+        'except' => ['update', 'edit']
+    ]);
+
+    // sermon resource
+    Route::resource('/resources', 'Sermon\SermonResourceController', [
+        'as' => 'sermons'
+    ]);
+
+    // sermon reviews
+    Route::resource('/reviews', 'Sermon\SermonReviewController', [
+        'as' => 'sermons',
+        'except' => ['update', 'edit']
+    ]);
+
+    // speaker
+    Route::resource('/speakers', 'Sermon\SermonSpeakerController', [
+        'as' => 'sermons',
+        'except' => ['update', 'edit']
+    ]);
+});
 
 // Auth Routes
 Auth::routes(['verify' => true]);

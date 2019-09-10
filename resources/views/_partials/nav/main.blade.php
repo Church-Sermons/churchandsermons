@@ -48,7 +48,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link text-uppercase">
+                <a href="{{ route('sermons.index') }}" class="nav-link text-uppercase">
                 Sermons
                 </a>
             </li>
