@@ -26,7 +26,80 @@
                         <div class="card mt-3">
                             <div class="card-body">
                                 <h3 class="card-title font-weight-bold">Resources</h3>
+                                <ul class="nav nav-pills nav-justified bg-light">
+                                    <li class="nav-item">
+                                        <a
+                                        href="#audio"
+                                        class="nav-link active"
+                                        data-toggle="pill"
+                                        >
+                                        <i class="fas fa-music"></i> Audio
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                        href="#video"
+                                        class="nav-link"
+                                        data-toggle="pill"
+                                        >
+                                        <i class="fas fa-film"></i> Video
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                        href="#document"
+                                        class="nav-link"
+                                        data-toggle="pill"
+                                        >
+                                        <i class="far fa-file-alt"></i> Document
+                                        </a>
+                                    </li>
+                                </ul>
 
+                                <div class="tab-content mt-4">
+                                    <div class="tab-pane active" id="audio">
+                                         @if (count($sermon->getMedia('audio')))
+                                            @foreach ($sermon->getMedia('audio') as $audio)
+                                                <tr>
+                                                    <td>
+                                                        <a href="{{ $audio->getFullUrl() }}">{{ $audio->name }}</a>
+                                                    </td>
+                                                    <td class="text-muted">
+                                                        {{ $audio->human_readable_size }}
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm"><i class="fas fa-play-circle"></i></button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                    <div class="tab-pane fade" id="video">
+
+                                    </div>
+                                    <div class="tab-pane fade" id="document">
+
+                                    </div>
+                                </div>
+                                @if (count($sermon->getMedia('audio')) || count($sermon->getMedia('video')) || count($sermon->getMedia('document')))
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Size</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                @else
+
+                                @endif
                             </div>
                         </div>
 
