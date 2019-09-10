@@ -6,6 +6,7 @@
     <div id="safeguard">
         <div id="details">
             <div class="details-inner container my-5">
+                @include('components.messages')
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card">
@@ -31,29 +32,55 @@
 
                         <div class="card mt-3">
                             <div class="card-body">
-                                <h3 class="card-title font-weight-bold">Recent Reviews</h3>
-                                <div class="media">
-                                    <img src="{{ asset('images/default-logo.png')}}" alt="reviewer-avatar" height="64" width="64" class="align-self-start mr-2 rounded-circle">
-                                    <div class="media-body">
-                                        {{-- <span>
-                                            @forelse (Helper::starRating($sermon->rating) as $rating)
-                                                <i class="{{ $rating }}"></i>
-                                            @empty
-                                                <i class="o"></i>
-                                            @endforelse
-                                        </span> --}}
-                                        <h5 class="font-weight-bold mb-1 text-capitalize">james juma</h5>
-                                        <p class="my-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, ipsam!</p>
-                                        <h6 class="text-muted mini-texts mt-1"><i class="mr-1 {{ Helper::checkDuration($sermon->created_at) }}"></i>{{ $sermon->created_at?$sermon->created_at->diffForHumans():null }}</h6>
-                                        {{-- @isTribrid(['administrator', 'author', 'superadministrator'], $review)
-                                            <form class="d-inline mr-1 mt-1" action="{{ route('organisations.reviews.destroy', [$review->uuid_link, $review->id]) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
-                                            </form>
-                                        @endisTribrid --}}
+                                <div class="row">
+                                    <div class="col-10">
+                                        <h3 class="card-title font-weight-bold">Recent Reviews</h3>
+                                    </div>
+                                    <div class="col-2 text-right">
+                                        @auth
+                                            <a href="{{ route('sermons.reviews.create', $sermon->uuid) }}" class="btn btn-success btn-sm" title="Add Review"><i class="fas fa-plus"></i></a>
+                                        @endauth
                                     </div>
                                 </div>
+                                @auth
+                                    @forelse ($sermon->reviews as $review)
+                                        @if ($loop->iteration > 5)
+                                            @break
+                                        @endif
+                                        <div class="media">
+                                            <img src="{{ asset('images/default-logo.png')}}" alt="reviewer-avatar" height="64" width="64" class="align-self-start mr-2 rounded-circle">
+                                            <div class="media-body">
+                                                {{-- <span>
+                                                    @forelse (Helper::starRating($sermon->rating) as $rating)
+                                                        <i class="{{ $rating }}"></i>
+                                                    @empty
+                                                        <i class="o"></i>
+                                                    @endforelse
+                                                </span> --}}
+                                                <h5 class="font-weight-bold mb-1 text-capitalize">{{ $review->user->name }}</h5>
+                                                <p class="my-1">{{ $review->message }}</p>
+                                                <h6 class="text-muted mini-texts mt-1"><i class="mr-1 {{ Helper::checkDuration($review->created_at) }}"></i>{{ $review->created_at?$review->created_at->diffForHumans():null }}</h6>
+                                                {{-- @isTribrid(['administrator', 'author', 'superadministrator'], $review)
+                                                    <form class="d-inline mr-1 mt-1" action="{{ route('organisations.reviews.destroy', [$review->uuid_link, $review->id]) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                                                    </form>
+                                                @endisTribrid --}}
+                                            </div>
+                                        </div>
+                                        @unless ($loop->last)
+                                            <hr>
+                                        @endunless
+
+                                    @empty
+                                        <p class="lead">There are no reviews at the moment</p>
+                                    @endforelse
+                                @else
+                                    <p class="lead text-center text-info">
+                                        Please <a href="{{ route('login') }}">Log In</a> to submit a review
+                                    </p>
+                                @endauth
                             </div>
                         </div>
                     </div>

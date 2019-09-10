@@ -32,6 +32,15 @@ class Sermon extends Model implements HasMedia
         return $this->belongsTo('App\User');
     }
 
+    // reviews
+    public function reviews()
+    {
+        return $this->hasMany('App\Review', 'uuid_link', 'uuid')->orderBy(
+            'id',
+            'desc'
+        );
+    }
+
     // scopes
     public function scopeGetByUuid($query, $uuid)
     {

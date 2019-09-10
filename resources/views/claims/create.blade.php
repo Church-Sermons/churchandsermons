@@ -1,4 +1,4 @@
-@section('title', __("Tell ").$model->name)
+@section('title', "Tell {$model->name} {$model->title}")
 
 @extends('layouts.app')
 
