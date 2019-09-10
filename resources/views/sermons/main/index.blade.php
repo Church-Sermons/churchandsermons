@@ -61,14 +61,13 @@
                 @include('components.messages')
                 <div class="row">
                     @forelse ($sermons as $sermon)
-                        <div class="col">
-                            <div class="media border p-3">
+                        <div class="col mb-2">
+                            <div class="media border p-3 bg-light w-100 h-100">
                                 <img src='{{ asset("storage/{$sermon->profiles->first()->profile_image}") }}' class="align-self-start mr-2 rounded-circle" alt="sermon-speaker" width="64" height="64"/>
                                 <div class="media-body">
-                                    <h5 class="font-weight-bold text-capitalize">{{ $sermon->title }}</h5>
-                                    <p class="mini-texts">
-                                        {{ $sermon->description }}
-                                    </p>
+                                    <h5 class="font-weight-bold text-capitalize mb-1">
+                                        <a href="{{ route('sermons.show', $sermon->uuid) }}">{{ $sermon->title }}</a>
+                                    </h5>
                                     <span class="mb-2">
                                         @forelse (Helper::starRating($sermon->average_review) as $rating)
                                             <i class="{{ $rating }}"></i>
@@ -76,14 +75,20 @@
                                             <span></span>
                                         @endforelse
                                     </span>
-                                    {{-- @isTribrid($organisation)
-                                            <form class="d-inline mr-1" action="{{ route('organisations.destroy', $organisation->uuid) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
-                                            </form>
-                                            <a href="{{ route('organisations.edit', $organisation->uuid) }}" class="btn btn-primary" title="Edit"><i class="fas fa-edit"></i></a>
-                                        @endisTribrid --}}
+                                    <p class="mini-texts mb-0">
+                                        {{ $sermon->description }}
+                                    </p>
+                                    <h4 class="mini-texts text-muted my-2">
+                                        <span><i class="{{ Helper::checkDuration($sermon->created_at) }}"></i> Added {{ $sermon->created_at?$sermon->created_at->diffForHumans():null }}</span>
+                                    </h4>
+                                    @isTribrid($sermon)
+                                        <form class="d-inline mr-1" action="{{ route('sermons.destroy', $sermon->uuid) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                                        </form>
+                                        <a href="{{ route('sermons.edit', $sermon->uuid) }}" class="btn btn-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
+                                    @endisTribrid
                                 </div>
                             </div>
                         </div>

@@ -43,4 +43,25 @@ class Handler
             Storage::disk($disk)->delete(static::$oldImage);
         }
     }
+
+    public static function combineMedia($model)
+    {
+        $combined = [];
+
+        if ($model) {
+            if (count($model->getMedia('audio'))) {
+                $combined = array_map(function ($callback) {
+                    return [
+                        'id' => $callback['id'],
+                        'orginal_name' => $callback['name'],
+                        'file_name' => $callback['file_name'],
+                        'mime_type' => $callback['mime_type'],
+                        'size' => $callback['size'],
+                        'created_at' => $callback['created_at'],
+                        'collection_name' => $callback['collection_name']
+                    ];
+                }, $model->getMedia('audio')->toArray());
+            }
+        }
+    }
 }

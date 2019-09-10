@@ -16,6 +16,7 @@
 </div>
 <div class="input-group mb-3">
     <div class="custom-file">
+        <input type="hidden" value="{{ $file }}" name="file_id">
         <input type="file" name="file_name" class="custom-file-input @error('file_name') is-invalid @enderror" id="file_name" value="{{ $file }}">
         <label for="file_name" class="custom-file-label">Upload File</label>
         @error('file_name')
@@ -60,7 +61,7 @@
         @if (count($speakers))
             <option value disabled selected>Select Speaker From List</option>
             @foreach ($speakers as $speaker)
-                <option value="{{ $speaker->id }}" {{ count($selected)?in_array($speaker->uuid, $selected)?'selected':null:null }}>{{ "{$speaker->name} {$speaker->surname}" }}</option>
+                <option value="{{ $speaker->id }}" {{ count($selected)?in_array($speaker->id, $selected)?'selected':null:null }}>{{ "{$speaker->name} {$speaker->surname}" }}</option>
             @endforeach
         @else
             <option value disabled selected>No Speaker Found. Please Add To Proceed</option>

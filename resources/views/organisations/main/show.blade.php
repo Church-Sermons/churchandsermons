@@ -21,7 +21,7 @@
 
     <section id="details">
         <div class="details-inner container my-5">
-            @component('components.messages')@endcomponent
+            @include('components.messages')
             <div class="row">
                 <div class="col-md-8">
                     <div class="card">

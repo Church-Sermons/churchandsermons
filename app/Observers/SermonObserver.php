@@ -49,6 +49,16 @@ class SermonObserver
     }
 
     /**
+     * Handle the sermon "updating" event.
+     *
+     * @param  \App\Sermon  $sermon
+     * @return void
+     */
+    public function updating(Sermon $sermon)
+    {
+    }
+
+    /**
      * Handle the sermon "deleted" event.
      *
      * @param  \App\Sermon  $sermon

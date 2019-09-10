@@ -27,6 +27,17 @@ class Sermon extends Model implements HasMedia
         )->orderBy('id', 'desc');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    // scopes
+    public function scopeGetByUuid($query, $uuid)
+    {
+        return $query->where('uuid', $uuid)->first();
+    }
+
     // media collections
     public function registerMediaCollections()
     {
