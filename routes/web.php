@@ -14,17 +14,14 @@
 
 use App\User;
 
-// Test Routes
-Route::get('/users/{id}', function ($id) {
-    return User::find($id);
-});
-
 // Home Routes
 Route::get('/', 'HomeController@index')->name('home');
 
-// samples
-Route::get('/sample', function () {
-    return view('sample');
+// User Routes
+Route::prefix('user')->group(function () {
+    Route::resource('/profile', 'User\UserProfileController', [
+        'as' => 'user'
+    ]);
 });
 
 // Manage - Content Providers

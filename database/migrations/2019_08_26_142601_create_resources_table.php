@@ -19,12 +19,18 @@ class CreateResourcesTable extends Migration
             $table->mediumText('description');
             $table->string('file_name');
             $table->decimal('average_review')->nullable();
-            $table->bigInteger('category_id')->unsigned()->nullable();
+            $table
+                ->bigInteger('category_id')
+                ->unsigned()
+                ->nullable();
             $table->timestamps();
 
             // foreign
-            $table->foreign('category_id')->references('id')
-                    ->on('organisation_categories')->onDelete('set null');
+            $table
+                ->foreign('category_id')
+                ->references('id')
+                ->on('categories')
+                ->onDelete('set null');
         });
     }
 

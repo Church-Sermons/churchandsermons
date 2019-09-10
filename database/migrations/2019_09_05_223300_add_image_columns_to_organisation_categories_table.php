@@ -13,7 +13,7 @@ class AddImageColumnsToOrganisationCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('organisation_categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             $table
                 ->string('image')
                 ->nullable()
@@ -28,7 +28,7 @@ class AddImageColumnsToOrganisationCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::table('organisation_categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             $table->removeColumn('image');
         });
     }

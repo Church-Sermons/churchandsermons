@@ -13,7 +13,7 @@ class DropImagesColumnFromCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('organisation_categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             $table->dropColumn('image');
         });
     }

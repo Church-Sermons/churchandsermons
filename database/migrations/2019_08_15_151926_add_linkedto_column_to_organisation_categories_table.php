@@ -13,7 +13,7 @@ class AddLinkedtoColumnToOrganisationCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('organisation_categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             $table->string('linked_to', 150)->after('name');
         });
     }
@@ -25,7 +25,7 @@ class AddLinkedtoColumnToOrganisationCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::table('organisation_categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             $table->dropColumn('linked_to');
         });
     }

@@ -89,14 +89,14 @@
                         Hello, {{ Auth::user()-> name }}
                     </a>
                     <div class="dropdown-menu">
-                        <a href="#" class="nav-link dropdown-item">
+                        <a href="{{ route('user.profile.index') }}" class="dropdown-item">
                             <i class="fas fa-user-circle mr-1"></i> Profile
                         </a>
-                        <a href="#" class="dropdown-item nav-link">
+                        {{-- <a href="#" class="dropdown-item">
                             <i class="fas fa-cog mr-1"></i> Settings
-                        </a>
-                        <span class="dropdown-divider"></span>
-                        <a href="{{ route('logout') }}" class="nav-link dropdown-item" onclick="event.preventDefault();
+                        </a> --}}
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
                                                                         document.getElementById('logout-form').submit();">
                             <i class="fas fa-sign-out-alt mr-1"></i> Log Out
                         </a>

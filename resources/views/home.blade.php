@@ -30,7 +30,7 @@
                         <span
                         class="icon-container w-100 d-flex justify-content-center text-center pt-2 rounded bg-light px-2"
                         >
-                        <a href="#" class="text-docoration-none">
+                        <a href="{{ route('sermons.index') }}" class="text-docoration-none">
                             <i class="fas fa-bible fa-5x"></i>
                             {{-- <img src="{{ asset('images/icons/bible.svg') }}" alt="sermon-icon" class="w-100 h-100"> --}}
                             <h5 class="display-5 text-uppercase small pt-2">
@@ -73,7 +73,7 @@
     </div>
 </section><!-- End of banner section -->
 
-<section id="actions">
+<section id="actions" class="bg-light">
     <div class="container py-5">
         <div class="row">
         <div class="col-md-6 col-sm-12 text-center px-2">
@@ -128,7 +128,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="row">
             <div class="col">
-                <h4 class="display-5 text-uppercase">
+                <h4 class="display-5 text-uppercase font-weight-bold">
                 organisation categories
                 </h4>
             </div>
@@ -196,7 +196,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="row">
             <div class="col">
-                <h4 class="display-5 text-uppercase">
+                <h4 class="display-5 text-uppercase font-weight-bold">
                 sermons categories
                 </h4>
             </div>
@@ -256,7 +256,7 @@
     <div class="container py-5">
         <div class="row">
             <div class="col">
-                <h4 class="display-5 text-uppercase text-center py-3">
+                <h4 class="display-5 text-uppercase text-center py-3 font-weight-bold">
                     recently added
                 </h4>
             </div>

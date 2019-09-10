@@ -20,15 +20,24 @@ class CreateOrganisationsTable extends Migration
             $table->string('website', 150);
             $table->decimal('average_review', 3, 3)->nullable();
             $table->longText('description');
-            $table->bigInteger('category_id')->unsigned()->nullable();
+            $table
+                ->bigInteger('category_id')
+                ->unsigned()
+                ->nullable();
             $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
 
             // foreign key
-            $table->foreign('category_id')->references('id')
-                    ->on('organisation_categories')->onDelete('set null');
-            $table->foreign('user_id')->references('id')
-                    ->on('users')->onDelete('cascade');
+            $table
+                ->foreign('category_id')
+                ->references('id')
+                ->on('categories')
+                ->onDelete('set null');
+            $table
+                ->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

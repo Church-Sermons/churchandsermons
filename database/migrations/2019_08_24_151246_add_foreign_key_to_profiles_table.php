@@ -14,12 +14,17 @@ class AddForeignKeyToProfilesTable extends Migration
     public function up()
     {
         Schema::table('profiles', function (Blueprint $table) {
-            $table->bigInteger('category_id')->unsigned()->nullable();
-
+            $table
+                ->bigInteger('category_id')
+                ->unsigned()
+                ->nullable();
 
             // foreign key
-            $table->foreign('category_id')->references('id')
-            ->on('organisation_categories')->onDelete('set null');
+            $table
+                ->foreign('category_id')
+                ->references('id')
+                ->on('categories')
+                ->onDelete('set null');
         });
     }
 
@@ -31,6 +36,5 @@ class AddForeignKeyToProfilesTable extends Migration
     public function down()
     {
         Schema::disableForeignKeyConstraints();
-
     }
 }
