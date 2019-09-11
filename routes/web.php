@@ -17,6 +17,9 @@ use App\User;
 // Home Routes
 Route::get('/', 'HomeController@index')->name('home');
 
+// About Route
+Route::get('/about', 'HomeController@about')->name('about');
+
 // User Routes
 Route::prefix('user')->group(function () {
     // Profile Details
