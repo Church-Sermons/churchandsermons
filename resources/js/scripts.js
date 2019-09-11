@@ -6,6 +6,7 @@
 
 require("./bootstrap");
 
+
 /**
  * Load All Custom Scripts
  */

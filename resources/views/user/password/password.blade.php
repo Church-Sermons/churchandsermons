@@ -15,7 +15,7 @@
                             <form action="{{ route('user.profile.security.update') }}" method="post">
                                 @csrf
                                 @method('PUT')
-                                @component('user.main.password-form')
+                                @component('user.password.password-form')
                                     @slot('oldPassword')
                                         {{ __("") }}
                                     @endslot
@@ -38,33 +38,3 @@
     </div>
 @endsection
 
-@section('styles')
-    <style>
-        #sidenav{
-            height: 100vh;
-            width: 250px;
-            position: fixed;
-            padding-top: 15px;
-            overflow-y: auto;
-        }
-        .sidenav-inner{
-            width: 100%;
-            height: 100%;
-        }
-
-        .sidenav-inner a:hover{
-            background: #ccc;
-            color: #000;
-        }
-
-        .sidenav-inner a{
-            color: grey;
-        }
-        #main{
-            padding-left: 250px;
-        }
-        .has-background-primary{
-            background: #ccc;
-        }
-    </style>
-@endsection

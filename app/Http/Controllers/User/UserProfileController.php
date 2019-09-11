@@ -60,7 +60,7 @@ class UserProfileController extends Controller
     // password management
     public function securityIndex()
     {
-        return view('user.main.password');
+        return view('user.password.password');
     }
 
     public function securityUpdate(StoreUserSecurityRequest $request)
@@ -97,4 +97,6 @@ class UserProfileController extends Controller
             return redirect()->back();
         }
     }
+
+    
 }

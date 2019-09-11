@@ -45,6 +45,11 @@ Route::prefix('user')->group(function () {
             'as' => 'user'
         ]
     )->name('user.profile.security.update');
+
+    // site details
+    Route::get('/site/about', 'User\UserSiteController@siteAboutEdit', [
+        'as' => 'user'
+    ])->name('user.site.about.edit');
 });
 
 // Manage - Content Providers

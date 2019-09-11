@@ -9,8 +9,10 @@
         <a href="#" class="h6 px-2 py-3 my-0">
             <i class="fas fa-compact-disc mr-1"></i> Resources
         </a>
-        <a href="#" class="h6 px-2 py-3 my-0">
-            <i class="fas fa-tachometer-alt mr-1"></i> Site - Admin Only
+        @role(['administrator', 'superadministrator'])
+        <a href="{{ route('user.site.about.edit') }}" class="{{ Nav::isRoute('user.site.about.edit') }} h6 px-2 py-3 my-0">
+            <i class="fas fa-tachometer-alt mr-1"></i> Manage Site
         </a>
+        @endrole
     </div>
 </div>

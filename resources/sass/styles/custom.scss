@@ -176,3 +176,32 @@ a:hover {
 .social-container a:hover {
     color: #fff;
 }
+
+// profile page
+// sidenav
+#sidenav {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    padding-top: 15px;
+    overflow-y: auto;
+}
+.sidenav-inner {
+    width: 100%;
+    height: 100%;
+}
+
+.sidenav-inner a:hover {
+    background: #ccc;
+    color: #000;
+}
+
+.sidenav-inner a {
+    color: grey;
+}
+#main {
+    padding-left: 250px;
+}
+.has-background-primary {
+    background: #ccc;
+}
