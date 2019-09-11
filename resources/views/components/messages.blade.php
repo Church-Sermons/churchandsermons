@@ -4,8 +4,8 @@
     </div>
 @endif
 
-@if (session('error'))
+@if (session('danger'))
     <div class="alert alert-danger text-capitalize" role="alert">
-        {{ session('error') }}
+        {{ session('danger') }}
     </div>
 @endif

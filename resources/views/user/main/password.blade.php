@@ -12,18 +12,18 @@
                     <div class="card">
                         <div class="card-body">
                             <h2 class="card-title font-weight-bold mb-3 text-center">Update Password</h2>
-                            <form action="{{ route('user.profile.update') }}" method="post">
+                            <form action="{{ route('user.profile.security.update') }}" method="post">
                                 @csrf
                                 @method('PUT')
                                 @component('user.main.password-form')
                                     @slot('oldPassword')
-                                        {{ old('old_password') }}
+                                        {{ __("") }}
                                     @endslot
                                     @slot('password')
-                                        {{ old('password') }}
+                                        {{ __("") }}
                                     @endslot
                                     @slot('confirmPassword')
-                                        {{ old('confirm_password') }}
+                                        {{ __("") }}
                                     @endslot
                                     @slot('submitButtonText')
                                         Update Password

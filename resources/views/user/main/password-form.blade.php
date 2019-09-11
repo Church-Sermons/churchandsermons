@@ -8,6 +8,7 @@
 </div>
 {{ $slot }}
 <div class="form-group">
+    <input type="hidden" name="id" value="{{ Auth::user()->id }}">
     <input type="password" name="password" id="password" placeholder="New Password" class="@error('password') is-invalid @enderror form-control" value="{{ $password }}" required>
     @error('password')
         <p class="invalid-feedback">
@@ -16,8 +17,8 @@
     @enderror
 </div>
 <div class="form-group">
-    <input type="password" name="confirm_password" id="confirm-password" placeholder="Confirm New Password" class="@error('confirm_password') is-invalid @enderror form-control" value="{{ $confirmPassword }}" required>
-    @error('confirm_password')
+    <input type="password" name="password_confirmation" id="password-confirmation" placeholder="Confirm New Password" class="@error('password_confirmation') is-invalid @enderror form-control" value="{{ $confirmPassword }}" required>
+    @error('password_confirmation')
         <p class="invalid-feedback">
             {{ $message }}
         </p>

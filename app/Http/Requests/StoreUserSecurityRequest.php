@@ -13,7 +13,7 @@ class StoreUserSecurityRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreUserSecurityRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'old_password' => ['required', 'string', 'min:8'],
+            'password' => ['required', 'string', 'min:8', 'confirmed']
         ];
     }
 }
