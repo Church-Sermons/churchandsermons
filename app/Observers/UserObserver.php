@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\User;
+use App\Helpers\Handler;
 
 class UserObserver
 {
@@ -37,6 +38,19 @@ class UserObserver
     public function updated(User $user)
     {
         //
+    }
+
+    /**
+     * Handle the user "updating" event.
+     *
+     * @param  \App\User  $user
+     * @return void
+     */
+    public function updating(User $user)
+    {
+        Handler::model($user)
+            ->whileUpdating('profile_image')
+            ->deleteImage();
     }
 
     /**

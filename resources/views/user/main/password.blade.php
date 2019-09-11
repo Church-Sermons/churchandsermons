@@ -8,41 +8,29 @@
         <div class="main-inner container my-5">
             @include('components.messages')
             <div class="row">
-                <div class="col-md-5 offset-md-2">
+                <div class="col-md-6 offset-md-3">
                     <div class="card">
                         <div class="card-body">
-                            <h2 class="card-title font-weight-bold mb-3 text-center">Your Profile</h2>
-                            <form action="{{ route('user.profile.update') }}" method="post" enctype="multipart/form-data">
+                            <h2 class="card-title font-weight-bold mb-3 text-center">Update Password</h2>
+                            <form action="{{ route('user.profile.update') }}" method="post">
                                 @csrf
                                 @method('PUT')
-                                @component('user.main.profile-form')
-                                    @slot('name')
-                                        {{ old('name', Auth::user()->name )}}
+                                @component('user.main.password-form')
+                                    @slot('oldPassword')
+                                        {{ old('old_password') }}
                                     @endslot
-                                    @slot('surname')
-                                        {{ old('surname', Auth::user()->surname) }}
+                                    @slot('password')
+                                        {{ old('password') }}
                                     @endslot
-                                    @slot('email')
-                                        {{ old('email', Auth::user()->email) }}
-                                    @endslot
-                                    @slot('address')
-                                        {{ old('address', Auth::user()->address) }}
-                                    @endslot
-                                    @slot('profile')
-                                        {{ old('profile_image', Auth::user()->profile_image) }}
+                                    @slot('confirmPassword')
+                                        {{ old('confirm_password') }}
                                     @endslot
                                     @slot('submitButtonText')
-                                        Update Profile
+                                        Update Password
                                     @endslot
                                 @endcomponent
                             </form>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow">
-                        <img src="{{ asset('storage/'.Auth::user()->profile_image)}}" alt="avatar" class="w-100 h-100 img-thumbnail">
-
                     </div>
                 </div>
             </div>

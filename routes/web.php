@@ -19,9 +19,29 @@ Route::get('/', 'HomeController@index')->name('home');
 
 // User Routes
 Route::prefix('user')->group(function () {
-    Route::resource('/profile', 'User\UserProfileController', [
+    // Profile Details
+    Route::get('/profile', 'User\UserProfileController@index', [
         'as' => 'user'
-    ]);
+    ])->name('user.profile.index');
+    Route::put('/profile', 'User\UserProfileController@updateUserProfile', [
+        'as' => 'user'
+    ])->name('user.profile.update');
+
+    // Password
+    Route::get(
+        '/profile/security',
+        'User\UserProfileController@securityIndex',
+        [
+            'as' => 'user'
+        ]
+    )->name('user.profile.security.index');
+    Route::put(
+        '/profile/security',
+        'User\UserProfileController@securityUpdate',
+        [
+            'as' => 'user'
+        ]
+    )->name('user.profile.security.update');
 });
 
 // Manage - Content Providers
@@ -159,10 +179,10 @@ Route::prefix('/sermons/{sermon_id}')->group(function () {
     ]);
 
     // speaker
-    Route::resource('/speakers', 'Sermon\SermonSpeakerController', [
-        'as' => 'sermons',
-        'except' => ['update', 'edit']
-    ]);
+    // Route::resource('/speakers', 'Sermon\SermonSpeakerController', [
+    //     'as' => 'sermons',
+    //     'except' => ['update', 'edit']
+    // ]);
 });
 
 // Auth Routes
