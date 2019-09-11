@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ContactMessageSendingSuccessful;
 use App\Http\Requests\StoreContactRequest;
 use App\OrganisationCategory;
+use App\SiteMessage;
 use DB;
 use Session;
 use Carbon\Carbon;
@@ -38,19 +40,13 @@ class HomeController extends Controller
     {
         $validator = $request->validated();
 
-        $message = DB::table('site_messages')->insert([
-            [
-                'name' => $request->name,
-                'email' => $request->email,
-                'subject' => $request->subject,
-                'message' => $request->message,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]
-        ]);
+        $message = new SiteMessage($request->all());
+        // dd($message);
 
-        if ($message) {
+        if ($message->save()) {
             // store message and set event to send message to administrator
+            // event(new ContactMessageSendingSuccessful($message));
+
             Session::flash('success', 'Message sent successfully');
 
             return redirect()->back();

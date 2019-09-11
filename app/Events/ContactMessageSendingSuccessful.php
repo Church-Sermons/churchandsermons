@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\SiteMessage;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -14,14 +15,15 @@ class ContactMessageSendingSuccessful
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $message;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(SiteMessage $message)
     {
-        //
+        $this->message = $message;
     }
 
     /**

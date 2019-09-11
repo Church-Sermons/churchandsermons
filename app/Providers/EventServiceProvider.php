@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Listeners\CategoryCreationSuccessfullListener;
 use App\Events\CategoryCreationSuccessfull;
+use App\Events\ContactMessageSendingSuccessful;
 use App\Events\ResouceUploadSuccessfull;
 use App\Events\ResourceCreationSuccessful;
+use App\Listeners\ContactMessageSendingSuccessfulListener;
 use App\Listeners\MediaLogger;
 use App\Listeners\ResourceCreationSuccessfulListener;
 use App\Listeners\ResourceUploadSuccessfullListener;
@@ -26,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [SendEmailVerificationNotification::class],
         ResouceUploadSuccessfull::class => [
             ResourceUploadSuccessfullListener::class
+        ],
+        ContactMessageSendingSuccessful::class => [
+            ContactMessageSendingSuccessfulListener::class
         ]
     ];
 
