@@ -12,13 +12,17 @@
 */
 // Bind Routes
 
-use App\User;
-
 // Home Routes
 Route::get('/', 'HomeController@index')->name('home');
 
 // About Route
 Route::get('/about', 'HomeController@about')->name('about');
+
+// Contact route
+Route::get('/contact', 'HomeController@contact')->name('contact');
+Route::post('/contact', 'HomeController@storeContactMessages')->name(
+    'contact.messages.store'
+);
 
 // User Routes
 Route::prefix('user')->group(function () {
