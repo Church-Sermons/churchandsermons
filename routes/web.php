@@ -50,6 +50,9 @@ Route::prefix('user')->group(function () {
     Route::get('/site/about', 'User\UserSiteController@siteAboutEdit', [
         'as' => 'user'
     ])->name('user.site.about.edit');
+    Route::put('/site/about', 'User\UserSiteController@siteAboutUpdate', [
+        'as' => 'user'
+    ])->name('user.site.about.update');
 });
 
 // Manage - Content Providers
@@ -213,7 +216,7 @@ Route::get('/fake', function () {
                 'latitude' => $faker->latitude,
                 'longitude' => $faker->longitude
             ),
-            'description' => $faker->paragraph()
+            'description' => $faker->paragraph(5)
         );
     }
 

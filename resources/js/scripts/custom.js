@@ -37,15 +37,7 @@ module.exports = {
  * CKEditor Integration
  */
 
-document.addEventListener("DOMContentLoaded", function() {
-    const desc = document.getElementById("aboutDescription");
-    const msn = document.getElementById("aboutMission");
 
-    if (desc && msn) {
-        CKEDITOR.replace("aboutDescription");
-        CKEDITOR.replace("aboutMission");
-    }
-});
 
 /**
  *

@@ -22,9 +22,7 @@
                     <div class="col-md-6">
                         <h1 class="text-capitalize font-weight-bold mb-2">about church & sermons</h1>
                         <p class="lead">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Dicta perspiciatis incidunt necessitatibus eius dolorum dignissimos!
-                            Aspernatur illum vel a! Autem optio ex amet vero odit eum ipsum delectus, sit fugiat?
+                            {!! $details->description !!}
                         </p>
                     </div>
                     <div class="col-md-6">
@@ -47,14 +45,7 @@
                     <div class="col-md-6">
                         <h1 class="text-capitalize font-weight-bold mb-2">our mission and vision</h1>
                         <p class="lead">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Dicta perspiciatis incidunt necessitatibus eius dolorum dignissimos!
-                            Aspernatur illum vel a! Autem optio ex amet vero odit eum ipsum delectus, sit fugiat?
-                            <ul>
-                                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero, deleniti?</li>
-                                <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero, voluptates?</li>
-                                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem veniam est ex tempora quidem ipsam.</li>
-                            </ul>
+                            {!! $details->mission !!}
                         </p>
                     </div>
                 </div>

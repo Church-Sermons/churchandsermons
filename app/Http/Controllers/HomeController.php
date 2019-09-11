@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\OrganisationCategory;
-use Illuminate\Http\Request;
+use DB;
 
 class HomeController extends Controller
 {
@@ -21,6 +21,8 @@ class HomeController extends Controller
 
     public function about()
     {
-        return view('site.about');
+        $details = DB::table('site_details')->first();
+
+        return view('site.about', compact('details'));
     }
 }
