@@ -17,11 +17,13 @@
                             </video>
                         @elseif(strpos($resource->collection_name, 'document') !== false)
                             <img src="{{ asset('images/app/defaults/file.svg') }}" alt="{{ $resource->name }}" class="w-75 h-75">
+                            {{-- <a href="{{ $resource->getFullUrl() }}" class="btn btn-primary mt-2">Download</a> --}}
                         @elseif(strpos($resource->collection_name, 'audio') !== false)
                             <img src="{{ asset('images/app/defaults/musical-note.svg') }}" alt="{{ $resource->name }}" class="w-75 h-75">
                             @include('_partials.media.audio', ['data' => [$resource]])
                         @elseif(strpos(explode("/", $resource->mime_type)[0], 'image') !== false)
-                            <img src="{{ $resource->getUrl() }}" alt="{{ $resource->name }}" class="w-75 h-75">
+                            <img src="{{ $resource->getUrl() }}" alt="{{ $resource->name }}" class="w-100 h-100">
+                            {{-- <a href="{{ $resource->getFullUrl() }}" class="btn btn-primary mt-2">Download</a> --}}
                         @else
                             <div class="text-center">
                                 <i class="far fa-file fa-10x"></i>
