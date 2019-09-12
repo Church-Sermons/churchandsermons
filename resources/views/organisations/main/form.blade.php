@@ -6,18 +6,18 @@
         </p>
     @enderror
 </div>
-<div class="form-group">
-    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="Email Address" value="{{ $email }}" required>
-    @error('email')
-        <p class="invalid-feedback">
-            {{ $message }}
-        </p>
+{{-- <div class="form-group col-md-6">
+    <input type="url" name="website" class="form-control @error('website') is-invalid @enderror" id="website" placeholder="https://example.com" pattern="https?://.*" value="{{ $website }}" required>
+    @error('website')
+    <p class="invalid-feedback">
+        {{ $message }}
+    </p>
     @enderror
-</div>
+</div> --}}
 <div class="form-row">
     <div class="form-group col-md-6">
-        <input type="url" name="website" class="form-control @error('website') is-invalid @enderror" id="website" placeholder="https://example.com" pattern="https?://.*" value="{{ $website }}" required>
-        @error('website')
+        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="Email Address" value="{{ $email }}" required>
+        @error('email')
             <p class="invalid-feedback">
                 {{ $message }}
             </p>
@@ -40,7 +40,7 @@
         </p>
     @enderror
 </div>
-<div class="form-row">
+{{-- <div class="form-row">
     <div class="form-group col-md-6">
         <input type="text" name="lat" class="form-control @error('lat') is-invalid @enderror" id="latitude" placeholder="Latitude" value="{{ $latitude }}">
         @error('lat')
@@ -57,7 +57,7 @@
             </p>
         @enderror
     </div>
-</div>
+</div> --}}
 <div class="form-group">
     <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5" style="resize: none;" placeholder="Description" required>{{ $description }}</textarea>
     @error('description')
@@ -101,7 +101,7 @@
         @enderror
     </div>
 </div>
-<div class="form-group">
+{{-- <div class="form-group">
     <div class="custom-file">
         <input type="file" name="slides[]" class="custom-file-input @error('slides') is-invalid @enderror" id="slides" value="{{ $slides }}" multiple>
         <label for="slides" class="custom-file-label">Upload Slide Images</label>
@@ -111,8 +111,8 @@
             </p>
         @enderror
     </div>
-</div>
-<div class="form-group">
+</div> --}}
+{{-- <div class="form-group">
     <div class="input-group">
         <div class="input-group-prepend">
             <select name="social_id" id="social-id" class="form-control text-capitalize @error('social_id') is-invalid @enderror">
@@ -148,7 +148,7 @@
         </span>
         <button type="button" id="input-generator" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></button>
     </div>
-</div>
+</div> --}}
 {{ $slot }}
 <div class="form-group">
     <button type="submit" class="btn btn-primary">{{ $submitButtonText }}</button>

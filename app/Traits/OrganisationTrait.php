@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Organisation;
+use Config;
 
 trait OrganisationTrait
 {
@@ -13,7 +14,17 @@ trait OrganisationTrait
         // store to db
         $organisation = new Organisation($request->except($excepts));
         $organisation->category_id = $request->category;
-        $organisation->logo = $request->logo->store('uploads/images', 'public');
+        // if logo exists
+        if ($request->hasFile('logo')) {
+            $organisation->logo = $request->logo->store(
+                'uploads/images',
+                'public'
+            );
+        } else {
+            $organisation->logo = Config::get(
+                'site_variables.defaults.main.organisation'
+            );
+        }
 
         // check if slides exists then upload them
         $slides = $this->uploadSlides($request, $organisation);
@@ -47,7 +58,7 @@ trait OrganisationTrait
 
     private function uploadSlides($request, $model)
     {
-        if (count($request->slides)) {
+        if ($request->has('slides')) {
             // get ids of previous slides
             $oldSlides = $model
                 ->getMedia('slides')

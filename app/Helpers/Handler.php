@@ -64,4 +64,23 @@ class Handler
             }
         }
     }
+
+    // handle images display
+    public static $path;
+
+    public static function getPath($path)
+    {
+        static::$path = $path;
+
+        return new static();
+    }
+
+    public function displayImage()
+    {
+        if (strpos(static::$path, "uploads") === false) {
+            return asset('images/' . static::$path);
+        } else {
+            return asset('storage/' . static::$path);
+        }
+    }
 }

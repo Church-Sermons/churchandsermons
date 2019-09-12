@@ -36,5 +36,10 @@ return [
             'color' => '32506d',
             'icon' => 'fa-tumblr'
         ]
+    ],
+    'defaults' => [
+        'main' => [
+            'organisation' => 'app/defaults/main/organisation.svg'
+        ]
     ]
 ];

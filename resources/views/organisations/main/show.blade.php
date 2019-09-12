@@ -9,7 +9,7 @@
             <div class="dark-overlay py-5">
                 <div class="container d-flex justify-content-center w-100 h-100 align-items-center flex-column">
                     <!-- Logo Image-->
-                    <img src="{{ Helper::displayImage($organisation->logo)->fromOwnTable() }}" alt="{{ $organisation->name.__("-Logo") }}" width="200" height="200" class="rounded">
+                    <img src="{{ Handler::getPath($organisation->logo)->displayImage() }}" alt="{{ $organisation->name.__("-Logo") }}" width="200" height="200" class="rounded">
                     <h4 class="text-center display-4 text-uppercase font-weight-bold my-2">
                         {{ $organisation->name }}
                     </h4>
@@ -312,7 +312,11 @@
                             <p class="lead mini-texts">{{ $organisation->email }}</p>
                             <h6 class="h6 font-weight-bold">Website</h6>
                             <p class="lead mini-texts">
-                                <a href="{{ $organisation->website }}" target="_blank">{{ $organisation->website }}</a>
+                                @if ($organisation->website)
+                                    <a href="{{ $organisation->website }}" target="_blank">{{ $organisation->website }}</a>
+                                @else
+                                    No website information added
+                                @endif
                             </p>
                             {{-- {{ dd(date('g:i a', strtotime('1:00'))) }} --}}
                             <h6 class="h6 font-weight-bold">Work Schedule</h6>

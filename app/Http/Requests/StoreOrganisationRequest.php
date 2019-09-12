@@ -23,15 +23,8 @@ class StoreOrganisationRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:organisations,email',
-            'phone' => 'required|max:20',
+        $rules = [
             'website' => 'required|max:150|url',
-            'address' => 'required',
-            'description' => 'required',
-            'category' => 'required|numeric',
-            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
             'slides' => 'array',
             'slides.*' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
             'day_of_week' => 'array',
@@ -43,6 +36,16 @@ class StoreOrganisationRequest extends FormRequest
             'social_id' => 'required_with:share_link,page_link',
             'share_link' => 'required_with:social_id',
             'page_link' => 'required_with:social_id'
+        ];
+
+        return [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:organisations,email',
+            'phone' => 'required|max:20',
+            'address' => 'required|string',
+            'description' => 'required|string',
+            'category' => 'required|numeric',
+            'logo' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:10000'
         ];
     }
 }
