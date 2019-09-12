@@ -60639,7 +60639,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! c:\xampp\htdocs\churchandsermons\src\resources\js\scripts.js */"./resources/js/scripts.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\churchandsermons\src\resources\js\scripts.js */"./resources/js/scripts.js");
 
 
 /***/ })
