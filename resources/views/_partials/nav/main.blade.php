@@ -9,7 +9,7 @@
         </div>
     @endif
     <nav class="navbar navbar-expand-md navbar-light bg-light py-2">
-        <div class="container">
+        <div class="container align-items-center">
         <a href="{{ route('home') }}" class="navbar-brand d-flex">
             <img
             src="{{ asset('images/candsedit.png') }}"
@@ -36,65 +36,70 @@
         </button>
 
         <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a href="{{ route('home') }}" class="nav-link text-uppercase">
-                Home
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('organisations.index') }}" class="nav-link text-uppercase">
-                Organisations
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('sermons.index') }}" class="nav-link text-uppercase">
-                Sermons
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('profiles.index') }}" class="nav-link text-uppercase">
-                Profiles
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link text-uppercase">
-                Resources
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('about') }}" class="nav-link text-uppercase">
-                About
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('contact') }}" class="nav-link text-uppercase">
-                Contact
-                </a>
-            </li>
-            @guest
-            <li class="nav-item">
-                <a href="{{ route('login') }}" class="nav-link text-uppercase">
-                <i class="fas custom-fa fa-sign-in-alt"></i> Log In
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('register') }}" class="nav-link text-uppercase">
-                <i class="fas custom-fa fa-user-plus"></i> Register
-                </a>
-            </li>
-            @else
+            <ul class="navbar-nav ml-auto d-flex align-items-center">
+                <li class="nav-item">
+                    <a href="{{ route('home') }}" class="nav-link text-uppercase">
+                    Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('organisations.index') }}" class="nav-link text-uppercase">
+                    Organisations
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('sermons.index') }}" class="nav-link text-uppercase">
+                    Sermons
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('profiles.index') }}" class="nav-link text-uppercase">
+                    Profiles
+                    </a>
+                </li>
+                {{-- <li class="nav-item">
+                    <a href="#" class="nav-link text-uppercase">
+                    Resources
+                    </a>
+                </li> --}}
+                <li class="nav-item">
+                    <a href="{{ route('about') }}" class="nav-link text-uppercase">
+                    About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('contact') }}" class="nav-link text-uppercase">
+                    Contact
+                    </a>
+                </li>
+                @guest
+                <li class="nav-item">
+                    <a href="{{ route('login') }}" class="nav-link text-uppercase">
+                    <i class="fas custom-fa fa-sign-in-alt"></i> Log In
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('register') }}" class="nav-link text-uppercase">
+                    <i class="fas custom-fa fa-user-plus"></i> Register
+                    </a>
+                </li>
+                @else
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        @if (Auth::user()->profile_image)
+                            <img src="{{ asset('storage/'.Auth::user()->profile_image) }}" alt="user-avatar" width="30" height="30" class="rounded-circle mr-1">
+                        @else
+                            <i class="fas fa-user-circle mr-1"></i>
+                        @endif
                         Hello, {{ Auth::user()-> name }}
                     </a>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu dropdown-profile dropdown-menu-right">
                         <a href="{{ route('user.profile.index') }}" class="dropdown-item">
                             <i class="fas fa-user-circle mr-1"></i> Profile
                         </a>
-                        {{-- <a href="#" class="dropdown-item">
-                            <i class="fas fa-cog mr-1"></i> Settings
-                        </a> --}}
+
+                        {{-- <div class="dropdown-divider"></div> --}}
+
                         <div class="dropdown-divider"></div>
                         <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
                                                                         document.getElementById('logout-form').submit();">
@@ -111,4 +116,3 @@
         </div>
     </nav>
 </header>
-
