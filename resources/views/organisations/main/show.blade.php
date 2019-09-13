@@ -31,9 +31,14 @@
                             @if (count($organisation->getMedia('slides')))
                                 @include('components.carousel', ['slides' => $organisation->getMedia('slides')])
                             @else
-                            <div class="card-image-handler-lg">
-                                <img src="{{ asset('images/temp/slides/slide-1.jpg') }}" alt="slide-image-holder" class="rounded-top w-100 h-100">
-                            </div>
+                                @isTribrid($organisation)
+                                    <div class="card-image-handler-lg">
+                                        <img src="{{ asset('images/app/banners/org-placeholder.jpg') }}" alt="slide-image-holder" class="rounded-top w-100 h-100">
+                                        <div class="no-slide d-flex justify-content-start align-items-start p-2">
+                                            <button class="btn btn-primary border-radius-0" data-target="#generalModal" data-toggle="modal"><i class="fas fa-plus"></i> Add Slides</button>
+                                        </div>
+                                    </div>
+                                @endisTribrid
                             @endif
                             <h3 class="card-title font-weight-bold mt-3">About</h3>
                             <p class="card-text">
@@ -311,13 +316,22 @@
                             <h6 class="h6 font-weight-bold">Email</h6>
                             <p class="lead mini-texts">{{ $organisation->email }}</p>
                             <h6 class="h6 font-weight-bold">Website</h6>
-                            <p class="lead mini-texts">
-                                @if ($organisation->website)
+                            @if ($organisation->website)
+                                <p class="lead mini-texts">
                                     <a href="{{ $organisation->website }}" target="_blank">{{ $organisation->website }}</a>
-                                @else
-                                    No website information added
-                                @endif
-                            </p>
+                                </p>
+                            @else
+                                <div class="clearfix mb-2">
+                                    <span class="float-left lead mini-texts">
+                                        No website information added
+                                    </span>
+                                    <span class="float-right">
+                                        <a href="#">
+                                            <i class="fas fa-edit" title="Edit Website"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            @endif
                             {{-- {{ dd(date('g:i a', strtotime('1:00'))) }} --}}
                             <h6 class="h6 font-weight-bold">Work Schedule</h6>
                             @if (count($organisation->schedules))
@@ -336,32 +350,59 @@
                                     </table>
                                 </div>
                             @else
-                                <p class="lead mini-texts">No work schedule added yet</p>
+                            <div class="clearfix mb-2">
+                                <span class="float-left lead mini-texts">
+                                    No work schedule information added
+                                </span>
+                                <span class="float-right">
+                                    <a href="#">
+                                        <i class="fas fa-edit" title="Edit Work Schedule"></i>
+                                    </a>
+                                </span>
+                            </div>
                             @endif
                             <h6 class="h6 font-weight-bold">Social Media</h6>
-                            <p class="lead mini-texts">
-                                @forelse ($organisation->social as $social)
-                                    @if ($social->page_link)
+                            @forelse ($organisation->social as $social)
+                            @if ($social->page_link)
+                                    <p class="lead mini-texts">
                                         <a href="{{ $social->page_link }}" target="_blank">
                                             <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
                                         </a>
+                                    </p>
                                     @endif
                                 @empty
-                                    No social media links available
+                                    <div class="clearfix mb-2">
+                                        <span class="float-left lead mini-texts">
+                                            No social media links information added
+                                        </span>
+                                        <span class="float-right">
+                                            <a href="#">
+                                                <i class="fas fa-edit" title="Edit Social Media"></i>
+                                            </a>
+                                        </span>
+                                    </div>
                                 @endforelse
-                            </p>
                             <h6 class="h6 font-weight-bold">Share</h6>
-                            <p class="lead mini-texts">
-                                @forelse ($organisation->social as $social)
-                                    @if ($social->share_link)
-                                        <a href="{{ $social->share_link }}" target="_blank">
-                                            <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
+                            @forelse ($organisation->social as $social)
+                            @if ($social->share_link)
+                                <p class="lead mini-texts">
+                                    <a href="{{ $social->share_link }}" target="_blank">
+                                        <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
+                                    </a>
+                                </p>
+                                @endif
+                            @empty
+                                <div class="clearfix mb-2">
+                                    <span class="float-left lead mini-texts">
+                                        No share links information added
+                                    </span>
+                                    <span class="float-right">
+                                        <a href="#">
+                                            <i class="fas fa-edit" title="Edit Social Media"></i>
                                         </a>
-                                    @endif
-                                @empty
-                                    No share links available
-                                @endforelse
-                            </p>
+                                    </span>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
 
@@ -429,6 +470,53 @@
     </div>
 @endcomponent
 
+
+{{-- General Modal --}}
+@component('components.modal-general', ['title' => "Edit $organisation->name", 'size' => 'modal-lg', 'header' => false])
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#slides"><i class="far fa-images"></i> Slides</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#work"><i class="far fa-calendar-alt"></i> Work</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#social"><i class="fas fa-user-friends"></i> Social</a>
+    </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="slides">
+        <div class="container py-3 px-1">
+            <form action="{{ route('organisations.slides.update', $organisation->uuid) }}" method="post" id="slidesForm" class="dropzone" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="fallback">
+                    <input name="slides" type="file" multiple />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="tab-pane container fade" id="work">work</div>
+    <div class="tab-pane container fade" id="social">social</div>
+</div>
+@endcomponent
 @endsection
 
+@section('scripts')
+    <script>
+        Dropzone.options.slidesForm = {
+            paramName: 'slides',
+            maxFileSize: 5,
+            uploadMultiple: true,
+            maxFiles:8,
+            addRemoveLinks: true,
+            method: 'PUT',
+            dictFileTooBig: 'File is larger than 5 MB',
+            accept: function(file, done){
 
+            }
+        }
+    </script>
+@endsection

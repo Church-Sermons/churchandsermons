@@ -113,8 +113,14 @@ Route::post(
  *
  */
 Route::resource('/organisations', 'OrganisationController');
+
 // Organisation&Events
 Route::prefix('/organisations/{organisation_id}')->group(function () {
+    // slides
+    Route::put('/slides', 'OrganisationController@uploadSlides')->name(
+        'organisations.slides.update'
+    );
+
     // organisation events
     Route::resource('/events', 'Organisation\OrganisationEventController', [
         'as' => 'organisations'

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrganisationRequest;
+use App\Http\Requests\StoreOrganisationSlidesRequest;
 use Illuminate\Http\Request;
 use App\Organisation;
 use App\Traits\OrganisationTrait;
@@ -176,6 +177,32 @@ class OrganisationController extends Controller
             Session::flash('danger', 'Organisation failed to delete');
 
             return redirect()->route('organisations.index');
+        }
+    }
+
+    // additional coding
+    public function uploadSlides(StoreOrganisationSlidesRequest $request, $uuid)
+    {
+        $organisation = Organisation::getByUuid($uuid);
+
+        // upload slides
+        $slides = $this->uploadSlides($request, $organisation);
+
+        if ($slides['slides']) {
+            // delete old data slides - get old slides
+            if (is_array($slides['oldSlides']) && count($slides['oldSlides'])) {
+                // delete
+                $destorySlides = Media::destroy($slides['oldSlides']);
+                // log it
+                Log::channel('custom')->info(
+                    "Old slides deleted. Dump => {$destorySlides}"
+                );
+            }
+            return response()->json([
+                'success' => 'Slides uploaded successfully'
+            ]);
+        } else {
+            return response()->json(['danger', 'Slides failed to upload']);
         }
     }
 }

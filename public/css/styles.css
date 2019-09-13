@@ -18648,6 +18648,16 @@ a:hover {
   background: #f1f1f1;
 }
 
+.no-slide {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  content: "";
+  background: rgba(0, 0, 0, 0.125);
+  left: 0;
+  bottom: 0;
+}
+
 .event-card {
   border: none;
   border-right: solid 3px #3490dc;

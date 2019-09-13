@@ -39,7 +39,7 @@ return [
     ],
     'defaults' => [
         'main' => [
-            'organisation' => 'app/defaults/main/organisation'
+            'organisation' => 'app/defaults/main/organisation.svg'
         ]
     ]
 ];
