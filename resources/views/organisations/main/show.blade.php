@@ -28,17 +28,11 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
+                            @isTribrid($organisation)
+                                <a class="btn btn-primary mb-2 btn-sm" href="{{ route('organisations.slides.create', $organisation->uuid) }}"><i class="fas fa-plus"></i> Add Slides</a>
+                            @endisTribrid
                             @if (count($organisation->getMedia('slides')))
                                 @include('components.carousel', ['slides' => $organisation->getMedia('slides')])
-                            @else
-                                @isTribrid($organisation)
-                                    <div class="card-image-handler-lg">
-                                        <img src="{{ asset('images/app/banners/org-placeholder.jpg') }}" alt="slide-image-holder" class="rounded-top w-100 h-100">
-                                        <div class="no-slide d-flex justify-content-start align-items-start p-2">
-                                            <button class="btn btn-primary border-radius-0" data-target="#generalModal" data-toggle="modal"><i class="fas fa-plus"></i> Add Slides</button>
-                                        </div>
-                                    </div>
-                                @endisTribrid
                             @endif
                             <h3 class="card-title font-weight-bold mt-3">About</h3>
                             <p class="card-text">
@@ -471,52 +465,5 @@
 @endcomponent
 
 
-{{-- General Modal --}}
-@component('components.modal-general', ['title' => "Edit $organisation->name", 'size' => 'modal-lg', 'header' => false])
-<ul class="nav nav-tabs">
-    <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#slides"><i class="far fa-images"></i> Slides</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#work"><i class="far fa-calendar-alt"></i> Work</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#social"><i class="fas fa-user-friends"></i> Social</a>
-    </li>
-</ul>
-
-<!-- Tab panes -->
-<div class="tab-content">
-    <div class="tab-pane active" id="slides">
-        <div class="container py-3 px-1">
-            <form action="{{ route('organisations.slides.update', $organisation->uuid) }}" method="post" id="slidesForm" class="dropzone" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="fallback">
-                    <input name="slides" type="file" multiple />
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="tab-pane container fade" id="work">work</div>
-    <div class="tab-pane container fade" id="social">social</div>
-</div>
-@endcomponent
 @endsection
 
-@section('scripts')
-    <script>
-        Dropzone.options.slidesForm = {
-            paramName: 'slides',
-            maxFileSize: 5,
-            uploadMultiple: true,
-            maxFiles:8,
-            addRemoveLinks: true,
-            method: 'PUT',
-            dictFileTooBig: 'File is larger than 5 MB',
-            accept: function(file, done){
-
-            }
-        }
-    </script>
-@endsection

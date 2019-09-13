@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreOrganisationSlidesRequest extends FormRequest
+class StoreOrganisationWorkScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,12 @@ class StoreOrganisationSlidesRequest extends FormRequest
     public function rules()
     {
         return [
-            'slides' => 'sometimes|array',
-            'slides.*' =>
-                'sometimes|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+            'day_of_week' => 'array',
+            'day_of_week.*' => 'numeric|between:0,6',
+            'time_open' => 'array',
+            'time_open.*' => 'numeric|between:1,24',
+            'work_duration' => 'array',
+            'work_duration.*' => 'numeric|between:1,24'
         ];
     }
 }

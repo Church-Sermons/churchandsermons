@@ -19,9 +19,6 @@ class OrganisationObserver
      */
     public function created(Organisation $organisation)
     {
-        // store working hours
-        $this->storeWorkingSchedule($organisation);
-
         // Logic to input social links
         if (request()->has('social_id')) {
             //either of the two inputs must exist
@@ -119,27 +116,5 @@ class OrganisationObserver
     public function forceDeleted(Organisation $organisation)
     {
         //
-    }
-
-    public function storeWorkingSchedule($model)
-    {
-        $dayOfWeek = request()->day_of_week;
-        $timeOpen = request()->time_open;
-        $workDuration = request()->work_duration;
-        // Logic on multiple working schedules here
-        // get data
-        if ($dayOfWeek && $timeOpen && $workDuration) {
-            $workingHours = [];
-            foreach ($dayOfWeek as $key => $value) {
-                $workingHours[] = [
-                    'day_of_week' => $value,
-                    'time_open' => $timeOpen[$key],
-                    'work_duration' => $workDuration[$key]
-                ];
-            }
-
-            // use one to many associate
-            $model->schedules()->createMany($workingHours);
-        }
     }
 }

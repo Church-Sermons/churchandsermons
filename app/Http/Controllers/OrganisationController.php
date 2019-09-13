@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrganisationRequest;
 use App\Http\Requests\StoreOrganisationSlidesRequest;
+use App\Http\Requests\StoreOrganisationWorkScheduleRequest;
 use Illuminate\Http\Request;
 use App\Organisation;
 use App\Traits\OrganisationTrait;
@@ -180,29 +181,85 @@ class OrganisationController extends Controller
         }
     }
 
-    // additional coding
-    public function uploadSlides(StoreOrganisationSlidesRequest $request, $uuid)
+    // Slides
+    public function createSlides($uuid)
     {
         $organisation = Organisation::getByUuid($uuid);
 
-        // upload slides
-        $slides = $this->uploadSlides($request, $organisation);
+        return view(
+            'organisations.main.slides.create',
+            compact('organisation')
+        );
+    }
 
-        if ($slides['slides']) {
-            // delete old data slides - get old slides
-            if (is_array($slides['oldSlides']) && count($slides['oldSlides'])) {
-                // delete
-                $destorySlides = Media::destroy($slides['oldSlides']);
-                // log it
-                Log::channel('custom')->info(
-                    "Old slides deleted. Dump => {$destorySlides}"
-                );
-            }
-            return response()->json([
-                'success' => 'Slides uploaded successfully'
+    // additional coding
+    public function storeSlides(StoreOrganisationSlidesRequest $request, $uuid)
+    {
+        $validator = $request->validated();
+
+        $organisation = Organisation::getByUuid($uuid);
+        $slides = null;
+
+        if ($request->hasFile('slides')) {
+            // upload slides
+            $slides = $organisation
+                ->addMultipleMediaFromRequest(['slides'])
+                ->each(function ($fileAdder) use ($organisation) {
+                    $fileAdder
+                        ->withCustomProperties([
+                            'name' => $organisation->name,
+                            'description' => $organisation->description
+                        ])
+                        ->toMediaCollection('slides');
+                });
+        }
+
+        if ($slides) {
+            Session::flash('success', 'Slides added successfully');
+
+            return redirect()->back();
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+    }
+
+    public function deleteSlides($uuid, $id)
+    {
+        // delete media
+        $media = Media::findOrFail($id);
+
+        $organisation = Organisation::getByUuid($uuid);
+
+        if ($media->delete()) {
+            Session::flash('success', 'Slide deleted successfully');
+
+            return redirect()->back();
+        } else {
+            Session::flash('danger', 'Slide failed to delete');
+
+            return redirect()->back();
+        }
+    }
+
+    public function storeWorkSchedule(
+        StoreOrganisationWorkScheduleRequest $request,
+        $uuid
+    ) {
+        $validator = $request->validated();
+
+        $organisation = Organisation::getByUuid($uuid);
+
+        $schedule = $this->storeWorkingSchedule($organisation, $request);
+
+        if ($schedule) {
+            return request()->json([
+                'success' => 'Work schedules store successfully'
             ]);
         } else {
-            return response()->json(['danger', 'Slides failed to upload']);
+            return request()->json(['danger', 'Work schedules failed to save']);
         }
     }
 }

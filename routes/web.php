@@ -117,8 +117,20 @@ Route::resource('/organisations', 'OrganisationController');
 // Organisation&Events
 Route::prefix('/organisations/{organisation_id}')->group(function () {
     // slides
-    Route::put('/slides', 'OrganisationController@uploadSlides')->name(
-        'organisations.slides.update'
+    Route::get('/slides', 'OrganisationController@createSlides')->name(
+        'organisations.slides.create'
+    );
+    Route::post('/slides', 'OrganisationController@storeSlides')->name(
+        'organisations.slides.store'
+    );
+
+    Route::delete('/slides/{id}', 'OrganisationController@deleteSlides')->name(
+        'organisations.slides.delete'
+    );
+
+    // work schedule
+    Route::post('/work', 'OrganisationController@storeWorkSchedule')->name(
+        'organisations.work.store'
     );
 
     // organisation events

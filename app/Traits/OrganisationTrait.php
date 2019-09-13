@@ -60,19 +60,22 @@ trait OrganisationTrait
     {
         if ($request->has('slides')) {
             // get ids of previous slides
-            $oldSlides = $model
-                ->getMedia('slides')
-                ->pluck('id')
-                ->toArray();
+            $oldSlides = [];
+            $var = $model->getMedia('slides');
+
+            if (is_array($var) && count($var)) {
+                // pluck id if exists
+                $oldSlides = $var->pluck('id')->toArray();
+            }
 
             // upload files
             $slides = $model
                 ->addMultipleMediaFromRequest(['slides'])
-                ->each(function ($fileAdder) {
+                ->each(function ($fileAdder) use ($model) {
                     $fileAdder
                         ->withCustomProperties([
-                            'name' => request()->name,
-                            'description' => request()->description
+                            'name' => $model->name,
+                            'description' => $model->description
                         ])
                         ->toMediaCollection('slides');
                 });
@@ -82,5 +85,31 @@ trait OrganisationTrait
                 'oldSlides' => $oldSlides
             ];
         }
+    }
+
+    public function storeWorkingSchedule($model, $request)
+    {
+        $dayOfWeek = $request->day_of_week;
+        $timeOpen = $request->time_open;
+        $workDuration = $request->work_duration;
+        // Logic on multiple working schedules here
+        // get data
+        if ($dayOfWeek && $timeOpen && $workDuration) {
+            $workingHours = [];
+            foreach ($dayOfWeek as $key => $value) {
+                $workingHours[] = [
+                    'day_of_week' => $value,
+                    'time_open' => $timeOpen[$key],
+                    'work_duration' => $workDuration[$key]
+                ];
+            }
+
+            // use one to many associate
+            $schedule = $model->schedules()->createMany($workingHours);
+
+            return $schedule;
+        }
+
+        return null;
     }
 }
