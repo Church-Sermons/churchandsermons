@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use View;
 use Auth;
+use Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,8 +34,12 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // setting categories available in all views
-        $categories = OrganisationCategory::distinctCategoryNames();
-        View::share('categories', $categories);
+        // check if table exists to avoid migrate reset error
+        if (Schema::hasTable('categories')) {
+            // get categories
+            $categories = OrganisationCategory::distinctCategoryNames();
+            View::share('categories', $categories);
+        }
     }
 
     public function isTribrid($thing, $fk = null)

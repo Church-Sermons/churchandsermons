@@ -78,7 +78,7 @@ class Handler
     public function displayImage()
     {
         if (strpos(static::$path, "uploads") === false) {
-            return asset('images/' . static::$path);
+            return asset('images/' . static::$path . '.svg');
         } else {
             return asset('storage/' . static::$path);
         }
