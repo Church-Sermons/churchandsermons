@@ -128,10 +128,19 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
         'organisations.slides.delete'
     );
 
-    // work schedule
-    Route::post('/work', 'OrganisationController@storeWorkSchedule')->name(
-        'organisations.work.store'
-    );
+    // comms general schedule
+    Route::get(
+        '/general',
+        'OrganisationController@createGeneralSettings'
+    )->name('organisations.general.create');
+    Route::post(
+        '/general',
+        'OrganisationController@storeGeneralSettings'
+    )->name('organisations.general.store');
+    Route::post(
+        '/general/{id}',
+        'OrganisationController@deleteGeneralSettings'
+    )->name('organisations.general.delete');
 
     // organisation events
     Route::resource('/events', 'Organisation\OrganisationEventController', [

@@ -320,7 +320,7 @@
                                         No website information added
                                     </span>
                                     <span class="float-right">
-                                        <a href="#">
+                                        <a href="{{ route('organisations.edit', $organisation->uuid) }}">
                                             <i class="fas fa-edit" title="Edit Website"></i>
                                         </a>
                                     </span>
@@ -349,7 +349,7 @@
                                     No work schedule information added
                                 </span>
                                 <span class="float-right">
-                                    <a href="#">
+                                    <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
                                         <i class="fas fa-edit" title="Edit Work Schedule"></i>
                                     </a>
                                 </span>
@@ -367,10 +367,10 @@
                                 @empty
                                     <div class="clearfix mb-2">
                                         <span class="float-left lead mini-texts">
-                                            No social media links information added
+                                            No social media links added
                                         </span>
                                         <span class="float-right">
-                                            <a href="#">
+                                            <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
                                                 <i class="fas fa-edit" title="Edit Social Media"></i>
                                             </a>
                                         </span>
@@ -388,10 +388,10 @@
                             @empty
                                 <div class="clearfix mb-2">
                                     <span class="float-left lead mini-texts">
-                                        No share links information added
+                                        No share links added
                                     </span>
                                     <span class="float-right">
-                                        <a href="#">
+                                        <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
                                             <i class="fas fa-edit" title="Edit Social Media"></i>
                                         </a>
                                     </span>

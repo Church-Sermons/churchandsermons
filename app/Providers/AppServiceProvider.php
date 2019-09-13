@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use View;
 use Auth;
 use Schema;
-
+use DB;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -39,6 +39,11 @@ class AppServiceProvider extends ServiceProvider
             // get categories
             $categories = OrganisationCategory::distinctCategoryNames();
             View::share('categories', $categories);
+        }
+
+        if (Schema::hasTable('social_media')) {
+            $sites = DB::table('social_media')->get();
+            View::share('sites', $sites);
         }
     }
 

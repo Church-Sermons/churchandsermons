@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreGeneralSettingsRequest;
 use App\Http\Requests\StoreOrganisationRequest;
 use App\Http\Requests\StoreOrganisationSlidesRequest;
 use App\Http\Requests\StoreOrganisationWorkScheduleRequest;
@@ -181,6 +182,11 @@ class OrganisationController extends Controller
         }
     }
 
+    /**
+     *
+     * Caution! This code is messed up, even I don't understand any of it
+     */
+
     // Slides
     public function createSlides($uuid)
     {
@@ -231,8 +237,6 @@ class OrganisationController extends Controller
         // delete media
         $media = Media::findOrFail($id);
 
-        $organisation = Organisation::getByUuid($uuid);
-
         if ($media->delete()) {
             Session::flash('success', 'Slide deleted successfully');
 
@@ -244,8 +248,19 @@ class OrganisationController extends Controller
         }
     }
 
-    public function storeWorkSchedule(
-        StoreOrganisationWorkScheduleRequest $request,
+    // general settings
+    public function createGeneralSettings($uuid)
+    {
+        $organisation = Organisation::getByUuid($uuid);
+
+        return view(
+            'organisations.main.general.create',
+            compact('organisation')
+        );
+    }
+
+    public function storeGeneralSettings(
+        StoreGeneralSettingsRequest $request,
         $uuid
     ) {
         $validator = $request->validated();
@@ -253,13 +268,17 @@ class OrganisationController extends Controller
         $organisation = Organisation::getByUuid($uuid);
 
         $schedule = $this->storeWorkingSchedule($organisation, $request);
+        $social = $this->storeSocialMedia($organisation, $request);
 
-        if ($schedule) {
-            return request()->json([
-                'success' => 'Work schedules store successfully'
-            ]);
+        if ($social && $schedule) {
+            Session::flash('success', 'Data stored successfully');
+
+            return redirect()->back();
         } else {
-            return request()->json(['danger', 'Work schedules failed to save']);
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
     }
 }

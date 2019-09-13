@@ -19,17 +19,6 @@ class OrganisationObserver
      */
     public function created(Organisation $organisation)
     {
-        // Logic to input social links
-        if (request()->has('social_id')) {
-            //either of the two inputs must exist
-            if (request()->has('share_link') || request()->has('page_link')) {
-                // populate db
-                $social = new SocialLink(request()->except('social_id'));
-                $social->social_id = request()->social_id;
-                $social->uuid_link = $organisation->uuid;
-                $social->save();
-            }
-        }
     }
 
     /**

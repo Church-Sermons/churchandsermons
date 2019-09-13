@@ -112,4 +112,31 @@ trait OrganisationTrait
 
         return null;
     }
+
+    public function storeSocialMedia($model, $request)
+    {
+        // dd($request->all());
+
+        $socialId = $request->social_id;
+        $shareLink = $request->share_link;
+        $pageLink = $request->page_link;
+
+        if ($socialId && ($shareLink || $pageLink)) {
+            $social = [];
+
+            foreach ($socialId as $key => $value) {
+                $social[] = [
+                    'social_id' => $value,
+                    'share_link' => $shareLink[$key],
+                    'page_link' => $pageLink[$key]
+                ];
+            }
+
+            $response = $model->social()->createMany($social);
+
+            return $response;
+        }
+
+        return null;
+    }
 }
