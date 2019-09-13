@@ -8,7 +8,9 @@ use App\Http\Requests\StoreOrganisationSlidesRequest;
 use App\Http\Requests\StoreOrganisationWorkScheduleRequest;
 use Illuminate\Http\Request;
 use App\Organisation;
+use App\SocialLink;
 use App\Traits\OrganisationTrait;
+use App\WorkingSchedule;
 use Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -279,6 +281,36 @@ class OrganisationController extends Controller
                 ->back()
                 ->withErrors($validator)
                 ->withInput();
+        }
+    }
+
+    public function deleteWorkSchedule($uuid, $id)
+    {
+        $schedule = WorkingSchedule::findOrFail($id);
+
+        if ($schedule->delete()) {
+            Session::flash('success', 'Work schedule deleted');
+
+            return redirect()->back();
+        } else {
+            Session::flash('danger', 'Work schedule not deleted');
+
+            return redirect()->back();
+        }
+    }
+
+    public function deleteSocialMedia($uuid, $id)
+    {
+        $social = SocialLink::findOrFail($id);
+
+        if ($social->delete()) {
+            Session::flash('success', 'Social media link deleted');
+
+            return redirect()->back();
+        } else {
+            Session::flash('danger', 'Social media link not deleted');
+
+            return redirect()->back();
         }
     }
 }

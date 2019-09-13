@@ -12,4 +12,9 @@ class SocialLink extends Model
     {
         return $this->belongsTo('App\SocialMedia', 'social_id');
     }
+
+    public function organisation()
+    {
+        return $this->belongsTo('App\Organisation', 'uuid_link', 'uuid');
+    }
 }

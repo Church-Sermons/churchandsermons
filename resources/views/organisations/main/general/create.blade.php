@@ -9,6 +9,7 @@
                 <div class="row">
                     <div class="col-md-5">
                         <h3 class="card-title font-weight-bold mb-3">Working Schedule</h3>
+                        <a href="{{ route('organisations.show', $organisation->uuid) }}" class="btn btn-sm btn-primary mb-2"><i class="fas fa-chevron-left"></i> Back To Organisation</a>
                         {{-- display list of work --}}
                         @if (count($organisation->schedules))
                             <div class="table-responsive">
@@ -18,6 +19,7 @@
                                             <th>Day</th>
                                             <th>From</th>
                                             <th>To</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -27,6 +29,13 @@
                                                 <td>{{ date('g:i a', strtotime("{$schedule->time_open}:00")) }}</td>
 
                                                 <td>{{ date('g:i a', strtotime(Helper::sumTime($schedule->time_open, $schedule->work_duration)->isFullyFormatted())) }}</td>
+                                                <td>
+                                                    <form class="d-inline" action="{{ route('organisations.general.work.delete', [$organisation->uuid, $schedule->id]) }}" method="post">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <button class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -53,13 +62,13 @@
                                             <tr>
                                                 <td>{{ $social->social->name }}</td>
                                                 <td>{{ $social->social->tag }}</td>
-                                                <td>{{ $social->social_link }}</td>
+                                                <td>{{ $social->page_link }}</td>
                                                 <td>{{ $social->share_link }}</td>
                                                 <td>
-                                                    <form class="d-inline" action="#" method="post">
+                                                    <form class="d-inline" action="{{ route('organisations.general.social.delete', [$organisation->uuid, $social->id]) }}" method="post">
                                                         @method('DELETE')
                                                         @csrf
-                                                        <button class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                                                        <button class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>

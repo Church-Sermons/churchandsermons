@@ -137,10 +137,14 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
         '/general',
         'OrganisationController@storeGeneralSettings'
     )->name('organisations.general.store');
-    Route::post(
-        '/general/{id}',
-        'OrganisationController@deleteGeneralSettings'
-    )->name('organisations.general.delete');
+    Route::delete(
+        '/general/work/{id}',
+        'OrganisationController@deleteWorkSchedule'
+    )->name('organisations.general.work.delete');
+    Route::delete(
+        '/general/social/{id}',
+        'OrganisationController@deleteSocialMedia'
+    )->name('organisations.general.social.delete');
 
     // organisation events
     Route::resource('/events', 'Organisation\OrganisationEventController', [

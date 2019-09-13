@@ -356,18 +356,38 @@
                             </div>
                             @endif
                             <h6 class="h6 font-weight-bold">Social Media</h6>
-                            @forelse ($organisation->social as $social)
-                            @if ($social->page_link)
-                                    <p class="lead mini-texts">
-                                        <a href="{{ $social->page_link }}" target="_blank">
-                                            <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
-                                        </a>
-                                    </p>
-                                    @endif
+                            <p class="lead">
+                                @forelse ($organisation->social as $social)
+                                @if ($social->page_link)
+                                    <a href="{{ $social->page_link }}" target="_blank">
+                                        <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
+                                    </a>
+                                @endif
                                 @empty
                                     <div class="clearfix mb-2">
                                         <span class="float-left lead mini-texts">
                                             No social media links added
+                                        </span>
+                                        <span class="float-right">
+                                            <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
+                                                    <i class="fas fa-edit" title="Edit Social Media"></i>
+                                                </a>
+                                            </span>
+                                    </div>
+                                @endforelse
+                            </p>
+                            <h6 class="h6 font-weight-bold">Share</h6>
+                            <p class="lead d-inline mr-1">
+                                @forelse ($organisation->social as $social)
+                                    @if ($social->share_link)
+                                        <a href="{{ $social->share_link }}" target="_blank">
+                                            <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
+                                        </a>
+                                    @endif
+                                @empty
+                                    <div class="clearfix mb-2">
+                                        <span class="float-left lead mini-texts">
+                                            No share links added
                                         </span>
                                         <span class="float-right">
                                             <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
@@ -376,27 +396,7 @@
                                         </span>
                                     </div>
                                 @endforelse
-                            <h6 class="h6 font-weight-bold">Share</h6>
-                            @forelse ($organisation->social as $social)
-                            @if ($social->share_link)
-                                <p class="lead mini-texts">
-                                    <a href="{{ $social->share_link }}" target="_blank">
-                                        <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
-                                    </a>
-                                </p>
-                                @endif
-                            @empty
-                                <div class="clearfix mb-2">
-                                    <span class="float-left lead mini-texts">
-                                        No share links added
-                                    </span>
-                                    <span class="float-right">
-                                        <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
-                                            <i class="fas fa-edit" title="Edit Social Media"></i>
-                                        </a>
-                                    </span>
-                                </div>
-                            @endforelse
+                            </p>
                         </div>
                     </div>
 
