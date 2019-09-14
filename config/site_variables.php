@@ -40,6 +40,14 @@ return [
     'defaults' => [
         'main' => [
             'organisation' => 'app/defaults/main/organisation.svg'
+        ],
+        'media' => [
+            'audio' => [
+                'poster' => 'app/defaults/musical-note.svg'
+            ],
+            'audio' => [
+                'poster' => 'app/defaults/video.svg'
+            ]
         ]
     ]
 ];

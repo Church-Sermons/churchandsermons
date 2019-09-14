@@ -140,7 +140,7 @@
                                         {{-- audio details styled component - displays the audio details --}}
                                         @component('components.audio-details')
                                             @slot('albumArt')
-                                            {{ asset('images/app/audio-icon.png') }}
+                                            {{ asset('images/app/defaults/musical-note.svg') }}
                                             @endslot
                                             @slot('title')
                                             {{ $organisation->getMedia('audio')[0]->getCustomProperty('title')?$organisation->getMedia('audio')[0]->getCustomProperty('title'):$organisation->getMedia('audio')[0]->name }}
@@ -179,7 +179,7 @@
                                             @if ($loop->iteration <= 6)
                                                 <div class="col-lg-4 col-sm-6 col-xs-12">
                                                     <div class="card mb-2">
-                                                        <img src="{{ $video->getUrl('small') }}" alt="video-placeholder" height="150" class="w-100 rounded">
+                                                        <img src="{{ is_file(public_path($video->getUrl('small')))?$video->getUrl('small'):asset('images/app/defaults/video.svg') }}" alt="video-placeholder" height="150" class="w-100 rounded">
                                                         <div class="dark-overlay d-flex flex-column justify-content-between align-items-end" title="{{ $video->getCustomProperty('description')}}">
                                                             <div class="mx-1 mt-1">
                                                                 <form class="d-inline" action="{{ route('organisations.resources.destroy', [$organisation->uuid, $video->id]) }}" method="POST">
@@ -191,7 +191,7 @@
                                                             </div>
                                                             <a href="#" class="video mr-1 mb-1 btn btn-outline-success" title="Play" data-toggle="modal"
                                                                 data-target="#categoryModal"
-                                                                data-poster="{!! $video->getUrl('small') !!}" data-src="{!! $video->getFullUrl() !!}"
+                                                                data-poster="{!! is_file(public_path($video->getUrl('small')))?$video->getUrl('small'):asset('images/app/defaults/video.svg') !!}" data-src="{!! $video->getFullUrl() !!}"
                                                                 data-title="{!! $video->name !!}" data-type="{!! $video->mime_type !!}"
                                                                 data-size="{!! $video->human_readable_size !!}" data-description="{!! $video->getCustomProperty('description') !!}"
                                                                 data-published="{!! $video->created_at?$video->created_at->diffForHumans():null !!}">
