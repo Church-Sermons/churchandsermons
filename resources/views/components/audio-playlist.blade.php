@@ -13,17 +13,17 @@
                                     <a href="#" class="meta-container"
                                         data-src="{{ $audio->getFullUrl() }}"
                                         data-type="{{ $audio->mime_type }}"
-                                        data-title="{{ $audio->getCustomProperty('title') }}"
+                                        data-title="{{ $audio->getCustomProperty('title')?$audio->getCustomProperty('title'):$audio->name }}"
                                         data-size="{{ $audio->human_readable_size }}"
-                                        data-artist="{{ $audio->getCustomProperty('artist') }}">
+                                        data-artist="{{ $audio->getCustomProperty('artist')?$audio->getCustomProperty('artist'):$audio->getCustomProperty('description') }}">
 
-                                        {{ $audio->getCustomProperty('title') }}
+                                        {{ $audio->getCustomProperty('title')?$audio->getCustomProperty('title'):$audio->name }}
                                     </a>
                                 </h6>
-                                <p class="my-1 text-muted text-capitalized w-100">{{ $audio->getCustomProperty('artist') }}</p>
+                                <p class="my-1 text-muted text-capitalized w-100">{{ $audio->getCustomProperty('artist')?$audio->getCustomProperty('artist'):$audio->getCustomProperty('description') }}</p>
                             </div>
                             <div class="col-2 text-right">
-                                <h4 class="text-muted">{{ $audio->getCustomProperty('duration') }}</h4>
+                                <h4 class="text-muted">{{ $audio->getCustomProperty('duration')?$audio->getCustomProperty('duration'):$audio->human_readable_size }}</h4>
                                 <div>
                                     <form class="d-inline" action="{{ route("{$name}.resources.destroy", [$id, $audio->id]) }}" method="POST" class="delete">
                                         @csrf

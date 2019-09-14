@@ -8,8 +8,8 @@
             <div class="general-inner container py-5">
                 <div class="row">
                     <div class="col-md-5">
-                        <h3 class="card-title font-weight-bold mb-3">Working Schedule</h3>
                         <a href="{{ route('organisations.show', $organisation->uuid) }}" class="btn btn-sm btn-primary mb-2"><i class="fas fa-chevron-left"></i> Back To Organisation</a>
+                        <h3 class="card-title font-weight-bold mb-3">Working Schedule</h3>
                         {{-- display list of work --}}
                         @if (count($organisation->schedules))
                             <div class="table-responsive">
@@ -62,8 +62,8 @@
                                             <tr>
                                                 <td>{{ $social->social->name }}</td>
                                                 <td>{{ $social->social->tag }}</td>
-                                                <td>{{ $social->page_link }}</td>
-                                                <td>{{ $social->share_link }}</td>
+                                                <td><a href="{{ $social->page_link }}" target="_blank">{{ $social->page_link }}</a></td>
+                                                <td><a href="{{ $social->share_link }}" target="_blank">{{ $social->share_link }}</a></td>
                                                 <td>
                                                     <form class="d-inline" action="{{ route('organisations.general.social.delete', [$organisation->uuid, $social->id]) }}" method="post">
                                                         @method('DELETE')
@@ -81,9 +81,9 @@
                         @endif
                     </div>
                     <div class="col-md-7">
+                        @include('components.messages')
+                        @include('components.errors')
                         <div class="card">
-                            @include('components.messages')
-                            @include('components.errors')
                             <div class="card-body">
                                 <form action="{{ route('organisations.general.store', $organisation->uuid) }}" method="post">
                                     @csrf

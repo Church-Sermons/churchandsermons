@@ -143,10 +143,10 @@
                                             {{ asset('images/app/audio-icon.png') }}
                                             @endslot
                                             @slot('title')
-                                            {{ $organisation->getMedia('audio')[0]->getCustomProperty('title') }}
+                                            {{ $organisation->getMedia('audio')[0]->getCustomProperty('title')?$organisation->getMedia('audio')[0]->getCustomProperty('title'):$organisation->getMedia('audio')[0]->name }}
                                             @endslot
                                             @slot('artist')
-                                            {{ $organisation->getMedia('audio')[0]->getCustomProperty('artist') }}
+                                            {{ $organisation->getMedia('audio')[0]->getCustomProperty('artist')?$organisation->getMedia('audio')[0]->getCustomProperty('artist'):$organisation->getMedia('audio')[0]->getCustomProperty('description') }}
                                             @endslot
                                             @slot('size')
                                             {{ $organisation->getMedia('audio')[0]->human_readable_size }}
@@ -276,7 +276,13 @@
                                     <div class="col-md-6 col-sm-12 mb-2">
                                         <div class="card h-100">
                                             <div class="card-body d-flex flex-column align-items-center">
-                                                <img src="{{ asset('storage/'.$profile->profile_image) }}" alt="avatar" class="rounded-circle mr-2 mt-2" width="100" height="100" style="object-fit: cover;">
+                                                @if (Handler::getPath($profile->profile_image)->displayImage())
+                                                    <img src="{{ Handler::getPath($profile->profile_image)->displayImage() }}" alt="avatar" class="rounded-circle mr-2 mt-2" width="100" height="100" style="object-fit: cover;">
+                                                @else
+                                                    <h4 class="text-center bg-info px-4 py-2 font-weight-bold rounded-circle display-4">
+                                                        {{ strtoupper(substr($profile->name, 0, 1)) }}
+                                                    </h4>
+                                                @endif
                                                 <h4 class="text-capitalize font-weight-bold mt-1">
                                                     <a href="{{ route('profiles.show', $profile->uuid) }}">{{ $profile->name.__(" ").$profile->surname }}</a>
                                                 </h4>
@@ -380,7 +386,7 @@
                                 @forelse ($organisation->social as $social)
                                     @if ($social->page_link)
                                         <span class="social-container rounded-circle mr-1 d-flex align-items-center justify-content-center">
-                                            <a href="{{ $social->page_link }}" target="_blank">
+                                            <a href="{{ $social->page_link }}" target="_blank" title="{{ $social->social->name }}">
                                                 <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
                                             </a>
                                         </span>
@@ -403,7 +409,7 @@
                                 @forelse ($organisation->social as $social)
                                     @if ($social->share_link)
                                         <span class="social-container rounded-circle mr-1 d-flex align-items-center justify-content-center">
-                                            <a href="{{ $social->share_link }}" target="_blank">
+                                            <a href="{{ $social->share_link }}" target="_blank" title="{{ $social->social->name }}">
                                                 <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
                                             </a>
                                         </span>
