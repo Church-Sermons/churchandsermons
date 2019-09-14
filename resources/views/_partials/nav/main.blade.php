@@ -89,7 +89,9 @@
                         @if (Auth::user()->profile_image)
                             <img src="{{ asset('storage/'.Auth::user()->profile_image) }}" alt="user-avatar" width="30" height="30" class="rounded-circle mr-1">
                         @else
-                            <i class="fas fa-user-circle mr-1"></i>
+                            <h6 class="p-2 d-inline text-center bg-info font-weight-bold rounded-circle mr-1">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)).strtoupper(substr(Auth::user()->surname, 0, 1)) }}
+                            </h6>
                         @endif
                         Hello, {{ Auth::user()-> name }}
                     </a>

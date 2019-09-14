@@ -5,15 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGeneralSettingsRequest;
 use App\Http\Requests\StoreOrganisationRequest;
 use App\Http\Requests\StoreOrganisationSlidesRequest;
-use App\Http\Requests\StoreOrganisationWorkScheduleRequest;
-use Illuminate\Http\Request;
 use App\Organisation;
 use App\SocialLink;
 use App\Traits\OrganisationTrait;
 use App\WorkingSchedule;
 use Session;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\Models\Media;
 
 class OrganisationController extends Controller
@@ -30,17 +26,7 @@ class OrganisationController extends Controller
         )->except(['index', 'show']);
 
         $this->name = 'organisations';
-        $this->_excepts = [
-            'category',
-            'logo',
-            'slides',
-            'day_of_week',
-            'time_open',
-            'work_duration',
-            'social_id',
-            'share_link',
-            'page_link'
-        ];
+        $this->_excepts = ['category', 'logo'];
     }
     /**
      * Display a listing of the resource.
@@ -63,8 +49,7 @@ class OrganisationController extends Controller
      */
     public function create()
     {
-        $sites = DB::table('social_media')->get();
-        return view('organisations.main.create', compact('sites'));
+        return view('organisations.main.create');
     }
 
     /**
@@ -115,12 +100,8 @@ class OrganisationController extends Controller
     public function edit($uuid)
     {
         $organisation = Organisation::getByUuid($uuid);
-        $sites = DB::table('social_media')->get();
 
-        return view(
-            'organisations.main.edit',
-            compact(['organisation', 'sites'])
-        );
+        return view('organisations.main.edit', compact('organisation'));
     }
 
     /**
@@ -130,28 +111,17 @@ class OrganisationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $uuid)
+    public function update(StoreOrganisationRequest $request, $uuid)
     {
         $organisation = Organisation::getByUuid($uuid);
 
         $response = $this->updateOrganisation(
-            $request,
             $organisation,
+            $request,
             $this->_excepts
         );
 
         if ($organisation->update($response['data'])) {
-            // delete old data slides - get old slides
-            $oldSlides = $response['slides']['oldSlides'];
-            if (is_array($oldSlides) && count($oldSlides)) {
-                // delete
-                $destorySlides = Media::destroy($oldSlides);
-                // log it
-                Log::channel('custom')->info(
-                    "Old slides deleted. Dump => {$destorySlides}"
-                );
-            }
-
             Session::flash('success', 'Organisation updated successfully');
 
             return redirect()->route('organisations.index');

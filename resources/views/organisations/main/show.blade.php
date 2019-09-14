@@ -4,12 +4,22 @@
 
 @section('content')
 <div id="safeguard">
-    <section id="banner">
-        <div class="banner-content">
-            <div class="dark-overlay py-5">
-                <div class="container d-flex justify-content-center w-100 h-100 align-items-center flex-column">
+    <div id="top" class="bg-light">
+        <div class="top-inner container py-5">
+            <div class="row">
+                <div class="col-md-4 offset-md-5">
                     <!-- Logo Image-->
-                    <img src="{{ Handler::getPath($organisation->logo)->displayImage() }}" alt="{{ $organisation->name.__("-Logo") }}" width="200" height="200" class="rounded">
+                    @if (Handler::getPath($organisation->logo)->displayImage())
+                        <img src="{{ Handler::getPath($organisation->logo)->displayImage() }}" alt="{{ $organisation->name.__("-Logo") }}" class="rounded-circle" height="170" width="170">
+                    @else
+                        <h1 class="display-1 text-white font-weight-bolder bg-info text-center w-50 py-4 rounded-circle">
+                            {{ strtoupper(substr($organisation->name, 0, 1)) }}
+                        </h1>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
                     <h4 class="text-center display-4 text-uppercase font-weight-bold my-2">
                         {{ $organisation->name }}
                     </h4>
@@ -19,8 +29,7 @@
                 </div>
             </div>
         </div>
-    </section><!-- End of Banner Section -->
-
+    </div>
     <section id="details">
         <div class="details-inner container my-5">
             @include('components.messages')
@@ -309,25 +318,34 @@
                             <p class="lead mini-texts">{{ $organisation->phone }}</p>
                             <h6 class="h6 font-weight-bold">Email</h6>
                             <p class="lead mini-texts">{{ $organisation->email }}</p>
-                            <h6 class="h6 font-weight-bold">Website</h6>
-                            @if ($organisation->website)
-                                <p class="lead mini-texts">
+                            <div class="clearfix">
+                                <span class="float-left">
+                                    <h6 class="h6 font-weight-bold">Website</h6>
+                                </span>
+                                <span class="float-right">
+                                    <a href="{{ route('organisations.edit', $organisation->uuid) }}">
+                                        <i class="fas fa-edit" title="Edit Website"></i>
+                                    </a>
+                                </span>
+                            </div>
+                            <p class="lead mini-texts">
+                                @if ($organisation->website)
                                     <a href="{{ $organisation->website }}" target="_blank">{{ $organisation->website }}</a>
-                                </p>
-                            @else
-                                <div class="clearfix mb-2">
-                                    <span class="float-left lead mini-texts">
-                                        No website information added
-                                    </span>
-                                    <span class="float-right">
-                                        <a href="{{ route('organisations.edit', $organisation->uuid) }}">
-                                            <i class="fas fa-edit" title="Edit Website"></i>
-                                        </a>
-                                    </span>
-                                </div>
-                            @endif
+                                @else
+                                    No website information available
+                                @endif
+                            </p>
                             {{-- {{ dd(date('g:i a', strtotime('1:00'))) }} --}}
-                            <h6 class="h6 font-weight-bold">Work Schedule</h6>
+                            <div class="clearfix">
+                                <span class="float-left">
+                                    <h6 class="h6 font-weight-bold">Work Schedule</h6>
+                                </span>
+                                <span class="float-right">
+                                    <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
+                                        <i class="fas fa-edit" title="Edit Work Schedule"></i>
+                                    </a>
+                                </span>
+                            </div>
                             @if (count($organisation->schedules))
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-sm ">
@@ -344,57 +362,54 @@
                                     </table>
                                 </div>
                             @else
-                            <div class="clearfix mb-2">
-                                <span class="float-left lead mini-texts">
-                                    No work schedule information added
+                            <p class="lead mini-texts">
+                                No work schedule information added
+                            </p>
+                            @endif
+                            <div class="clearfix">
+                                <span class="float-left">
+                                    <h6 class="h6 font-weight-bold">Social Media</h6>
                                 </span>
                                 <span class="float-right">
                                     <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
-                                        <i class="fas fa-edit" title="Edit Work Schedule"></i>
+                                        <i class="fas fa-edit" title="Edit Social Media"></i>
                                     </a>
                                 </span>
                             </div>
-                            @endif
-                            <h6 class="h6 font-weight-bold">Social Media</h6>
-                            <p class="lead">
+                            <p class="lead mini-texts d-flex">
                                 @forelse ($organisation->social as $social)
-                                @if ($social->page_link)
-                                    <a href="{{ $social->page_link }}" target="_blank">
-                                        <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
-                                    </a>
-                                @endif
-                                @empty
-                                    <div class="clearfix mb-2">
-                                        <span class="float-left lead mini-texts">
-                                            No social media links added
-                                        </span>
-                                        <span class="float-right">
-                                            <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
-                                                    <i class="fas fa-edit" title="Edit Social Media"></i>
-                                                </a>
-                                            </span>
-                                    </div>
-                                @endforelse
-                            </p>
-                            <h6 class="h6 font-weight-bold">Share</h6>
-                            <p class="lead d-inline mr-1">
-                                @forelse ($organisation->social as $social)
-                                    @if ($social->share_link)
-                                        <a href="{{ $social->share_link }}" target="_blank">
-                                            <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
-                                        </a>
-                                    @endif
-                                @empty
-                                    <div class="clearfix mb-2">
-                                        <span class="float-left lead mini-texts">
-                                            No share links added
-                                        </span>
-                                        <span class="float-right">
-                                            <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
-                                                <i class="fas fa-edit" title="Edit Social Media"></i>
+                                    @if ($social->page_link)
+                                        <span class="social-container rounded-circle mr-1 d-flex align-items-center justify-content-center">
+                                            <a href="{{ $social->page_link }}" target="_blank">
+                                                <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
                                             </a>
                                         </span>
-                                    </div>
+                                    @endif
+                                @empty
+                                    No social media links added
+                                @endforelse
+                            </p>
+                            <div class="clearfix">
+                                <span class="float-left">
+                                    <h6 class="h6 font-weight-bold">Share</h6>
+                                </span>
+                                <span class="float-right">
+                                    <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
+                                        <i class="fas fa-edit" title="Edit Share Links"></i>
+                                    </a>
+                                </span>
+                            </div>
+                            <p class="lead mini-texts d-flex">
+                                @forelse ($organisation->social as $social)
+                                    @if ($social->share_link)
+                                        <span class="social-container rounded-circle mr-1 d-flex align-items-center justify-content-center">
+                                            <a href="{{ $social->share_link }}" target="_blank">
+                                                <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
+                                            </a>
+                                        </span>
+                                    @endif
+                                @empty
+                                    No share links added
                                 @endforelse
                             </p>
                         </div>

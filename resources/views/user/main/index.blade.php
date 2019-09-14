@@ -40,10 +40,16 @@
                     </div>
                 </div>
                 <div class="col-md-3">
+                    @if (Auth::user()->profile_image)
                     <div class="card shadow">
                         <img src="{{ asset('storage/'.Auth::user()->profile_image)}}" alt="avatar" class="w-100 h-100 img-thumbnail">
 
                     </div>
+                    @else
+                        <h3 class="p-5 display-1 border text-center bg-info font-weight-bold">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)).strtoupper(substr(Auth::user()->surname, 0, 1)) }}
+                        </h3>
+                    @endif
                 </div>
             </div>
         </div>

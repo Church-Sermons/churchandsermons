@@ -40,19 +40,17 @@ trait OrganisationTrait
     {
         $validator = $request->validated();
 
-        // upload slides then delete existing one
-        $slides = $this->uploadSlides($request, $model);
-
         // merge for update
         $data = array_merge($request->except($excepts), [
             'category_id' => $request->category,
-            'logo' => $request->logo->store('uploads/images', 'public')
+            'logo' => $request->hasFile('logo')
+                ? $request->logo->store('uploads/images', 'public')
+                : $model->logo
         ]);
 
         return [
             'data' => $data,
-            'validator' => $validator,
-            'slides' => $slides
+            'validator' => $validator
         ];
     }
 

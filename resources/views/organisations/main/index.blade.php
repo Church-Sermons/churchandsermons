@@ -64,7 +64,13 @@
                     <div class="col-md-4 col-sm-6 col-xs-12 mb-3">
                         <div class="card bg-light h-100">
                             <div class="card-image-handler">
-                                <img src="{{ Handler::getPath($organisation->logo)->displayImage() }}" alt="{{ $organisation->name.__("-Logo") }}" class="w-100 h-100">
+                                @if (Handler::getPath($organisation->logo)->displayImage())
+                                    <img src="{{ Handler::getPath($organisation->logo)->displayImage() }}" alt="{{ $organisation->name.__("-Logo") }}" class="w-100 h-100">
+                                @else
+                                    <h1 class="display-1 text-white font-weight-bolder bg-info d-flex justify-content-center align-items-center h-100">
+                                        {{ strtoupper(substr($organisation->name, 0, 1)) }}
+                                    </h1>
+                                @endif
                                 <div class="card-image-overlay rounded-top d-flex align-items-start justify-content-end p-3">
                                     @isTribrid($organisation)
                                         <form class="d-inline mr-1" action="{{ route('organisations.destroy', $organisation->uuid) }}" method="POST">
