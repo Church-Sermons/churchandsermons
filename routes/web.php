@@ -81,7 +81,7 @@ Route::prefix('user')->group(function () {
 
 // Manage - Content Providers
 Route::prefix('manage')
-    ->middleware('role:superadministrator|administrator')
+    ->middleware('role:superadmin|admin')
     ->group(function () {
         Route::get('/', 'ManageController@index')->name('manage.index');
         Route::get('/dashboard', 'ManageController@dashboard')->name(
@@ -255,25 +255,29 @@ Route::prefix('/sermons/{sermon_id}')->group(function () {
 Auth::routes(['verify' => true]);
 
 Route::get('/fake', function () {
-    $faker = Faker\Factory::create();
-    $data = array();
+    if (app()->environment() == 'local') {
+        $faker = Faker\Factory::create();
+        $data = array();
 
-    for ($i = 0; $i < 10; $i++) {
-        $data[] = array(
-            'name' => $faker->name(),
-            'company_name' => $faker->company,
-            'email' => $faker->companyEmail,
-            'phone' => $faker->e164PhoneNumber,
-            'website' => 'https://' . $faker->domainName,
-            'address' => $faker->address,
-            'skill' => $faker->jobTitle,
-            'coordinates' => array(
-                'latitude' => $faker->latitude,
-                'longitude' => $faker->longitude
-            ),
-            'description' => $faker->paragraph(5)
-        );
+        for ($i = 0; $i < 10; $i++) {
+            $data[] = array(
+                'name' => $faker->name(),
+                'company_name' => $faker->company,
+                'email' => $faker->companyEmail,
+                'phone' => $faker->e164PhoneNumber,
+                'website' => 'https://' . $faker->domainName,
+                'address' => $faker->address,
+                'skill' => $faker->jobTitle,
+                'coordinates' => array(
+                    'latitude' => $faker->latitude,
+                    'longitude' => $faker->longitude
+                ),
+                'description' => $faker->paragraph(5)
+            );
+        }
+
+        return json_encode($data);
     }
 
-    return json_encode($data);
+    return false;
 });

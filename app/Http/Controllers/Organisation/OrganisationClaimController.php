@@ -16,9 +16,9 @@ class OrganisationClaimController extends Controller
 
     public function __construct()
     {
-        $this->middleware(
-            'role:administrator|superadministrator|author'
-        )->except('create');
+        $except = ['create'];
+        $this->middleware('auth')->except($except);
+        $this->middleware('role:admin|superadmin|author')->except($except);
 
         $this->name = "organisations";
     }

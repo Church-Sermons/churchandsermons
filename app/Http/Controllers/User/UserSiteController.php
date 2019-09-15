@@ -11,7 +11,8 @@ class UserSiteController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator');
+        $this->middleware('auth');
+        $this->middleware('role:admin|superadmin|author');
     }
 
     public function siteAboutEdit()

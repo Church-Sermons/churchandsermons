@@ -18,9 +18,10 @@ class ProfileResourceController extends Controller
 
     public function __construct()
     {
-        $this->middleware(
-            'role:administrator|superadministrator|author'
-        )->except(['index', 'show']);
+        $except = ['show', 'index'];
+        $this->middleware('auth')->except($except);
+        $this->middleware('role:admin|superadmin|author')->except($except);
+
         $this->name = 'profiles';
     }
 

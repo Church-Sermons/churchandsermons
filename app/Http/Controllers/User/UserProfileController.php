@@ -14,7 +14,8 @@ class UserProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:author|administrator|superadministrator');
+        $this->middleware('auth');
+        $this->middleware('role:admin|superadmin|author');
     }
 
     public function index()
@@ -97,6 +98,4 @@ class UserProfileController extends Controller
             return redirect()->back();
         }
     }
-
-    
 }

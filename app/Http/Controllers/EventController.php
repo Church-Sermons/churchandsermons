@@ -12,9 +12,9 @@ class EventController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(
-            'role:administrator|superadministrator|author'
-        )->except(['show', 'index']);
+        $except = ['show', 'index'];
+        $this->middleware('auth')->except($except);
+        $this->middleware('role:admin|superadmin|author')->except($except);
     }
     /**
      * Display a listing of the resource.

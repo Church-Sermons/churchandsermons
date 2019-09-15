@@ -18,9 +18,9 @@ class SermonResourceController extends Controller
 
     public function __construct()
     {
-        $this->middleware(
-            'role:administrator|superadministrator|author'
-        )->except(['index', 'show']);
+        $except = ['index', 'show'];
+        $this->middleware('auth')->except($except);
+        $this->middleware('role:admin|superadmin|author')->except($except);
 
         $this->name = 'sermons';
     }

@@ -16,7 +16,9 @@ class SermonClaimController extends Controller
 
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator|author');
+        $this->middleware('auth');
+        $this->middleware('role:admin|superadmin|author');
+
         $this->name = "sermons";
     }
 
