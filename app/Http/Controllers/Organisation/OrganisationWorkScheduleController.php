@@ -34,9 +34,9 @@ class OrganisationWorkScheduleController extends Controller
     public function store(StoreWorkScheduleRequest $request, $uuid)
     {
         // dd($request->all());
-        $organisation = Organisation::getByUuid($uuid);
+        $model = Organisation::getByUuid($uuid);
 
-        $response = $this->storeWorkSchedule($organisation, $request);
+        $response = $this->storeWorkSchedule($model, $request);
 
         if ($response['schedule']) {
             Session::flash('success', 'Work Schedule stored successfully');

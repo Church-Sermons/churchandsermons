@@ -28,7 +28,7 @@ class ProfileContactController extends Controller
     {
         $model = Profile::getByUuid($uuid);
 
-        return view('contacts.index', compact('model'));
+        return view('contacts.index', compact('model'))->withName($this->name);
     }
 
     public function create($uuid)

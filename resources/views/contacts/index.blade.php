@@ -26,7 +26,7 @@
                                             {{ $message->message }}
                                         </button>
                                     </p>
-                                    <form class="d-inline mr-1 mt-1" action="{{ route('organisations.contacts.destroy', [$message->uuid_link, $message->id]) }}" method="POST">
+                                    <form class="d-inline mr-1 mt-1" action='{{ route("{$name}.contacts.destroy", [$message->uuid_link, $message->id]) }}' method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>

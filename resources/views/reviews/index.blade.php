@@ -17,7 +17,7 @@
                         ut facere. Minus, expedita ut. Odit?
                     </p>
                     <div class="accordion my-3" id="accordionParent">
-                        @component('components.messages')@endcomponent
+                        @includeIf('components.messages')
 
                         @forelse ($model->reviews as $review)
                             <div class="card mb-1 {{ $loop->last?'border':null }}">
@@ -27,7 +27,7 @@
                                             {{ $review->message }}
                                         </button>
                                     </p>
-                                    <form class="d-inline mr-1 mt-1" action="{{ route('organisations.reviews.destroy', [$review->uuid_link, $review->id]) }}" method="POST">
+                                    <form class="d-inline mr-1 mt-1" action='{{ route("{$name}.reviews.destroy", [$review->uuid_link, $review->id]) }}' method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>

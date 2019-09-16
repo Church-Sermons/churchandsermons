@@ -26,7 +26,7 @@
                                             {{ $claim->message }}
                                         </button>
                                     </p>
-                                    <form class="d-inline mr-1 mt-1" action="{{ route('organisations.claims.destroy', [$claim->uuid_link, $claim->id]) }}" method="POST">
+                                    <form class="d-inline mr-1 mt-1" action='{{ route("{$name}.claims.destroy", [$claim->uuid_link, $claim->id]) }}' method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>

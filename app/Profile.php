@@ -79,6 +79,15 @@ class Profile extends Model implements HasMedia
         )->orderBy('id', 'desc');
     }
 
+    public function schedules()
+    {
+        return $this->hasMany(
+            'App\WorkingSchedule',
+            'uuid_link',
+            'uuid'
+        )->orderBy('day_of_week', 'asc');
+    }
+
     // scopes
     public function scopeGetByUuid($query, $uuid)
     {

@@ -31,7 +31,7 @@ class ProfileReviewController extends Controller
     {
         $model = Profile::getByUuid($uuid);
 
-        return view('reviews.index', compact('model'));
+        return view('reviews.index', compact('model'))->withName($this->name);
     }
 
     public function create($uuid)

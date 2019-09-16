@@ -26,7 +26,7 @@ class ProfileClaimController extends Controller
     {
         $model = Profile::getByUuid($uuid);
 
-        return view('claims.index', compact('model'));
+        return view('claims.index', compact('model'))->withName($this->name);
     }
 
     public function create($uuid)

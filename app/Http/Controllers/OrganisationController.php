@@ -256,21 +256,6 @@ class OrganisationController extends Controller
         }
     }
 
-    public function deleteWorkSchedule($uuid, $id)
-    {
-        $schedule = WorkingSchedule::findOrFail($id);
-
-        if ($schedule->delete()) {
-            Session::flash('success', 'Work schedule deleted');
-
-            return redirect()->back();
-        } else {
-            Session::flash('danger', 'Work schedule not deleted');
-
-            return redirect()->back();
-        }
-    }
-
     public function deleteSocialMedia($uuid, $id)
     {
         $social = SocialLink::findOrFail($id);
