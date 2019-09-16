@@ -83,4 +83,28 @@ class Handler
             return asset('storage/' . static::$path);
         }
     }
+
+    public static function generateTime()
+    {
+        $start = 1;
+        $limit = 24;
+        $reset = 1;
+        $holder = [];
+
+        foreach (range($start, $limit) as $value) {
+            if ($value < 12) {
+                $holder[] = "{$value}:00 am";
+            } elseif ($value == 12) {
+                $holder[] = "{$value}:00 pm";
+            } elseif ($value == 24) {
+                $holder[] = "{$reset}:00 am";
+            } else {
+                $holder[] = "{$reset}:00 pm";
+
+                $reset++;
+            }
+        }
+
+        return $holder;
+    }
 }

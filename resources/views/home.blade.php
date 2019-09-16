@@ -263,7 +263,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <div id="recentsCarousel"class="carousel slide"data-ride="carousel">
+                <div id="recentsCarousel"class="carousel slide" data-ride="carousel">
                     <!-- indicators -->
                     <ul class="carousel-indicators">
                         <li data-target="#recentsCarousel"data-slide-to="0"class="active"></li>

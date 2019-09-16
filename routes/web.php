@@ -11,6 +11,9 @@
 |
 */
 // Bind Routes
+Route::get('/work-schedule', function () {
+    return view('components.forms.work-schedule');
+});
 
 // Home Routes
 Route::get('/', 'HomeController@index')->name('home');
