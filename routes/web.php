@@ -128,24 +128,6 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
         'organisations.slides.delete'
     );
 
-    // comms general schedule
-    Route::get(
-        '/general',
-        'OrganisationController@createGeneralSettings'
-    )->name('organisations.general.create');
-    Route::post(
-        '/general',
-        'OrganisationController@storeGeneralSettings'
-    )->name('organisations.general.store');
-    Route::delete(
-        '/general/work/{id}',
-        'OrganisationController@deleteWorkSchedule'
-    )->name('organisations.general.work.delete');
-    Route::delete(
-        '/general/social/{id}',
-        'OrganisationController@deleteSocialMedia'
-    )->name('organisations.general.social.delete');
-
     // organisation events
     Route::resource('/events', 'Organisation\OrganisationEventController', [
         'as' => 'organisations'
@@ -274,6 +256,12 @@ Route::prefix('/sermons/{sermon_id}')->group(function () {
     Route::resource('/reviews', 'Sermon\SermonReviewController', [
         'as' => 'sermons',
         'except' => ['update', 'edit']
+    ]);
+
+    // sermon social media
+    Route::resource('/social-media', 'Sermon\SermonSocialMediaController', [
+        'as' => 'sermons',
+        'except' => ['edit', 'update', 'index', 'show']
     ]);
 
     // speaker
