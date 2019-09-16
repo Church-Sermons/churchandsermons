@@ -20,7 +20,7 @@
                             <form action="{{ route("{$name}.claims.store", $model->uuid) }}" method="post" class="py-2">
                                 @csrf
                                 @include('components.messages')
-                                @component('claims.form')
+                                @component('components.forms.claims')
                                     @slot('subject')
                                         {{ old('subject') }}
                                     @endslot

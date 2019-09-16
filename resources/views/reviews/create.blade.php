@@ -20,7 +20,7 @@
                             <form action="{{ route("{$name}.reviews.store", $model->uuid) }}" method="post" class="py-2">
                                 @csrf
                                 @component('components.messages')@endcomponent
-                                @component('reviews.form')
+                                @component('components.forms.reviews')
                                     @slot('rating')
                                         {{ old('rating') }}
                                     @endslot
