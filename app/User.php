@@ -72,7 +72,7 @@ class User extends Authenticatable implements HasMedia
             return true;
         }
 
-        if ($this->hasRole(['administrator', 'superadministrator'])) {
+        if ($this->hasRole(['admin', 'superadmin'])) {
             return true;
         }
 

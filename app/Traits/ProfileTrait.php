@@ -12,10 +12,12 @@ trait ProfileTrait
 
         $profile = new Profile($request->except($excepts));
 
-        $profile->profile_image = $request->profile_image->store(
-            'uploads/images',
-            'public'
-        );
+        if ($request->hasFile('profile_image')) {
+            $profile->profile_image = $request->profile_image->store(
+                'uploads/images',
+                'public'
+            );
+        }
 
         $profile->category_id = $request->category;
 
@@ -30,10 +32,12 @@ trait ProfileTrait
         $validator = $request->validated();
 
         $profile->fill($request->except($excepts));
-        $profile->profile_image = $request->profile_image->store(
-            'uploads/images',
-            'public'
-        );
+        if ($request->hasFile('profile_image')) {
+            $profile->profile_image = $request->profile_image->store(
+                'uploads/images',
+                'public'
+            );
+        }
         $profile->category_id = $request->category;
 
         return [

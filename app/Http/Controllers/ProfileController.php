@@ -47,8 +47,7 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        $sites = DB::table('social_media')->get();
-        return view('profiles.main.create', compact('sites'));
+        return view('profiles.main.create', ['profile' => new Profile()]);
     }
 
     /**

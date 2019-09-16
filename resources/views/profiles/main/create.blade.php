@@ -22,41 +22,9 @@
                                 method="post" enctype="multipart/form-data"
                                 class="py-2" id="profileForm">
                                 @csrf
-                                @component('profiles.main.form', ['categories' => $categories, 'oldCategory' => old('category')])
-                                    @slot('name')
-                                        {{ old('name') }}
-                                    @endslot
-                                    @slot('surname')
-                                        {{ old('surname') }}
-                                    @endslot
-                                    @slot('email')
-                                        {{ old('email') }}
-                                    @endslot
-                                    @slot('website')
-                                        {{ old('website') }}
-                                    @endslot
-                                    @slot('phone')
-                                        {{ old('phone') }}
-                                    @endslot
-                                    @slot('address')
-                                        {{ old('address') }}
-                                    @endslot
-                                    @slot('latitude')
-                                        {{ old('lat') }}
-                                    @endslot
-                                    @slot('longitude')
-                                        {{ old('lon') }}
-                                    @endslot
-                                    @slot('description')
-                                        {{ old('description') }}
-                                    @endslot
-                                    @slot('profile')
-                                        {{ old('profile_image') }}
-                                    @endslot
-                                    @slot('submitButtonText')
-                                        Add Profile
-                                    @endslot
-                                @endcomponent
+                                {{-- import from form execs --}}
+                                @includeIf('components.form-execs.profile',
+                                    ['submitText' => 'Create Profile', 'profile' => $profile ])
                             </form>
                         </div>
                     </div>
