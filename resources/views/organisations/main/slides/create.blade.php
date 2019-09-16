@@ -15,21 +15,11 @@
                         <a href="{{ route('organisations.show', $organisation->uuid) }}" class="btn btn-sm btn-primary mb-2"><i class="fas fa-chevron-left"></i> Back To Organisation</a>
                         <form action="{{ route('organisations.slides.store', $organisation->uuid) }}" method="post" class="mb-2 mt-1" enctype="multipart/form-data">
                             @csrf
-                            <div class="input-group">
-                                <div class="custom-file">
-                                    <input type="file" name="slides[]" class="custom-file-input @error('slides') is-invalid @enderror" id="slides" multiple>
-                                    <label for="slides" class="custom-file-label">Upload Slides</label>
-                                    @error('slides')
-                                        <p class="invalid-feedback">
-                                            {{ $message }}
-                                        </p>
-                                    @enderror
-                                </div>
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">Upload</button>
-                                </div>
-                            </div>
+                            {{-- import from component forms --}}
+                            @includeIf('components.forms.organisation.slides')
+
                         </form>
+                        <hr>
                         @if (count($organisation->getMedia('slides')))
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped">

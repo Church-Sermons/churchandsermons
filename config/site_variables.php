@@ -8,7 +8,7 @@ return [
         3 => 'Wednesday',
         4 => 'Thursday',
         5 => 'Friday',
-        6 => 'Satuday'
+        6 => 'Saturday'
     ],
     'social' => [
         'fb' => [

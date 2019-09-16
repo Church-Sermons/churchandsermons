@@ -347,7 +347,7 @@
                                     <h6 class="h6 font-weight-bold">Work Schedule</h6>
                                 </span>
                                 <span class="float-right">
-                                    <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
+                                    <a href="{{ route('organisations.work-schedule.create', $organisation->uuid) }}">
                                         <i class="fas fa-edit" title="Edit Work Schedule"></i>
                                     </a>
                                 </span>

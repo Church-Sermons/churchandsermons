@@ -180,6 +180,16 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
         'as' => 'organisations',
         'except' => ['edit', 'update']
     ]);
+
+    // organisation schedule
+    Route::resource(
+        '/work-schedule',
+        'Organisation\OrganisationWorkScheduleController',
+        [
+            'as' => 'organisations',
+            'except' => ['edit', 'update', 'index', 'show']
+        ]
+    );
 });
 
 /**
@@ -216,6 +226,12 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
     Route::resource('/reviews', 'Profile\ProfileReviewController', [
         'as' => 'profiles',
         'except' => ['update', 'edit']
+    ]);
+
+    // organisation schedule
+    Route::resource('/work-schedule', 'Profile\ProfileWorkScheduleController', [
+        'as' => 'profiles',
+        'except' => ['edit', 'update', 'index', 'show']
     ]);
 });
 

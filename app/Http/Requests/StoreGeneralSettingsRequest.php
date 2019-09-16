@@ -24,12 +24,6 @@ class StoreGeneralSettingsRequest extends FormRequest
     public function rules()
     {
         return [
-            'day_of_week' => 'array',
-            'day_of_week.*' => 'numeric|between:0,6',
-            'time_open' => 'array',
-            'time_open.*' => 'numeric|between:1,24',
-            'work_duration' => 'array',
-            'work_duration.*' => 'numeric|between:1,24',
             'social_id' => 'array',
             'social_id.*' => 'numeric',
             'share_link' => 'array',
