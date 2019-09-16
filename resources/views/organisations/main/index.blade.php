@@ -11,8 +11,8 @@
                         organisations
                     </h4>
                     @auth
-                        <a href="{{ route('organisations.create') }}" class="btn btn-primary btn-lg text-uppercase">
-                            <i class="fas fa-plus"></i> create organisation
+                        <a href="{{ route('organisations.create') }}" class="btn btn-custom btn-lg text-uppercase">
+                            <i class="fas fa-plus"></i> register organisation
                         </a>
                     @endauth
                 </div>
@@ -43,7 +43,7 @@
                                             <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Keyword">
                                         </div>
                                         <div class="col-md-2 col-sm-12">
-                                            <button type="button" class="btn btn-primary text-uppercase form-control">Search</button>
+                                            <button type="button" class="btn btn-custom text-uppercase form-control">Search</button>
                                         </div>
                                     </div>
                                 </form>
@@ -78,7 +78,7 @@
                                             @method('DELETE')
                                             <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
                                         </form>
-                                        <a href="{{ route('organisations.edit', $organisation->uuid) }}" class="btn btn-primary" title="Edit"><i class="fas fa-edit"></i></a>
+                                        <a href="{{ route('organisations.edit', $organisation->uuid) }}" class="btn btn-custom" title="Edit"><i class="fas fa-edit"></i></a>
                                     @endisTribrid
                                 </div>
                             </div>

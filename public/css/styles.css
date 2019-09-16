@@ -18532,14 +18532,14 @@ a:hover {
 .banner-content {
   width: 100%;
   min-height: 500px;
-  background: black url(/images/home-banner-bg.jpg?a5f010ca9d687771ccc2da4417b6dfd0);
+  background: rgba(27, 28, 30, 0.4);
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
 }
 
 .dark-overlay {
-  background: rgba(151, 111, 38, 0.25);
+  background: rgba(27, 28, 30, 0.4);
   width: 100%;
   height: 100%;
   position: absolute;
@@ -18730,24 +18730,37 @@ a:hover {
 
 .banner-home {
   background-image: url(/images/home-banner1.jpg?03a05103fe143aa57d53daccdf34e54f);
+  background-position: center;
 }
 
 .banner-organisation {
-  background-image: url(/images/organisation-sample-1.jpg?c8f029dccba4dc3204833042e85d7845);
+  background-image: url(/images/organisation.jpg?1d61ebec2253ace7204decba686f3b2d);
+  background-position: center;
 }
 
 .banner-sermon {
-  background-image: url(/images/sermon-sample1.jpg?dc29e7b9ee00c4632a0b97018bbf86d6);
+  background-image: url(/images/sermon.jpg?66add21be8c70e53c8be93152e6f07a6);
   background-position: center;
 }
 
 .banner-profile {
-  background-image: url(/images/profile-sample-1.jpg?9e9a57e41f7c65fdcabdd92787a3fadf);
+  background-image: url(/images/profile.jpg?90e8e2b86ab0bd6b3e2e0dffab1be50b);
   background-position: center;
 }
 
 .banner-contact {
   background-image: url(/images/contact-sample1.jpg?71076a86217d9425bc56998770359c1d);
   background-position: center;
+}
+
+.btn-outline-custom {
+  background: #fff;
+  border: solid 1px #976f26;
+  color: #976f26;
+}
+
+.btn-custom {
+  color: #fff;
+  background: #976f26;
 }
 

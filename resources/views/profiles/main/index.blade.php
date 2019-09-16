@@ -13,7 +13,7 @@
                         {{ __("profiles") }}
                     </h4>
                     @auth
-                        <a href="{{ route('profiles.create') }}" class="btn btn-primary btn-lg text-uppercase">
+                        <a href="{{ route('profiles.create') }}" class="btn btn-custom btn-lg text-uppercase">
                             <i class="fas fa-plus"></i> create profile
                         </a>
                     @endauth
@@ -45,7 +45,7 @@
                                             <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Keyword">
                                         </div>
                                         <div class="col-md-2 col-sm-12">
-                                            <button type="button" class="btn btn-primary text-uppercase form-control">Search</button>
+                                            <button type="button" class="btn btn-custom text-uppercase form-control">Search</button>
                                         </div>
                                     </div>
                                 </form>
