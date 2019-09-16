@@ -38,7 +38,7 @@
             </div>
             <div class="form-group col-md-7">
                 <div class="form-row">
-                    <div class="form-group col-md-5">
+                    <div class="form-group col-md-6">
                         <select name="time_open[]" id="time-open-{{ $key }}" class="form-control">
                             <option value disabled selected>Start Time</option>
                             @foreach (Handler::generateTime() as $time)
@@ -46,11 +46,8 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group col-md-5">
+                    <div class="form-group col-md-6">
                         <input type="number" name="work_duration[]" class="form-control" id="work-duration" min="1" max="24" value="1">
-                    </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary" type="button" class="input-toggler"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>

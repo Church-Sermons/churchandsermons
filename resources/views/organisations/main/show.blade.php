@@ -377,7 +377,7 @@
                                     <h6 class="h6 font-weight-bold">Social Media</h6>
                                 </span>
                                 <span class="float-right">
-                                    <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
+                                    <a href="{{ route('organisations.social-media.create', $organisation->uuid) }}">
                                         <i class="fas fa-edit" title="Edit Social Media"></i>
                                     </a>
                                 </span>
@@ -400,7 +400,7 @@
                                     <h6 class="h6 font-weight-bold">Share</h6>
                                 </span>
                                 <span class="float-right">
-                                    <a href="{{ route('organisations.general.create', $organisation->uuid) }}">
+                                    <a href="{{ route('organisations.social-media.create', $organisation->uuid) }}">
                                         <i class="fas fa-edit" title="Edit Share Links"></i>
                                     </a>
                                 </span>

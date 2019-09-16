@@ -95,10 +95,17 @@
 
                                         <span class="d-block border border-bottom my-3"></span>
                                         <span class="text-center d-flex justify-content-between w-50">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
+                                            @foreach ($profile->social as $social)
+                                                @if ($social->page_link)
+                                                    <a href="{{ $social->page_link }}">
+                                                        <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
+                                                    </a>
+                                                @endif
+                                            @endforeach
+
+                                            {{-- <a href="#"><i class="fab fa-twitter"></i></a>
                                             <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                            <a href="#"><i class="fab fa-instagram"></i></a>
+                                            <a href="#"><i class="fab fa-instagram"></i></a> --}}
                                         </span>
                                     </div>
 

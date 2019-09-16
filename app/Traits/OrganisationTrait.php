@@ -54,7 +54,7 @@ trait OrganisationTrait
         ];
     }
 
-    private function uploadSlides($request, $model)
+    protected function uploadSlides($request, $model)
     {
         if ($request->has('slides')) {
             // get ids of previous slides
@@ -83,58 +83,5 @@ trait OrganisationTrait
                 'oldSlides' => $oldSlides
             ];
         }
-    }
-
-    public function storeWorkingSchedule($model, $request)
-    {
-        $dayOfWeek = $request->day_of_week;
-        $timeOpen = $request->time_open;
-        $workDuration = $request->work_duration;
-        // Logic on multiple working schedules here
-        // get data
-        if ($dayOfWeek && $timeOpen && $workDuration) {
-            $workingHours = [];
-            foreach ($dayOfWeek as $key => $value) {
-                $workingHours[] = [
-                    'day_of_week' => $value,
-                    'time_open' => $timeOpen[$key],
-                    'work_duration' => $workDuration[$key]
-                ];
-            }
-
-            // use one to many associate
-            $schedule = $model->schedules()->createMany($workingHours);
-
-            return $schedule;
-        }
-
-        return null;
-    }
-
-    public function storeSocialMedia($model, $request)
-    {
-        // dd($request->all());
-
-        $socialId = $request->social_id;
-        $shareLink = $request->share_link;
-        $pageLink = $request->page_link;
-
-        if ($socialId && ($shareLink || $pageLink)) {
-            $social = [];
-
-            foreach ($socialId as $key => $value) {
-                $social[] = [
-                    'social_id' => $value,
-                    'share_link' => $shareLink[$key],
-                    'page_link' => $pageLink[$key]
-                ];
-            }
-
-            $response = $model->social()->createMany($social);
-
-            return $response;
-        }
-
-        return null;
     }
 }

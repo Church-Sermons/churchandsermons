@@ -190,6 +190,16 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
             'except' => ['edit', 'update', 'index', 'show']
         ]
     );
+
+    // organisation social media
+    Route::resource(
+        '/social-media',
+        'Organisation\OrganisationSocialMediaController',
+        [
+            'as' => 'organisations',
+            'except' => ['edit', 'update', 'index', 'show']
+        ]
+    );
 });
 
 /**
@@ -228,8 +238,14 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
         'except' => ['update', 'edit']
     ]);
 
-    // organisation schedule
+    // profile schedule
     Route::resource('/work-schedule', 'Profile\ProfileWorkScheduleController', [
+        'as' => 'profiles',
+        'except' => ['edit', 'update', 'index', 'show']
+    ]);
+
+    // profile social media
+    Route::resource('/social-media', 'Profile\ProfileSocialMediaController', [
         'as' => 'profiles',
         'except' => ['edit', 'update', 'index', 'show']
     ]);
