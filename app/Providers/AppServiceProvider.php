@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             }
 
-            if ($expression->hasRole(['administrator', 'superadministrator'])) {
+            if ($expression->hasRole(['admin', 'superadmin'])) {
                 return true;
             }
 

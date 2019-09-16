@@ -49,7 +49,9 @@ class OrganisationController extends Controller
      */
     public function create()
     {
-        return view('organisations.main.create');
+        return view('organisations.main.create', [
+            'organisation' => new Organisation()
+        ]);
     }
 
     /**
