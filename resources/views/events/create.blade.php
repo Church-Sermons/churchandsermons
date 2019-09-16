@@ -17,35 +17,14 @@
                                 fuga impedit corrupti autem optio fugit modi accusamus ducimus
                                 ut facere. Minus, expedita ut. Odit?
                             </p> --}}
-                            @include('components.messages')
+                            @includeIf('components.messages')
                             <form action="{{ route("$name.events.store", $model->uuid) }}"
                                 method="post" enctype="multipart/form-data"
                                 class="py-2" id="eventForm">
                                 @csrf
 
-                                @component('events.form')
-                                    @slot('title')
-                                        {{ old('title') }}
-                                    @endslot
-                                    @slot('address')
-                                        {{ old('address') }}
-                                    @endslot
-                                    @slot('latitude')
-                                        {{ old('lat') }}
-                                    @endslot
-                                    @slot('longitude')
-                                        {{ old('lon') }}
-                                    @endslot
-                                    @slot('description')
-                                        {{ old('description') }}
-                                    @endslot
-                                    @slot('poster')
-                                        {{ old('poster') }}
-                                    @endslot
-                                    @slot('submitButtonText')
-                                        Add Event
-                                    @endslot
-                                @endcomponent
+                                {{-- import from form execs --}}
+                                @includeIf('components.form-execs.events', ['event' => new App\Event()])
                             </form>
                         </div>
                     </div>

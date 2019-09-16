@@ -181,7 +181,7 @@
                     <h3 class="text-capitalize font-weight-bold mb-4">send private message</h3>
                     <form action="{{ route('profiles.contacts.store', $profile->uuid)}}" method="POST">
                         @csrf
-                        @component('contacts.form')
+                        @component('components.forms.contacts')
                             @slot('name')
                                 {{ old('name') }}
                             @endslot
