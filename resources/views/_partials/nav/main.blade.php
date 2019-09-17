@@ -8,23 +8,16 @@
             </div>
         </div>
     @endif
-    <nav class="navbar navbar-expand-md navbar-light bg-light py-2">
-        <div class="container align-items-center">
+    <nav class="navbar navbar-expand-md navbar-light py-0">
+        <div class="container align-items-center py-0">
         <a href="{{ route('home') }}" class="navbar-brand d-flex">
-            <img
-            src="{{ asset('images/candsedit.png') }}"
-            alt="logo"
-            height="50"
-            width="50"
-            class="mr-1"
-            />
-            <h4 class="font-weight-bold d-flex align-items-center">
-                <span>&</span>
-                <span class="d-flex flex-column">
-                    <span>Church</span>
-                    <span>Sermons</span>
-                </span>
-            </h4>
+            <span class="d-inline" style="width: 150px;height: 70px;">
+                <img
+                src="{{ asset('images/app/logo.png') }}"
+                alt="logo"
+                class="w-100 h-100"
+                />
+            </span>
         </a>
 
         <button

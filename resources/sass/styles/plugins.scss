@@ -8,3 +8,94 @@
     color: #fff;
     background: $custom-primary;
 }
+
+.btn-outline-custom:hover {
+    background: $custom-primary;
+    color: #fff;
+}
+
+.navbar {
+    border-bottom: solid 2px $custom-primary;
+    background: #fff;
+}
+
+.navbar .navbar-nav .nav-item a.nav-link {
+    color: #000;
+}
+
+.navbar .navbar-nav .nav-item a.nav-link:last-child {
+    margin-right: 0;
+}
+
+.navbar .navbar-nav .nav-item a.nav-link:hover {
+    color: $custom-primary;
+    border: solid 1.5px $custom-primary;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    content: "";
+    z-index: 1;
+}
+
+.overlay-secondary {
+    background: $custom-secondary-tint;
+}
+
+.overlay-primary {
+    background: $custom-primary-tint;
+}
+
+.overlay-dark {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.main-link:hover {
+    color: $custom-primary;
+}
+
+.main-link {
+    color: #fff;
+}
+
+// CUSTOMIZED
+#custom-banner {
+    width: 100%;
+    min-height: 19rem;
+    padding-top: 0.65rem;
+    background-repeat: no-repeat;
+    background-size: inherit;
+    background-position: center;
+}
+
+.custom-banner-inner {
+    width: 100%;
+    min-height: 19rem;
+}
+
+// placeholders
+.holder {
+    width: 125px;
+    height: 125px;
+    background: $custom-primary;
+    font-size: 3.5rem;
+    font-weight: 600;
+}
+
+// home page
+.icons-display {
+    width: 60%;
+    margin: auto;
+}
+.icons-display img {
+    border-radius: 15px;
+}
+
+// background images
+.home-banner {
+    background: url("../../../public/images/app/banners/home-banner1.jpg");
+}
