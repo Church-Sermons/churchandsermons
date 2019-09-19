@@ -4,13 +4,15 @@
 
 @section('content')
     <div id="safeguard">
-        <section id="banner">
-            <div class="banner-content banner-contact">
-                <div class="dark-overlay py-5">
-                    <div class="container d-flex justify-content-center w-100 h-100 align-items-center flex-column">
-                        <h4 class="text-center display-4 text-uppercase font-weight-bold">
-                            Contact Us
-                        </h4>
+        <section id="custom-banner" class="banner-contact">
+            <div class="custom-banner-inner overlay-secondary">
+                <div class="container py-5 text-light">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3 py-5">
+                            <h1 class="text-center text-uppercase font-weight-bold">
+                                Contact Us
+                            </h1>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -24,27 +26,20 @@
                             <div class="inner-card d-flex">
                                 <div class="left d-flex justify-content-center align-items-center col-2">
                                     <span class="text-center icon-handler rounded-circle">
-                                        <i class="fas fa-phone-alt text-primary"></i>
+                                        <i class="fas fa-phone-alt text-custom-primary"></i>
                                     </span>
                                 </div>
                                 <div class="right d-flex justify-content-center flex-column col-10">
                                     <span class="font-weight-bold text-capitalize">phone number</span>
-                                    <span class="text-muted mini-texts">+254 724 698 854</span>
+                                    <span class="text-muted mini-texts">+(90) 0543 123 4567</span>
                                 </div>
                             </div>
                         </div>
-
-                        <style>
-                            .icon-handler{
-                                padding: 8px 12px;
-                                background: rgba(52, 144, 220, 0.125);
-                            }
-                        </style>
                         <div class="card mb-2 bg-white py-4 px-2">
                             <div class="inner-card d-flex">
                                 <div class="left d-flex justify-content-center align-items-center col-2">
                                     <span class="text-center icon-handler rounded-circle">
-                                        <i class="fas fa-envelope text-primary"></i>
+                                        <i class="fas fa-envelope text-custom-primary"></i>
                                     </span>
                                 </div>
                                 <div class="right d-flex justify-content-center flex-column col-10">
@@ -57,7 +52,7 @@
                             <div class="inner-card d-flex">
                                 <div class="left d-flex justify-content-center align-items-center col-2">
                                     <span class="text-center icon-handler rounded-circle">
-                                        <i class="fas fa-map-marker-alt text-primary"></i>
+                                        <i class="fas fa-map-marker-alt text-custom-primary"></i>
                                     </span>
                                 </div>
                                 <div class="right d-flex justify-content-center flex-column col-10">

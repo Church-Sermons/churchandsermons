@@ -4,18 +4,20 @@
 
 @section('content')
     <div id="safeguard">
-        <section id="banner">
-            <div class="banner-content banner-sermon">
-                <div class="dark-overlay py-5">
-                    <div class="container d-flex justify-content-center w-100 h-100 align-items-center flex-column">
-                        <h4 class="text-center display-4 text-uppercase font-weight-bold">
-                            sermons
-                        </h4>
-                        @auth
-                            <a href="{{ route('sermons.create') }}" class="btn btn-custom btn-lg text-uppercase">
-                                <i class="fas fa-plus"></i> add sermon
-                            </a>
-                        @endauth
+        <section id="custom-banner" class="banner-sermon">
+            <div class="custom-banner-inner overlay-secondary">
+                <div class="container py-5 text-light">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3 py-5">
+                            <h1 class="text-center text-uppercase font-weight-bold">
+                                sermons
+                            </h1>
+                            @auth
+                                <a href="{{ route('sermons.create') }}" class="btn btn-custom btn-lg text-uppercase">
+                                    <i class="fas fa-plus"></i> add sermon
+                                </a>
+                            @endauth
+                        </div>
                     </div>
                 </div>
             </div>

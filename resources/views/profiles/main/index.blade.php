@@ -5,18 +5,20 @@
 @section('content')
 <div id="safeguard">
 
-    <section id="banner">
-        <div class="banner-content banner-profile">
-            <div class="dark-overlay py-5">
-                <div class="container d-flex justify-content-center w-100 h-100 align-items-center flex-column">
-                    <h4 class="text-center display-4 text-uppercase font-weight-bold">
-                        {{ __("profiles") }}
-                    </h4>
-                    @auth
-                        <a href="{{ route('profiles.create') }}" class="btn btn-custom btn-lg text-uppercase">
-                            <i class="fas fa-plus"></i> create profile
-                        </a>
-                    @endauth
+    <section id="custom-banner" class="banner-profile">
+        <div class="custom-banner-inner overlay-secondary">
+            <div class="container py-5 text-light">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 py-5">
+                        <h1 class="text-center text-uppercase font-weight-bold">
+                            {{ __("profiles") }}
+                        </h1>
+                        @auth
+                            <a href="{{ route('profiles.create') }}" class="btn btn-custom btn-lg text-uppercase">
+                                <i class="fas fa-plus"></i> create profile
+                            </a>
+                        @endauth
+                    </div>
                 </div>
             </div>
         </div>

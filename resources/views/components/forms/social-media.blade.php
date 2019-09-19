@@ -19,5 +19,5 @@
     </div>
 @endforeach
 <div class="form-group">
-    <button class="btn btn-primary" type="submit">{{ $submitText }}</button>
+    <button class="btn btn-custom" type="submit">{{ $submitText }}</button>
 </div>

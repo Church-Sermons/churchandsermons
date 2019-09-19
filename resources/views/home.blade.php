@@ -3,7 +3,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="fallback">
+<div id="safeguard">
     <section id="custom-banner" class="home-banner">
         <div class="custom-banner-inner overlay-secondary">
             <div class="container py-5 text-light">

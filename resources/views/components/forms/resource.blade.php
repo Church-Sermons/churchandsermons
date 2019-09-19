@@ -54,5 +54,5 @@
 </div>
 {{ $slot }}
 <div class="form-group">
-    <button type="submit" class="btn btn-primary">{{ $submitButtonText }}</button>
+    <button type="submit" class="btn btn-custom">{{ $submitButtonText }}</button>
 </div>

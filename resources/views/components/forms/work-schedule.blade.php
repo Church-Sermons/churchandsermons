@@ -55,7 +55,7 @@
     @endforeach
 </div>
 <div class="form-group">
-    <button class="btn btn-primary" type="submit">{{ $submitText }}</button>
+    <button class="btn btn-custom" type="submit">{{ $submitText }}</button>
 </div>
 @section('scripts')
     <script>

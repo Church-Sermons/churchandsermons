@@ -18733,24 +18733,10 @@ a:hover {
   background-position: center;
 }
 
-.banner-organisation {
-  background-image: url(/images/organisation.jpg?1d61ebec2253ace7204decba686f3b2d);
-  background-position: center;
-}
-
-.banner-sermon {
-  background-image: url(/images/sermon.jpg?66add21be8c70e53c8be93152e6f07a6);
-  background-position: center;
-}
-
-.banner-profile {
-  background-image: url(/images/profile.jpg?90e8e2b86ab0bd6b3e2e0dffab1be50b);
-  background-position: center;
-}
-
-.banner-contact {
-  background-image: url(/images/contact-sample1.jpg?71076a86217d9425bc56998770359c1d);
-  background-position: center;
+body {
+  max-width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .btn-outline-custom {
@@ -18841,8 +18827,7 @@ a:hover {
   min-height: 19rem;
   padding-top: 0.65rem;
   background-repeat: no-repeat;
-  background-size: inherit;
-  background-position: center;
+  background-size: cover;
 }
 
 .custom-banner-inner {
@@ -18869,6 +18854,27 @@ a:hover {
 
 .home-banner {
   background: url(/images/home-banner1.jpg?03a05103fe143aa57d53daccdf34e54f);
+  background-position: center;
+}
+
+.banner-organisation {
+  background-image: url(/images/organisation.jpg?1d61ebec2253ace7204decba686f3b2d);
+}
+
+.banner-sermon {
+  background-image: url(/images/sermon.jpg?66add21be8c70e53c8be93152e6f07a6);
+}
+
+.banner-profile {
+  background-image: url(/images/profile.jpg?90e8e2b86ab0bd6b3e2e0dffab1be50b);
+}
+
+.banner-contact {
+  background-image: url(/images/contact-sample1.jpg?71076a86217d9425bc56998770359c1d);
+}
+
+.banner-about {
+  background-image: url(/images/profile-sample-1.jpg?9e9a57e41f7c65fdcabdd92787a3fadf);
 }
 
 .footer-inner {
@@ -18889,5 +18895,10 @@ footer p {
 footer a:hover {
   opacity: 0.75;
   color: grey;
+}
+
+.icon-handler {
+  padding: 8px 12px;
+  background: rgba(151, 111, 38, 0.25);
 }
 

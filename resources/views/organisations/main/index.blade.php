@@ -3,18 +3,20 @@
 @extends('layouts.app')
 @section('content')
 <div id="safeguard">
-    <section id="banner">
-        <div class="banner-content banner-organisation">
-            <div class="dark-overlay py-5">
-                <div class="container d-flex justify-content-center w-100 h-100 align-items-center flex-column">
-                    <h4 class="text-center display-4 text-uppercase font-weight-bold">
-                        organisations
-                    </h4>
-                    @auth
-                        <a href="{{ route('organisations.create') }}" class="btn btn-custom btn-lg text-uppercase">
-                            <i class="fas fa-plus"></i> register organisation
-                        </a>
-                    @endauth
+    <section id="custom-banner" class="banner-organisation">
+        <div class="custom-banner-inner overlay-secondary">
+            <div class="container py-5 text-light">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 py-5">
+                        <h1 class="text-center text-uppercase font-weight-bold">
+                            organisations
+                        </h1>
+                        @auth
+                            <a href="{{ route('organisations.create') }}" class="btn btn-custom btn-lg text-uppercase">
+                                <i class="fas fa-plus"></i> register organisation
+                            </a>
+                        @endauth
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,17 +31,17 @@
                             <div class="container">
                                 <form action="#" method="post">
                                     <div class="form-row">
-                                        <div class="col-md-3 col-sm-12">
+                                        <div class="col-md-3 col-sm-12 mb-1">
                                             <input type="text" name="location" id="location" class="form-control" placeholder="Location - City, Country">
                                         </div>
-                                        <div class="col-md-3 col-sm-12">
+                                        <div class="col-md-3 col-sm-12 mb-1">
                                             <select name="category" id="category" class="form-control">
                                                 <option selected disabled>Select Category</option>
                                                 <option value="1">Church</option>
                                                 <option value="2">NGO</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-4 col-sm-12 mb-1">
                                             <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Keyword">
                                         </div>
                                         <div class="col-md-2 col-sm-12">

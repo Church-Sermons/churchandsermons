@@ -1,3 +1,9 @@
+body {
+    max-width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
 .btn-outline-custom {
     background: #fff;
     border: solid 1px $custom-primary;
@@ -88,8 +94,7 @@
     min-height: 19rem;
     padding-top: 0.65rem;
     background-repeat: no-repeat;
-    background-size: inherit;
-    background-position: center;
+    background-size: cover;
 }
 
 .custom-banner-inner {
@@ -118,8 +123,28 @@
 // background images
 .home-banner {
     background: url("../../../public/images/app/banners/home-banner1.jpg");
+    background-position: center;
 }
 
+.banner-organisation {
+    background-image: url("../../../public/images//app/banners/organisation.jpg");
+}
+
+.banner-sermon {
+    background-image: url("../../../public/images/app/banners/sermon.jpg");
+}
+
+.banner-profile {
+    background-image: url("../../../public/images/app/banners/profile.jpg");
+}
+
+.banner-contact {
+    background-image: url("../../../public/images/app/banners/contact-sample1.jpg");
+}
+
+.banner-about {
+    background-image: url("../../../public/images/app/banners/profile-sample-1.jpg");
+}
 // footer styling
 .footer-inner {
     background: $custom-footer-top;
@@ -139,4 +164,10 @@ footer p {
 footer a:hover {
     opacity: 0.75;
     color: grey;
+}
+
+// To be rectified
+.icon-handler {
+    padding: 8px 12px;
+    background: $custom-primary-tint;
 }
