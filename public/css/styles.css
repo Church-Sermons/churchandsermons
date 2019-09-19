@@ -18764,9 +18764,22 @@ a:hover {
   background: #976f26;
 }
 
+.btn-custom:hover {
+  opacity: 0.75;
+  color: #fff;
+}
+
 .btn-outline-custom:hover {
   background: #976f26;
   color: #fff;
+}
+
+.text-custom-primary {
+  color: #976f26;
+}
+
+.text-custom-grey {
+  color: grey;
 }
 
 .navbar {
@@ -18783,8 +18796,14 @@ a:hover {
 }
 
 .navbar .navbar-nav .nav-item a.nav-link:hover {
+  margin-right: 0;
   color: #976f26;
-  border: solid 1.5px #976f26;
+}
+
+.navbar .navbar-nav .nav-item a.nav-link-active {
+  color: #976f26;
+  border-bottom: solid 1px #976f26;
+  margin: 0;
 }
 
 .overlay {
@@ -18850,5 +18869,25 @@ a:hover {
 
 .home-banner {
   background: url(/images/home-banner1.jpg?03a05103fe143aa57d53daccdf34e54f);
+}
+
+.footer-inner {
+  background: #30302e;
+  color: #fff;
+}
+
+.footer-inner input.form-control {
+  background: transparent;
+  border: solid 1px grey;
+  color: grey;
+}
+
+footer p {
+  color: grey;
+}
+
+footer a:hover {
+  opacity: 0.75;
+  color: grey;
 }
 

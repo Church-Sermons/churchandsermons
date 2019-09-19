@@ -22,8 +22,8 @@
     <body>
         <div id="app">
 
-            <!-- Partials -->
-            @include('_partials.nav.main')
+            <!-- Navbar -->
+            @includeIf('_partials.nav.main')
 
             <div id="wrapper">
                 @yield('content')
@@ -31,6 +31,8 @@
 
             </div>
 
+            <!-- Footer -->
+            @includeIf('_partials.footer.main')
 
         </div>
          <!-- Scripts -->

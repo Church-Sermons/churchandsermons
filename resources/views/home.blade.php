@@ -12,25 +12,25 @@
                     <div class="row">
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <a href="{{ route('organisations.index') }}" class="main-link">
-                                <img src="{{ asset('images/app/icons/church.jpg') }}" alt="organisation-logo" height="125" width="125" class="rounded"/>
+                                <img src="{{ asset('images/app/icons/church.jpg') }}" alt="organisation-logo" height="150" class="rounded w-100"/>
                                 <h6 class="text-uppercase text-center mt-1">organisations</h6>
                             </a>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <a href="{{ route('sermons.index') }}" class="main-link">
-                                <img src="{{ asset('images/app/icons/sermon.jpg') }}" alt="sermon-logo" height="125" width="125" class="rounded"/>
+                                <img src="{{ asset('images/app/icons/sermon.jpg') }}" alt="sermon-logo" height="150" class="rounded  w-100"/>
                                 <h6 class="text-uppercase text-center mt-1">sermons</h6>
                             </a>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <a href="{{ route('profiles.index') }}" class="main-link">
-                                <img src="{{ asset('images/app/icons/profile.jpg') }}" alt="profile-logo" height="125" width="125" class="rounded"/>
+                                <img src="{{ asset('images/app/icons/profile.jpg') }}" alt="profile-logo" height="150" class="rounded  w-100"/>
                                 <h6 class="text-uppercase text-center mt-1">profiles</h6>
                             </a>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <a href="#" class="main-link">
-                                <img src="{{ asset('images/app/icons/resource.jpg') }}" alt="resource-logo" height="125" width="125" class="rounded"/>
+                                <img src="{{ asset('images/app/icons/resource.jpg') }}" alt="resource-logo" height="150" class="rounded w-100"/>
                                 <h6 class="text-uppercase text-center mt-1">resources</h6>
                             </a>
                         </div>
@@ -49,7 +49,7 @@
                             Placing items into categories helps you find what you want easily and efficiently and also enables people find an item you created easily. Add your own category and
                             place items you create into your custom categories.
                         </p>
-                        <a href="{{ route('categories.create') }}" class="btn btn-custom">Add Category</a>
+                        <a href="{{ route('categories.create') }}" class="btn btn-custom mb-2">Add Category</a>
                     </div>
                 </div>
                 <div class="col-md-6">

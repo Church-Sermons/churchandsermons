@@ -80,7 +80,7 @@
                                 <form action="{{ route('contact.messages.store') }}" method="post" class="py-2">
                                     @csrf
                                     @include('components.messages')
-                                    @component('contacts.form')
+                                    @component('components.forms.contacts')
                                         @slot('name')
                                             {{ old('name') }}
                                         @endslot

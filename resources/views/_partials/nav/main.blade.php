@@ -31,22 +31,22 @@
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav ml-auto d-flex align-items-center">
                 <li class="nav-item">
-                    <a href="{{ route('home') }}" class="nav-link text-uppercase">
+                    <a href="{{ route('home') }}" class="nav-link text-uppercase {{ Nav::isRoute('home', 'nav-link-active') }}">
                     Home
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('organisations.index') }}" class="nav-link text-uppercase">
+                    <a href="{{ route('organisations.index') }}" class="nav-link text-uppercase {{ Nav::isResource('organisations', NULL ,'nav-link-active') }}">
                     Organisations
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('sermons.index') }}" class="nav-link text-uppercase">
+                    <a href="{{ route('sermons.index') }}" class="nav-link text-uppercase {{ Nav::isResource('sermons', NULL, 'nav-link-active') }}">
                     Sermons
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('profiles.index') }}" class="nav-link text-uppercase">
+                    <a href="{{ route('profiles.index') }}" class="nav-link text-uppercase {{ Nav::isResource('profiles', NULL,'nav-link-active') }}">
                     Profiles
                     </a>
                 </li>
@@ -56,23 +56,23 @@
                     </a>
                 </li> --}}
                 <li class="nav-item">
-                    <a href="{{ route('about') }}" class="nav-link text-uppercase">
+                    <a href="{{ route('about') }}" class="nav-link text-uppercase {{ Nav::isRoute('about', 'nav-link-active') }}">
                     About
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('contact') }}" class="nav-link text-uppercase">
+                    <a href="{{ route('contact') }}" class="nav-link text-uppercase {{ Nav::isRoute('contact', 'nav-link-active') }}">
                     Contact
                     </a>
                 </li>
                 @guest
                 <li class="nav-item">
-                    <a href="{{ route('login') }}" class="nav-link text-uppercase">
+                    <a href="{{ route('login') }}" class="nav-link text-uppercase {{ Nav::isRoute('login', 'nav-link-active') }}">
                     <i class="fas custom-fa fa-sign-in-alt"></i> Log In
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('register') }}" class="nav-link text-uppercase">
+                    <a href="{{ route('register') }}" class="nav-link text-uppercase {{ Nav::isRoute('register', 'nav-link-active') }}">
                     <i class="fas custom-fa fa-user-plus"></i> Register
                     </a>
                 </li>
