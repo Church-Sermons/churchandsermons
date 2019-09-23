@@ -22,41 +22,6 @@
         </div>
     </section>
 
-    <section id="search">
-        <div class="container search-content my-5">
-            <div class="row">
-                <div class="col">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <div class="container">
-                                <form action="#" method="post">
-                                    <div class="form-row">
-                                        <div class="col-md-3 col-sm-12 mb-1">
-                                            <input type="text" name="location" id="location" class="form-control" placeholder="Location - City, Country">
-                                        </div>
-                                        <div class="col-md-3 col-sm-12 mb-1">
-                                            <select name="category" id="category" class="form-control">
-                                                <option selected disabled>Select Category</option>
-                                                <option value="1">Church</option>
-                                                <option value="2">NGO</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4 col-sm-12 mb-1">
-                                            <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Keyword">
-                                        </div>
-                                        <div class="col-md-2 col-sm-12">
-                                            <button type="button" class="btn btn-custom text-uppercase form-control">Search</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section><!-- End of Search Section -->
-
     <section id="explore">
 
         <div class="container explore-inner my-5">

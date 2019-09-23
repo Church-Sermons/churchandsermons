@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreGeneralSettingsRequest;
 use App\Http\Requests\StoreOrganisationRequest;
 use App\Http\Requests\StoreOrganisationSlidesRequest;
 use App\Organisation;
-use App\SocialLink;
 use App\Traits\OrganisationTrait;
-use App\WorkingSchedule;
 use Session;
 use Spatie\MediaLibrary\Models\Media;
+use Illuminate\Http\Request;
 
 class OrganisationController extends Controller
 {
@@ -21,7 +19,7 @@ class OrganisationController extends Controller
 
     public function __construct()
     {
-        $except = ['index', 'show'];
+        $except = ['index', 'show', 'search'];
         $this->middleware('auth')->except($except);
         $this->middleware('role:admin|superadmin|author')->except($except);
 
@@ -33,11 +31,9 @@ class OrganisationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $organisations = Organisation::orderBy('id', 'desc')
-            ->with('category')
-            ->paginate(10);
+        $organisations = Organisation::orderBy('id', 'desc')->paginate(10);
 
         return view('organisations.main.index', compact('organisations'));
     }
@@ -220,5 +216,18 @@ class OrganisationController extends Controller
 
             return redirect()->back();
         }
+    }
+
+    public function search(Request $request)
+    {
+        if ($request->has('search')) {
+            $organisations = Organisation::search($request->search)
+                ->orderBy('id')
+                ->paginate(10);
+        } else {
+            $organisations = [];
+        }
+
+        return view('organisations.main.search', compact('organisations'));
     }
 }

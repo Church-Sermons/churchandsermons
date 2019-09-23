@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Laravel\Scout\Searchable;
 use App\Traits\CustomMediaTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -13,6 +14,8 @@ class Organisation extends Model implements HasMedia
     use HasMediaTrait;
 
     use CustomMediaTrait;
+
+    use Searchable;
 
     // guarded
     protected $guarded = ['category_id', 'user_id'];

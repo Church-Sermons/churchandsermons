@@ -112,8 +112,10 @@ Route::post(
  * Organisations, Categories, Organisation&Events, Organisation&Reviews
  *
  */
+Route::get('/organisations/search', 'OrganisationController@search')->name(
+    'organisations.search'
+);
 Route::resource('/organisations', 'OrganisationController');
-
 // Organisation&Events
 Route::prefix('/organisations/{organisation_id}')->group(function () {
     // slides
