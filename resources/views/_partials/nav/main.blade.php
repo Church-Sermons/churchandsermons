@@ -1,5 +1,5 @@
 <header class="fixed-top w-100">
-    @if (app()->environment() == 'testing')
+    {{-- @if (app()->environment() == 'testing')
         <div class="env-informer w-100">
             <div class="container h-100">
             <h5 class="text-center text-bold text-capitalize display-6">
@@ -7,7 +7,7 @@
             </h5>
             </div>
         </div>
-    @endif
+    @endif --}}
     <nav class="navbar navbar-expand-md navbar-light py-0">
         <div class="container align-items-center py-0">
         <a href="{{ route('home') }}" class="navbar-brand d-flex">

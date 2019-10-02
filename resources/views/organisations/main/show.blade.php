@@ -35,9 +35,9 @@
             @include('components.messages')
             <div class="row">
                 <div class="col-md-8">
-                    <div class="bg-light py-2 border">
+                    <div class="bg-light py-2 px-3 border h-100">
                         <div class="card border-0 bg-light">
-                            <div class="card-body">
+                            <div >
                                 @isTribrid($organisation)
                                     <a class="btn btn-primary mb-2 btn-sm" href="{{ route('organisations.slides.create', $organisation->uuid) }}"><i class="fas fa-plus"></i> Add Slides</a>
                                 @endisTribrid
@@ -257,7 +257,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
                     </div>
                     <div class="card mt-3">
                         <div class="card-body">
@@ -312,9 +312,10 @@
                             </div>
                         </div>
                     </div>
+                    </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="bg-light py-2 h-100 border">
+                    <div class="bg-light p-2 h-100 border">
                         <div class="logo-handler d-flex align-items-center justify-content-center">
                             <!-- Logo Image-->
                             @if (Handler::getPath($organisation->logo)->displayImage())
@@ -333,7 +334,7 @@
                                 {{-- Map Div --}}
                                 {{-- <div id="map" class="my-3" data-latitude="{{ $organisation->lat }}" data-longitude="{{ $organisation->lon }}"></div> --}}
 
-                                <h6 class="h6 font-weight-bold mt-0">Phone</h6>
+                                <h6 class="h6 font-weight-bold mt-0">Phone</h6>ypy1OF(k64,U
                                 <p class="lead mini-texts">{{ $organisation->phone }}</p>
                                 <h6 class="h6 font-weight-bold">Email</h6>
                                 <p class="lead mini-texts">{{ $organisation->email }}</p>
