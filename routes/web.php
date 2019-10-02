@@ -24,6 +24,10 @@ Route::post('/contact', 'HomeController@storeContactMessages')->name(
     'contact.messages.store'
 );
 
+// Test Routes
+Route::get('/test/organisations', function(){
+return view('');
+});
 // User Routes
 Route::prefix('user')->group(function () {
     // Profile Details
