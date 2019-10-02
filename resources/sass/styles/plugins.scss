@@ -33,6 +33,11 @@ body {
     color: grey;
 }
 
+.bg-custom-primary {
+    background: $custom-primary;
+    color: #fff;
+}
+
 .navbar {
     border-bottom: solid 2px $custom-primary;
     background: #fff;

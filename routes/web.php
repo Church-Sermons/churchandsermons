@@ -25,9 +25,10 @@ Route::post('/contact', 'HomeController@storeContactMessages')->name(
 );
 
 // Test Routes
-Route::get('/test/organisations', function(){
-return view('');
+Route::get('/test/organisations', function () {
+    return view('organisations');
 });
+
 // User Routes
 Route::prefix('user')->group(function () {
     // Profile Details

@@ -24,7 +24,7 @@
 
     <section id="explore">
 
-        <div class="container explore-inner my-5">
+        <div class="container explore-inner py-5">
             @include('components.messages')
             <div class="row">
                 @forelse ($organisations as $organisation)

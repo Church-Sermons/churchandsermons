@@ -18768,6 +18768,11 @@ body {
   color: grey;
 }
 
+.bg-custom-primary {
+  background: #976f26;
+  color: #fff;
+}
+
 .navbar {
   border-bottom: solid 2px #976f26;
   background: #fff;
