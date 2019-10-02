@@ -334,7 +334,7 @@
                                 {{-- Map Div --}}
                                 {{-- <div id="map" class="my-3" data-latitude="{{ $organisation->lat }}" data-longitude="{{ $organisation->lon }}"></div> --}}
 
-                                <h6 class="h6 font-weight-bold mt-0">Phone</h6>ypy1OF(k64,U
+                                <h6 class="h6 font-weight-bold mt-0">Phone</h6>
                                 <p class="lead mini-texts">{{ $organisation->phone }}</p>
                                 <h6 class="h6 font-weight-bold">Email</h6>
                                 <p class="lead mini-texts">{{ $organisation->email }}</p>
@@ -443,8 +443,8 @@
                             </div>
                         </div>
 
-                        <div class="card my-2 bg-light border-0">
-                            <div class="card-body">
+                        <div class="card bg-light border-0">
+                            <div class="card-body py-0">
                                 <h4 class="card-title text-uppercase h5 font-weight-bold">status</h4>
                                 <div class="row">
                                     <div class="col-4">
