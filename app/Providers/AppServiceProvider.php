@@ -5,9 +5,9 @@ namespace App\Providers;
 use App\OrganisationCategory;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 use View;
 use Auth;
-use Schema;
 use DB;
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
         // @isTribrid($user) @endIsTribrid
         // custom blade directive -owner admin
         Blade::if('isTribrid', function ($model, $fk = null) {
