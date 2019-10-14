@@ -2,35 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreOrganisationRequest;
+use App\Http\Requests\StoreOrganisationSlidesRequest;
 use App\Organisation;
-use App\OrganisationCategory;
+use App\Traits\OrganisationTrait;
 use Session;
-use Auth;
-use App\User;
-use Illuminate\Support\Facades\DB;
-use Storage;
+use Spatie\MediaLibrary\Models\Media;
+use Illuminate\Http\Request;
 
 class OrganisationController extends Controller
 {
+    use OrganisationTrait;
+
+    protected $name;
+    private $_excepts;
+
     public function __construct()
     {
-        $this->middleware(
-            'role:administrator|superadministrator|author'
-        )->except(['index', 'show']);
+        $except = ['index', 'show', 'search'];
+        $this->middleware('auth')->except($except);
+        $this->middleware('role:admin|superadmin|author')->except($except);
+
+        $this->name = 'organisations';
+        $this->_excepts = ['category', 'logo'];
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $organisations = Organisation::orderBy('id', 'desc')
-            ->with('category')
-            ->paginate(10);
+        $organisations = Organisation::orderBy('id', 'desc')->paginate(10);
 
-        return view('organisations.main.index', compact(['organisations']));
+        return view('organisations.main.index', compact('organisations'));
     }
 
     /**
@@ -40,8 +45,9 @@ class OrganisationController extends Controller
      */
     public function create()
     {
-        $sites = DB::table('social_media')->get();
-        return view('organisations.main.create', compact('sites'));
+        return view('organisations.main.create', [
+            'organisation' => new Organisation()
+        ]);
     }
 
     /**
@@ -50,65 +56,18 @@ class OrganisationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreOrganisationRequest $request)
     {
-        $validator = $this->validate($request, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:organisations,email',
-            'phone' => 'required|max:20',
-            'website' => 'required|max:150|url',
-            'address' => 'required',
-            'description' => 'required',
-            'category' => 'required|numeric',
-            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
-            'slides' => 'array',
-            'day_of_week' => 'array',
-            'time_open' => 'array',
-            'work_duration' => 'array',
-            'social_id' => 'required_with:share_link,page_link',
-            'share_link' => 'required_with:social_id',
-            'page_link' => 'required_with:social_id'
-        ]);
+        $response = $this->storeOrganisation($request, $this->_excepts);
 
-        $except = [
-            'category',
-            'logo',
-            'slides',
-            'day_of_week',
-            'time_open',
-            'work_duration',
-            'social_id',
-            'share_link',
-            'page_link'
-        ];
-        // store to db
-        $organisation = new Organisation($request->except($except));
-        $organisation->category_id = $request->category;
-        $organisation->logo = $request->logo->store('uploads/images', 'public');
-
-        // check if slides exists then upload them
-        if (count($request->slides)) {
-            // upload files
-            $organisation
-                ->addMultipleMediaFromRequest(['slides'])
-                ->each(function ($fileAdder) {
-                    $fileAdder
-                        ->withCustomProperties([
-                            'name' => request()->name,
-                            'description' => request()->description
-                        ])
-                        ->toMediaCollection('slides');
-                });
-        }
-
-        if ($organisation->save()) {
+        if ($response['organisation']->save()) {
             Session::flash('success', 'Organisation created successfully');
             return redirect()->route('organisations.index');
         } else {
             return redirect()
                 ->back()
                 ->withInput()
-                ->withErrors($validator);
+                ->withErrors($response['validator']);
         }
     }
 
@@ -124,7 +83,10 @@ class OrganisationController extends Controller
             ->with(['category', 'reviews'])
             ->first();
 
-        return view('organisations.main.show', compact(['organisation']));
+        return view(
+            'organisations.main.show',
+            compact(['organisation'])
+        )->withName($this->name);
     }
 
     /**
@@ -135,14 +97,9 @@ class OrganisationController extends Controller
      */
     public function edit($uuid)
     {
-        $organisation = Organisation::where('uuid', $uuid)->first();
+        $organisation = Organisation::getByUuid($uuid);
 
-        $categories = OrganisationCategory::distinctCategoryNames();
-
-        return view(
-            'organisations.main.edit',
-            compact(['organisation', 'categories'])
-        );
+        return view('organisations.main.edit', compact('organisation'));
     }
 
     /**
@@ -152,37 +109,25 @@ class OrganisationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $uuid)
+    public function update(StoreOrganisationRequest $request, $uuid)
     {
-        $organisation = Organisation::where('uuid', $uuid)->first();
+        $organisation = Organisation::getByUuid($uuid);
 
-        $validator = $this->validate($request, [
-            'name' => 'required|max:255',
-            'email' => "required|email|max:255|unique:organisations,email,$organisation->id",
-            'phone' => 'required|max:20',
-            'website' => 'required|max:150|url',
-            'address' => 'required',
-            'description' => 'required',
-            'category' => 'required|numeric',
-            'logo' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
-        ]);
+        $response = $this->updateOrganisation(
+            $organisation,
+            $request,
+            $this->_excepts
+        );
 
-        // get old file name
-        $oldFile = $organisation->logo;
-        // merge for update
-        $data = array_merge($request->except(['category']), [
-            'category_id' => $request->category,
-            'logo' => $request->logo->store('uploads/images', 'public')
-        ]);
-
-        if ($organisation->update($data)) {
+        if ($organisation->update($response['data'])) {
             Session::flash('success', 'Organisation updated successfully');
+
             return redirect()->route('organisations.index');
         } else {
             return redirect()
                 ->back()
                 ->withInput()
-                ->withErrors($validator);
+                ->withErrors($response['validator']);
         }
     }
 
@@ -194,7 +139,7 @@ class OrganisationController extends Controller
      */
     public function destroy($uuid)
     {
-        $organisation = Organisation::where('uuid', $uuid)->first();
+        $organisation = Organisation::getByUuid($uuid);
 
         if ($organisation->delete()) {
             Session::flash('success', 'Organisation deleted successfully');
@@ -205,5 +150,84 @@ class OrganisationController extends Controller
 
             return redirect()->route('organisations.index');
         }
+    }
+
+    /**
+     *
+     * Caution! This code is messed up, even I don't understand any of it
+     */
+
+    // Slides
+    public function createSlides($uuid)
+    {
+        $organisation = Organisation::getByUuid($uuid);
+
+        return view(
+            'organisations.main.slides.create',
+            compact('organisation')
+        );
+    }
+
+    // additional coding
+    public function storeSlides(StoreOrganisationSlidesRequest $request, $uuid)
+    {
+        $validator = $request->validated();
+
+        $organisation = Organisation::getByUuid($uuid);
+        $slides = null;
+
+        if ($request->hasFile('slides')) {
+            // upload slides
+            $slides = $organisation
+                ->addMultipleMediaFromRequest(['slides'])
+                ->each(function ($fileAdder) use ($organisation) {
+                    $fileAdder
+                        ->withCustomProperties([
+                            'name' => $organisation->name,
+                            'description' => $organisation->description
+                        ])
+                        ->toMediaCollection('slides');
+                });
+        }
+
+        if ($slides) {
+            Session::flash('success', 'Slides added successfully');
+
+            return redirect()->back();
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+    }
+
+    public function deleteSlides($uuid, $id)
+    {
+        // delete media
+        $media = Media::findOrFail($id);
+
+        if ($media->delete()) {
+            Session::flash('success', 'Slide deleted successfully');
+
+            return redirect()->back();
+        } else {
+            Session::flash('danger', 'Slide failed to delete');
+
+            return redirect()->back();
+        }
+    }
+
+    public function search(Request $request)
+    {
+        if ($request->has('search')) {
+            $organisations = Organisation::search($request->search)
+                ->orderBy('id')
+                ->paginate(10);
+        } else {
+            $organisations = [];
+        }
+
+        return view('organisations.main.search', compact('organisations'));
     }
 }

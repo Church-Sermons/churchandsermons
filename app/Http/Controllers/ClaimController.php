@@ -13,7 +13,8 @@ class ClaimController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator|author');
+        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('role:admin|superadmin|author');
     }
 
     // Explode route prefix

@@ -2,15 +2,26 @@
 
 namespace App;
 
+use App\Traits\CustomMediaTrait;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 
-class Profile extends Model
+class Profile extends Model implements HasMedia
 {
+    use HasMediaTrait, CustomMediaTrait;
+
     protected $guarded = ["category_id", "user_id"];
 
     public function category()
     {
         return $this->hasOne('App\OrganisationCategory', 'id', 'category_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 
     public function claims()
@@ -68,6 +79,23 @@ class Profile extends Model
         )->orderBy('id', 'desc');
     }
 
+    public function schedules()
+    {
+        return $this->hasMany(
+            'App\WorkingSchedule',
+            'uuid_link',
+            'uuid'
+        )->orderBy('day_of_week', 'asc');
+    }
+
+    public function social()
+    {
+        return $this->hasMany('App\SocialLink', 'uuid_link', 'uuid')->orderBy(
+            'id',
+            'desc'
+        );
+    }
+
     // scopes
     public function scopeGetByUuid($query, $uuid)
     {
@@ -80,5 +108,17 @@ class Profile extends Model
             ->where('uuid', $uuid)
             ->with(['category'])
             ->first();
+    }
+
+    // Laravel Media Library
+    // media collections
+    public function registerMediaCollections()
+    {
+        $this->sharedMediaCollections('profile_image');
+    }
+
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->sharedMediaConversions('profile_image');
     }
 }

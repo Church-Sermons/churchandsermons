@@ -27,9 +27,10 @@ class StoreEventRequest extends FormRequest
             'title' => 'required|max:255',
             'description' => 'required',
             'address' => 'required',
-            'poster' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
-            'lat' => 'required_with:lon|numeric',
-            'lon' => 'required_with:lat|numeric'
+            'poster' =>
+                'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
+            'lat' => 'nullable|required_with:lon|numeric',
+            'lon' => 'nullable|required_with:lat|numeric'
         ];
     }
 }

@@ -9,6 +9,7 @@ use App\Observers\OrganisationObserver;
 use App\Observers\ProfileObserver;
 use App\Observers\ResourceObserver;
 use App\Observers\ReviewObserver;
+use App\Observers\SermonObserver;
 use App\Observers\UserObserver;
 use App\User;
 use App\Review;
@@ -16,6 +17,7 @@ use App\Organisation;
 use App\OrganisationCategory;
 use App\Resource;
 use App\Profile;
+use App\Sermon;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Container\Container;
 use Illuminate\Events\Dispatcher;
@@ -47,5 +49,6 @@ class ObserverServiceProvider extends ServiceProvider
         Resource::observe(ResourceObserver::class);
         Event::observe(EventObserver::class);
         OrganisationCategory::observe(CategoryObserver::class);
+        Sermon::observe(SermonObserver::class);
     }
 }

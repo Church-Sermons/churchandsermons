@@ -7,7 +7,6 @@ use App\Resource;
 use App\OrganisationCategory;
 use App\Profile;
 use Session;
-use Auth;
 
 class ProfileResourceController extends Controller
 {

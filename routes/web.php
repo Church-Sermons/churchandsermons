@@ -12,24 +12,81 @@
 */
 // Bind Routes
 
-use App\User;
-
-// Test Routes
-Route::get('/users/{id}', function ($id) {
-    return User::find($id);
-});
-
 // Home Routes
 Route::get('/', 'HomeController@index')->name('home');
 
-// samples
-Route::get('/sample', function () {
-    return view('sample');
+// About Route
+Route::get('/about', 'HomeController@about')->name('about');
+
+// Contact route
+Route::get('/contact', 'HomeController@contact')->name('contact');
+Route::post('/contact', 'HomeController@storeContactMessages')->name(
+    'contact.messages.store'
+);
+
+// Test Routes
+Route::get('/test/organisations', function () {
+    return view('organisations');
+});
+
+// User Routes
+Route::prefix('user')->group(function () {
+    // Profile Details
+    Route::get('/profile', 'User\UserProfileController@index')->name(
+        'user.profile.index'
+    );
+    Route::put(
+        '/profile',
+        'User\UserProfileController@updateUserProfile'
+    )->name('user.profile.update');
+
+    // Password
+    Route::get(
+        '/profile/security',
+        'User\UserProfileController@securityIndex'
+    )->name('user.profile.security.index');
+    Route::put(
+        '/profile/security',
+        'User\UserProfileController@securityUpdate'
+    )->name('user.profile.security.update');
+
+    // site details
+    Route::get('/site/about', 'User\UserSiteController@siteAboutEdit')->name(
+        'user.site.about.edit'
+    );
+    Route::put('/site/about', 'User\UserSiteController@siteAboutUpdate')->name(
+        'user.site.about.update'
+    );
+
+    // resources
+    Route::get('/resources', 'User\UserResourceController@index')->name(
+        'resources.index'
+    );
+    Route::get('/resources/{id}', 'User\UserResourceController@show')->name(
+        'resources.show'
+    );
+    Route::get('/resources/create', 'User\UserResourceController@create')->name(
+        'resources.create'
+    );
+    Route::post('/resources/create', 'User\UserResourceController@store')->name(
+        'resources.store'
+    );
+    Route::get(
+        '/resources/{id}/edit',
+        'User\UserResourceController@edit'
+    )->name('resources.edit');
+    Route::put('/resources/{id}', 'User\UserResourceController@update')->name(
+        'resources.update'
+    );
+    Route::delete(
+        '/resources/{id}',
+        'User\UserResourceController@destroy'
+    )->name('resources.destroy');
 });
 
 // Manage - Content Providers
 Route::prefix('manage')
-    ->middleware('role:superadministrator|administrator')
+    ->middleware('role:superadmin|admin')
     ->group(function () {
         Route::get('/', 'ManageController@index')->name('manage.index');
         Route::get('/dashboard', 'ManageController@dashboard')->name(
@@ -60,9 +117,24 @@ Route::post(
  * Organisations, Categories, Organisation&Events, Organisation&Reviews
  *
  */
+Route::get('/organisations/search', 'OrganisationController@search')->name(
+    'organisations.search'
+);
 Route::resource('/organisations', 'OrganisationController');
 // Organisation&Events
 Route::prefix('/organisations/{organisation_id}')->group(function () {
+    // slides
+    Route::get('/slides', 'OrganisationController@createSlides')->name(
+        'organisations.slides.create'
+    );
+    Route::post('/slides', 'OrganisationController@storeSlides')->name(
+        'organisations.slides.store'
+    );
+
+    Route::delete('/slides/{id}', 'OrganisationController@deleteSlides')->name(
+        'organisations.slides.delete'
+    );
+
     // organisation events
     Route::resource('/events', 'Organisation\OrganisationEventController', [
         'as' => 'organisations'
@@ -84,15 +156,39 @@ Route::prefix('/organisations/{organisation_id}')->group(function () {
     ]);
 
     // organisation resource
-    Route::resource('/resources', 'OrganisationResourceController', [
-        'as' => 'organisations'
-    ]);
+    Route::resource(
+        '/resources',
+        'Organisation\OrganisationResourceController',
+        [
+            'as' => 'organisations'
+        ]
+    );
 
     // organisation reviews
     Route::resource('/reviews', 'Organisation\OrganisationReviewController', [
         'as' => 'organisations',
         'except' => ['edit', 'update']
     ]);
+
+    // organisation schedule
+    Route::resource(
+        '/work-schedule',
+        'Organisation\OrganisationWorkScheduleController',
+        [
+            'as' => 'organisations',
+            'except' => ['edit', 'update', 'index', 'show']
+        ]
+    );
+
+    // organisation social media
+    Route::resource(
+        '/social-media',
+        'Organisation\OrganisationSocialMediaController',
+        [
+            'as' => 'organisations',
+            'except' => ['edit', 'update', 'index', 'show']
+        ]
+    );
 });
 
 /**
@@ -121,7 +217,7 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
     ]);
 
     // profile resource
-    Route::resource('/resources', 'ProfileResourceController', [
+    Route::resource('/resources', 'Profile\ProfileResourceController', [
         'as' => 'profiles'
     ]);
 
@@ -130,39 +226,85 @@ Route::prefix('/profiles/{profile_id}')->group(function () {
         'as' => 'profiles',
         'except' => ['update', 'edit']
     ]);
+
+    // profile schedule
+    Route::resource('/work-schedule', 'Profile\ProfileWorkScheduleController', [
+        'as' => 'profiles',
+        'except' => ['edit', 'update', 'index', 'show']
+    ]);
+
+    // profile social media
+    Route::resource('/social-media', 'Profile\ProfileSocialMediaController', [
+        'as' => 'profiles',
+        'except' => ['edit', 'update', 'index', 'show']
+    ]);
 });
 
 /**
  *
- * Resources Routes
+ * Sermon Routes
  *
  *
  */
-// Route::resource('/resources', 'ResourceController');
+Route::resource('/sermons', 'Sermon\SermonController');
+Route::prefix('/sermons/{sermon_id}')->group(function () {
+    // sermon claims
+    Route::resource('/claims', 'Sermon\SermonClaimController', [
+        'as' => 'sermons',
+        'except' => ['update', 'edit']
+    ]);
+
+    // sermon resource
+    Route::resource('/resources', 'Sermon\SermonResourceController', [
+        'as' => 'sermons'
+    ]);
+
+    // sermon reviews
+    Route::resource('/reviews', 'Sermon\SermonReviewController', [
+        'as' => 'sermons',
+        'except' => ['update', 'edit']
+    ]);
+
+    // sermon social media
+    Route::resource('/social-media', 'Sermon\SermonSocialMediaController', [
+        'as' => 'sermons',
+        'except' => ['edit', 'update', 'index', 'show']
+    ]);
+
+    // speaker
+    // Route::resource('/speakers', 'Sermon\SermonSpeakerController', [
+    //     'as' => 'sermons',
+    //     'except' => ['update', 'edit']
+    // ]);
+});
 
 // Auth Routes
 Auth::routes(['verify' => true]);
 
 Route::get('/fake', function () {
-    $faker = Faker\Factory::create();
-    $data = array();
+    if (app()->environment() == 'local') {
+        $faker = Faker\Factory::create();
+        $data = array();
 
-    for ($i = 0; $i < 10; $i++) {
-        $data[] = array(
-            'name' => $faker->name(),
-            'company_name' => $faker->company,
-            'email' => $faker->companyEmail,
-            'phone' => $faker->e164PhoneNumber,
-            'website' => 'https://' . $faker->domainName,
-            'address' => $faker->address,
-            'skill' => $faker->jobTitle,
-            'coordinates' => array(
-                'latitude' => $faker->latitude,
-                'longitude' => $faker->longitude
-            ),
-            'description' => $faker->paragraph()
-        );
+        for ($i = 0; $i < 10; $i++) {
+            $data[] = array(
+                'name' => $faker->name(),
+                'company_name' => $faker->company,
+                'email' => $faker->companyEmail,
+                'phone' => $faker->e164PhoneNumber,
+                'website' => 'https://' . $faker->domainName,
+                'address' => $faker->address,
+                'skill' => $faker->jobTitle,
+                'coordinates' => array(
+                    'latitude' => $faker->latitude,
+                    'longitude' => $faker->longitude
+                ),
+                'description' => $faker->paragraph(5)
+            );
+        }
+
+        return json_encode($data);
     }
 
-    return json_encode($data);
+    return false;
 });

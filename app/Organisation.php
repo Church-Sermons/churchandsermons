@@ -2,15 +2,20 @@
 
 namespace App;
 
+use Laravel\Scout\Searchable;
+use App\Traits\CustomMediaTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\Models\Media;
 
 class Organisation extends Model implements HasMedia
 {
     use HasMediaTrait;
+
+    use CustomMediaTrait;
+
+    use Searchable;
 
     // guarded
     protected $guarded = ['category_id', 'user_id'];
@@ -105,48 +110,11 @@ class Organisation extends Model implements HasMedia
     // media collections
     public function registerMediaCollections()
     {
-        // logo collection
-        $this->addMediaCollection('logo')
-            ->singleFile()
-            ->acceptsFile(function (File $file) {
-                return $file->mimeType == 'image/jpeg' ||
-                    $file->mimeType == 'image/png' ||
-                    $file->mimeType == 'image/jpg' ||
-                    $file->mimeType == 'image/svg' ||
-                    $file->mimeType == 'image/gif';
-            });
-
-        // resources collection
-        $this->addMediaCollection('video');
-        $this->addMediaCollection('audio');
-        $this->addMediaCollection('document');
-        $this->addMediaCollection('assets');
-        $this->addMediaCollection('slides');
+        $this->sharedMediaCollections();
     }
 
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion('small')
-            ->width(480)
-            ->height(320)
-            ->extractVideoFrameAtSecond(5)
-            ->performOnCollections('video', 'document');
-
-        $this->addMediaConversion('medium')
-            ->width(720)
-            ->height(480)
-            ->extractVideoFrameAtSecond(5)
-            ->performOnCollections('video');
-
-        $this->addMediaConversion('large', 'document')
-            ->width(1080)
-            ->height(720)
-            ->extractVideoFrameAtSecond(5)
-            ->performOnCollections('video', 'document');
-
-        $this->addMediaConversion('small')
-            ->width(300)
-            ->height(300)
-            ->performOnCollections('logo');
+        $this->sharedMediaConversions();
     }
 }

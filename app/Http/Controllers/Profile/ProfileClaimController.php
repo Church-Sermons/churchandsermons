@@ -16,7 +16,9 @@ class ProfileClaimController extends Controller
 
     public function __construct()
     {
-        $this->middleware('role:administrator|superadministrator|author');
+        $this->middleware('auth');
+        $this->middleware('role:admin|superadmin|author');
+
         $this->name = "profiles";
     }
 
@@ -24,7 +26,7 @@ class ProfileClaimController extends Controller
     {
         $model = Profile::getByUuid($uuid);
 
-        return view('claims.index', compact('model'));
+        return view('claims.index', compact('model'))->withName($this->name);
     }
 
     public function create($uuid)

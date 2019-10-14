@@ -17,9 +17,9 @@ class ProfileContactController extends Controller
 
     public function __construct()
     {
-        $this->middleware(
-            'role:administrator|superadministrator|author'
-        )->except(['store', 'create']);
+        $except = ['store', 'create'];
+        $this->middleware('auth')->except($except);
+        $this->middleware('role:admin|superadmin|author')->except($except);
 
         $this->name = 'profiles';
     }
@@ -28,7 +28,7 @@ class ProfileContactController extends Controller
     {
         $model = Profile::getByUuid($uuid);
 
-        return view('contacts.index', compact('model'));
+        return view('contacts.index', compact('model'))->withName($this->name);
     }
 
     public function create($uuid)

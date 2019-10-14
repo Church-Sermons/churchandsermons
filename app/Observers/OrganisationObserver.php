@@ -7,11 +7,10 @@ use App\SocialLink;
 use App\WorkingSchedule;
 use Str;
 use Auth;
-use Storage;
+use App\Helpers\Handler;
 
 class OrganisationObserver
 {
-    private $oldFile;
     /**
      * Handle the organisation "created" event.
      *
@@ -20,41 +19,6 @@ class OrganisationObserver
      */
     public function created(Organisation $organisation)
     {
-        // Logic on multiple working schedules here
-        // get data
-        if (
-            request()->has('day_of_week') &&
-            request()->has('time_open') &&
-            request()->has('work_duration')
-        ) {
-            // iterate through array make table
-            foreach (request()->day_of_week as $key => $value) {
-                // create an array for delivery
-                $workingHours = array(
-                    'day_of_week' => $value,
-                    'time_open' => request()->time_open[$key],
-                    'work_duration' => request()->work_duration[$key]
-                );
-
-                // add to db
-                $ws = new WorkingSchedule($workingHours);
-                $ws->uuid_link = $organisation->uuid;
-                // save
-                $ws->save();
-            }
-        }
-
-        // Logic to input social links
-        if (request()->has('social_id')) {
-            //either of the two inputs must exist
-            if (request()->has('share_link') || request()->has('page_link')) {
-                // populate db
-                $social = new SocialLink(request()->except('social_id'));
-                $social->social_id = request()->social_id;
-                $social->uuid_link = $organisation->uuid;
-                $social->save();
-            }
-        }
     }
 
     /**
@@ -82,18 +46,10 @@ class OrganisationObserver
      */
     public function updating(Organisation $organisation)
     {
-        if (request()->hasFile('logo')) {
-            // delete image
-            if (
-                Storage::disk('public')->exists(
-                    $organisation->getOriginal('logo')
-                )
-            ) {
-                Storage::disk('public')->delete(
-                    $organisation->getOriginal('logo')
-                );
-            }
-        }
+        Handler::model($organisation)
+            ->whileUpdating('logo')
+            ->deleteImage();
+
         $organisation->user_id = Auth::user()->id;
     }
 

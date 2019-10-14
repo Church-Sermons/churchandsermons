@@ -19,9 +19,9 @@ class OrganisationReviewController extends Controller
 
     public function __construct()
     {
-        $this->middleware(
-            'role:administrator|superadministrator|author'
-        )->except(['create']);
+        $except = ['create'];
+        $this->middleware('auth')->except($except);
+        $this->middleware('role:admin|superadmin|author')->except($except);
 
         $this->name = 'organisations';
         $this->uModel = 'App\Organisation';
@@ -31,7 +31,7 @@ class OrganisationReviewController extends Controller
     {
         $model = Organisation::getByUuid($uuid);
 
-        return view('reviews.index', compact('model'));
+        return view('reviews.index', compact('model'))->withName($this->name);
     }
 
     public function create($uuid)

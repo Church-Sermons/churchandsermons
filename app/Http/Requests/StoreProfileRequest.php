@@ -29,12 +29,12 @@ class StoreProfileRequest extends FormRequest
             'email' =>
                 "required|email|max:255|unique:profiles,email," . request()->id,
             'phone' => 'required|max:20',
-            'website' => 'required|max:150|url',
+            'website' => 'nullable|max:150|url',
             'address' => 'required',
             'description' => 'required',
             'category' => 'required|numeric',
             'profile_image' =>
-                'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
+                'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:5000'
         ];
     }
 }

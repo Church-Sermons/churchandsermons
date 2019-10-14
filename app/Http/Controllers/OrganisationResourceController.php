@@ -3,16 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Resource;
 use App\OrganisationCategory;
 use App\Organisation;
 use Session;
-use Auth;
-use FFMpeg\FFMpeg;
-use FFMpeg\FFProbe;
-use Plank\Mediable\MediaUploader;
-use App\Events\ResourceCreationSuccessful;
-use Spatie\MediaLibrary\Models\Media;
 
 class OrganisationResourceController extends Controller
 {

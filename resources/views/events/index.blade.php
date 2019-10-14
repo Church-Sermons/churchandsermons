@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="col-md-6 offset-md-3">
                                 @isTribrid($model)
-                                    <a href='{{ route("$name.events.create", $model->uuid) }}' class="mb-3 d-block btn btn-primary">Add Event</a>
+                                    <a href='{{ route("{$name}.events.create", $model->uuid) }}' class="mb-3 d-block btn btn-primary">Add Event</a>
                                 @endisTribrid
                                 <ul class="nav nav-pills bg-light nav-justified">
                                     <li class="nav-item">

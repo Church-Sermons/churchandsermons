@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\User;
-use App\Role;
+use App\Helpers\Handler;
 
 class UserObserver
 {
@@ -15,8 +15,6 @@ class UserObserver
      */
     public function created(User $user)
     {
-        // attach role
-        // $user->attachRole(Role::where('name', 'author')->first()->id);
     }
 
     /**
@@ -29,8 +27,6 @@ class UserObserver
     {
         // generate api token
         $user->api_token = bin2hex(openssl_random_pseudo_bytes(30));
-
-
     }
 
     /**
@@ -42,6 +38,19 @@ class UserObserver
     public function updated(User $user)
     {
         //
+    }
+
+    /**
+     * Handle the user "updating" event.
+     *
+     * @param  \App\User  $user
+     * @return void
+     */
+    public function updating(User $user)
+    {
+        Handler::model($user)
+            ->whileUpdating('profile_image')
+            ->deleteImage();
     }
 
     /**

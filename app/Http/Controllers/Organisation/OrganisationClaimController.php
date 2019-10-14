@@ -16,9 +16,9 @@ class OrganisationClaimController extends Controller
 
     public function __construct()
     {
-        $this->middleware(
-            'role:administrator|superadministrator|author'
-        )->except('create');
+        $except = ['create'];
+        $this->middleware('auth')->except($except);
+        $this->middleware('role:admin|superadmin|author')->except($except);
 
         $this->name = "organisations";
     }
@@ -27,7 +27,7 @@ class OrganisationClaimController extends Controller
     {
         $model = Organisation::getByUuid($uuid);
 
-        return view('claims.index', compact('model'));
+        return view('claims.index', compact('model'))->withName($this->name);
     }
 
     public function create($uuid)

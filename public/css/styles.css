@@ -18532,13 +18532,14 @@ a:hover {
 .banner-content {
   width: 100%;
   min-height: 500px;
-  background: black url(/images/home-banner-bg.jpg?a5f010ca9d687771ccc2da4417b6dfd0) no-repeat;
+  background: rgba(27, 28, 30, 0.4);
+  background-repeat: no-repeat;
   background-size: cover;
   position: relative;
 }
 
 .dark-overlay {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(27, 28, 30, 0.4);
   width: 100%;
   height: 100%;
   position: absolute;
@@ -18647,6 +18648,16 @@ a:hover {
   background: #f1f1f1;
 }
 
+.no-slide {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  content: "";
+  background: rgba(0, 0, 0, 0.125);
+  left: 0;
+  bottom: 0;
+}
+
 .event-card {
   border: none;
   border-right: solid 3px #3490dc;
@@ -18685,5 +18696,214 @@ a:hover {
 
 .social-container a:hover {
   color: #fff;
+}
+
+#sidenav {
+  height: 100vh;
+  width: 250px;
+  position: fixed;
+  padding-top: 15px;
+  overflow-y: auto;
+}
+
+.sidenav-inner {
+  width: 100%;
+  height: 100%;
+}
+
+.sidenav-inner a:hover {
+  background: #ccc;
+  color: #000;
+}
+
+.sidenav-inner a {
+  color: grey;
+}
+
+#main {
+  padding-left: 250px;
+}
+
+.has-background-primary {
+  background: #ccc;
+}
+
+.banner-home {
+  background-image: url(/images/home-banner1.jpg?03a05103fe143aa57d53daccdf34e54f);
+  background-position: center;
+}
+
+body {
+  max-width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.btn-outline-custom {
+  background: #fff;
+  border: solid 1px #976f26;
+  color: #976f26;
+}
+
+.btn-custom {
+  color: #fff;
+  background: #976f26;
+}
+
+.btn-custom:hover {
+  opacity: 0.75;
+  color: #fff;
+}
+
+.btn-outline-custom:hover {
+  background: #976f26;
+  color: #fff;
+}
+
+.text-custom-primary {
+  color: #976f26;
+}
+
+.text-custom-grey {
+  color: grey;
+}
+
+.bg-custom-primary {
+  background: #976f26;
+  color: #fff;
+}
+
+.navbar {
+  border-bottom: solid 2px #976f26;
+  background: #fff;
+}
+
+.navbar .navbar-nav .nav-item a.nav-link {
+  color: #000;
+}
+
+.navbar .navbar-nav .nav-item a.nav-link:last-child {
+  margin-right: 0;
+}
+
+.navbar .navbar-nav .nav-item a.nav-link:hover {
+  margin-right: 0;
+  color: #976f26;
+}
+
+.navbar .navbar-nav .nav-item a.nav-link-active {
+  color: #976f26;
+  border-bottom: solid 1px #976f26;
+  margin: 0;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  content: "";
+  z-index: 1;
+}
+
+.overlay-secondary {
+  background: rgba(27, 28, 30, 0.4);
+}
+
+.overlay-primary {
+  background: rgba(151, 111, 38, 0.25);
+}
+
+.overlay-dark {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.main-link:hover {
+  color: #976f26;
+}
+
+.main-link {
+  color: #fff;
+}
+
+#custom-banner {
+  width: 100%;
+  min-height: 19rem;
+  padding-top: 0.65rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.custom-banner-inner {
+  width: 100%;
+  min-height: 19rem;
+}
+
+.holder {
+  width: 125px;
+  height: 125px;
+  background: #976f26;
+  font-size: 3.5rem;
+  font-weight: 600;
+}
+
+.icons-display {
+  width: 60%;
+  margin: auto;
+}
+
+.icons-display img {
+  border-radius: 15px;
+}
+
+.home-banner {
+  background: url(/images/home-banner1.jpg?03a05103fe143aa57d53daccdf34e54f);
+  background-position: center;
+}
+
+.banner-organisation {
+  background-image: url(/images/organisation.jpg?1d61ebec2253ace7204decba686f3b2d);
+}
+
+.banner-sermon {
+  background-image: url(/images/sermon.jpg?66add21be8c70e53c8be93152e6f07a6);
+}
+
+.banner-profile {
+  background-image: url(/images/profile.jpg?90e8e2b86ab0bd6b3e2e0dffab1be50b);
+}
+
+.banner-contact {
+  background-image: url(/images/contact-sample1.jpg?71076a86217d9425bc56998770359c1d);
+}
+
+.banner-about {
+  background-image: url(/images/profile-sample-1.jpg?9e9a57e41f7c65fdcabdd92787a3fadf);
+}
+
+.footer-inner {
+  background: #30302e;
+  color: #fff;
+}
+
+.footer-inner input.form-control {
+  background: transparent;
+  border: solid 1px grey;
+  color: grey;
+}
+
+footer p {
+  color: grey;
+}
+
+footer a:hover {
+  opacity: 0.75;
+  color: grey;
+}
+
+.icon-handler {
+  padding: 8px 12px;
+  background: rgba(151, 111, 38, 0.25);
 }
 

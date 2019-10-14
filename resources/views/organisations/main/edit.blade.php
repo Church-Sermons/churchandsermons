@@ -1,3 +1,5 @@
+@section('title', "Edit {$organisation->name}")
+
 @extends('layouts.app')
 
 @section('content')
@@ -22,41 +24,9 @@
                                 class="py-2" id="organisationForm">
                                 @csrf
                                 @method('PUT')
-                                @component('organisations.main.form', ['categories' => $categories, 'oldCategory' => old('category', $organisation->category_id)])
-                                    @slot('name')
-                                        {{ old('name', $organisation->name) }}
-                                    @endslot
-                                    @slot('email')
-                                        {{ old('email', $organisation->email) }}
-                                    @endslot
-                                    @slot('website')
-                                        {{ old('website', $organisation->website) }}
-                                    @endslot
-                                    @slot('phone')
-                                        {{ old('phone', $organisation->phone) }}
-                                    @endslot
-                                    @slot('address')
-                                        {{ old('address', $organisation->address) }}
-                                    @endslot
-                                    @slot('latitude')
-                                        {{ old('lat', $organisation->lat) }}
-                                    @endslot
-                                    @slot('longitude')
-                                        {{ old('lon',$organisation->lon) }}
-                                    @endslot
-                                    @slot('description')
-                                        {{ old('description', $organisation->description) }}
-                                    @endslot
-                                    @slot('logo')
-                                        {{ old('logo', $organisation->logo) }}
-                                    @endslot
-                                    @slot('slides')
-                                        {{ old('slides') }}
-                                    @endslot
-                                    @slot('submitButtonText')
-                                        Edit Organisation
-                                    @endslot
-                                @endcomponent
+                                {{-- imported shared component --}}
+                                @includeIf('components.form-execs.organisation',
+                                    ['submitText' => 'Update', 'organisation' => $organisation])
                             </form>
                         </div>
                     </div>

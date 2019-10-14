@@ -20,7 +20,7 @@
                             <form action="{{ route("{$name}.contacts.store", $model->uuid) }}" method="post" class="py-2">
                                 @csrf
                                 @include('components.messages')
-                                @component('contacts.form')
+                                @component('components.forms.contacts')
                                     @slot('name')
                                         {{ old('name') }}
                                     @endslot

@@ -1,5 +1,5 @@
 <header class="fixed-top w-100">
-    @if (app()->environment() == 'testing')
+    {{-- @if (app()->environment() == 'testing')
         <div class="env-informer w-100">
             <div class="container h-100">
             <h5 class="text-center text-bold text-capitalize display-6">
@@ -7,24 +7,17 @@
             </h5>
             </div>
         </div>
-    @endif
-    <nav class="navbar navbar-expand-md navbar-light bg-light py-2">
-        <div class="container">
+    @endif --}}
+    <nav class="navbar navbar-expand-md navbar-light py-0">
+        <div class="container align-items-center py-0">
         <a href="{{ route('home') }}" class="navbar-brand d-flex">
-            <img
-            src="{{ asset('images/candsedit.png') }}"
-            alt="logo"
-            height="50"
-            width="50"
-            class="mr-1"
-            />
-            <h4 class="font-weight-bold d-flex align-items-center">
-                <span>&</span>
-                <span class="d-flex flex-column">
-                    <span>Church</span>
-                    <span>Sermons</span>
-                </span>
-            </h4>
+            <span class="d-inline" style="width: 150px;height: 70px;">
+                <img
+                src="{{ asset('images/app/logo.png') }}"
+                alt="logo"
+                class="w-100 h-100"
+                />
+            </span>
         </a>
 
         <button
@@ -36,67 +29,74 @@
         </button>
 
         <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a href="{{ route('home') }}" class="nav-link text-uppercase">
-                Home
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('organisations.index') }}" class="nav-link text-uppercase">
-                Organisations
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link text-uppercase">
-                Sermons
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('profiles.index') }}" class="nav-link text-uppercase">
-                Profiles
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link text-uppercase">
-                Resources
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link text-uppercase">
-                About
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link text-uppercase">
-                Contact
-                </a>
-            </li>
-            @guest
-            <li class="nav-item">
-                <a href="{{ route('login') }}" class="nav-link text-uppercase">
-                <i class="fas custom-fa fa-sign-in-alt"></i> Log In
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('register') }}" class="nav-link text-uppercase">
-                <i class="fas custom-fa fa-user-plus"></i> Register
-                </a>
-            </li>
-            @else
+            <ul class="navbar-nav ml-auto d-flex align-items-center">
+                <li class="nav-item">
+                    <a href="{{ route('home') }}" class="nav-link text-uppercase {{ Nav::isRoute('home', 'nav-link-active') }}">
+                    Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('organisations.index') }}" class="nav-link text-uppercase {{ Nav::isResource('organisations', NULL ,'nav-link-active') }}">
+                    Organisations
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('sermons.index') }}" class="nav-link text-uppercase {{ Nav::isResource('sermons', NULL, 'nav-link-active') }}">
+                    Sermons
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('profiles.index') }}" class="nav-link text-uppercase {{ Nav::isResource('profiles', NULL,'nav-link-active') }}">
+                    Profiles
+                    </a>
+                </li>
+                {{-- <li class="nav-item">
+                    <a href="#" class="nav-link text-uppercase">
+                    Resources
+                    </a>
+                </li> --}}
+                <li class="nav-item">
+                    <a href="{{ route('about') }}" class="nav-link text-uppercase {{ Nav::isRoute('about', 'nav-link-active') }}">
+                    About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('contact') }}" class="nav-link text-uppercase {{ Nav::isRoute('contact', 'nav-link-active') }}">
+                    Contact
+                    </a>
+                </li>
+                @guest
+                <li class="nav-item">
+                    <a href="{{ route('login') }}" class="nav-link text-uppercase {{ Nav::isRoute('login', 'nav-link-active') }}">
+                    <i class="fas custom-fa fa-sign-in-alt"></i> Log In
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('register') }}" class="nav-link text-uppercase {{ Nav::isRoute('register', 'nav-link-active') }}">
+                    <i class="fas custom-fa fa-user-plus"></i> Register
+                    </a>
+                </li>
+                @else
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        @if (Auth::user()->profile_image)
+                            <img src="{{ asset('storage/'.Auth::user()->profile_image) }}" alt="user-avatar" width="30" height="30" class="rounded-circle mr-1">
+                        @else
+                            <h6 class="p-2 d-inline text-center bg-info font-weight-bold rounded-circle mr-1">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)).strtoupper(substr(Auth::user()->surname, 0, 1)) }}
+                            </h6>
+                        @endif
                         Hello, {{ Auth::user()-> name }}
                     </a>
-                    <div class="dropdown-menu">
-                        <a href="#" class="nav-link dropdown-item">
+                    <div class="dropdown-menu dropdown-profile dropdown-menu-right">
+                        <a href="{{ route('user.profile.index') }}" class="dropdown-item">
                             <i class="fas fa-user-circle mr-1"></i> Profile
                         </a>
-                        <a href="#" class="dropdown-item nav-link">
-                            <i class="fas fa-cog mr-1"></i> Settings
-                        </a>
-                        <span class="dropdown-divider"></span>
-                        <a href="{{ route('logout') }}" class="nav-link dropdown-item" onclick="event.preventDefault();
+
+                        {{-- <div class="dropdown-divider"></div> --}}
+
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
                                                                         document.getElementById('logout-form').submit();">
                             <i class="fas fa-sign-out-alt mr-1"></i> Log Out
                         </a>
@@ -111,4 +111,3 @@
         </div>
     </nav>
 </header>
-

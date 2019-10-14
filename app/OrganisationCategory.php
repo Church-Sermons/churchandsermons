@@ -16,6 +16,9 @@ class OrganisationCategory extends Model implements HasMedia
     // timestamps
     public $timestamps = false;
 
+    // table
+    protected $table = 'categories';
+
     protected $fillable = ['name', 'linked_to', 'image', 'image_url'];
 
     public function scopeDistinctCategoryNames($query)

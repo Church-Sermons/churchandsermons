@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/churchandsermons
+    - /bin/cp -r * $DEPLOYPATH/pipeline.churchandsermons.com/ #copy all from root
+    # - /bin/cp -r ./public/* $DEPLOYPATH/testing.churchandsermons.com/
+    # - /bin/cp ./public/js/*.js $DEPLOYPATH/testing.churchandsermons.com/js/
+    # - /bin/cp ./public/css/*.css $DEPLOYPATH/testing.churchandsermons.com/css/

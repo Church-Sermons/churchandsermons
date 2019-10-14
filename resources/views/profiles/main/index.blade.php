@@ -5,18 +5,20 @@
 @section('content')
 <div id="safeguard">
 
-    <section id="banner">
-        <div class="banner-content">
-            <div class="dark-overlay py-5">
-                <div class="container d-flex justify-content-center w-100 h-100 align-items-center flex-column">
-                    <h4 class="text-center display-4 text-uppercase font-weight-bold">
-                        {{ __("profiles") }}
-                    </h4>
-                    @auth
-                        <a href="{{ route('profiles.create') }}" class="btn btn-primary btn-lg text-uppercase">
-                            <i class="fas fa-plus"></i> create profile
-                        </a>
-                    @endauth
+    <section id="custom-banner" class="banner-profile">
+        <div class="custom-banner-inner overlay-secondary">
+            <div class="container py-5 text-light">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 py-5">
+                        <h1 class="text-center text-uppercase font-weight-bold">
+                            {{ __("profiles") }}
+                        </h1>
+                        @auth
+                            <a href="{{ route('profiles.create') }}" class="btn btn-custom btn-lg text-uppercase">
+                                <i class="fas fa-plus"></i> create profile
+                            </a>
+                        @endauth
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,7 +47,7 @@
                                             <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Keyword">
                                         </div>
                                         <div class="col-md-2 col-sm-12">
-                                            <button type="button" class="btn btn-primary text-uppercase form-control">Search</button>
+                                            <button type="button" class="btn btn-custom text-uppercase form-control">Search</button>
                                         </div>
                                     </div>
                                 </form>
@@ -95,10 +97,17 @@
 
                                         <span class="d-block border border-bottom my-3"></span>
                                         <span class="text-center d-flex justify-content-between w-50">
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
+                                            @foreach ($profile->social as $social)
+                                                @if ($social->page_link)
+                                                    <a href="{{ $social->page_link }}">
+                                                        <i class="fab {{ Config::get('site_variables.social')[$social->social->tag]['icon'] }}"></i>
+                                                    </a>
+                                                @endif
+                                            @endforeach
+
+                                            {{-- <a href="#"><i class="fab fa-twitter"></i></a>
                                             <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                            <a href="#"><i class="fab fa-instagram"></i></a>
+                                            <a href="#"><i class="fab fa-instagram"></i></a> --}}
                                         </span>
                                     </div>
 

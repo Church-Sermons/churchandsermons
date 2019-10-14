@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use View;
 use Auth;
-
+use Schema;
+use DB;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -33,8 +34,17 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // setting categories available in all views
-        $categories = OrganisationCategory::distinctCategoryNames();
-        View::share('categories', $categories);
+        // check if table exists to avoid migrate reset error
+        if (Schema::hasTable('categories')) {
+            // get categories
+            $categories = OrganisationCategory::distinctCategoryNames();
+            View::share('categories', $categories);
+        }
+
+        if (Schema::hasTable('social_media')) {
+            $sites = DB::table('social_media')->get();
+            View::share('sites', $sites);
+        }
     }
 
     public function isTribrid($thing, $fk = null)
@@ -50,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             }
 
-            if ($expression->hasRole(['administrator', 'superadministrator'])) {
+            if ($expression->hasRole(['admin', 'superadmin'])) {
                 return true;
             }
 

@@ -8,8 +8,11 @@ const moment = require("moment");
 
     const hoursPerDay = 24;
     let counter = 0;
+    let scounter = 0;
     const generator = document.getElementById("input-generator");
     const container = document.getElementById("working-hours");
+    const socialGenerator = document.getElementById("social-input-generator");
+    const socialElement = document.getElementById("social-elements");
 
     // call function to generate inputs
     if (generator) {
@@ -21,9 +24,65 @@ const moment = require("moment");
         );
     }
 
+    // social elements elements generator button
+
+    if (socialGenerator) {
+        socialGenerator.addEventListener(
+            "click",
+            function(e) {
+                generateSocialInputs();
+            }.bind(this)
+        );
+    }
     // run generate inputs for initial input display
     generateInputs();
+    generateSocialInputs();
 
+    // social inputs
+    function generateSocialInputs() {
+        ++scounter;
+
+        const element = generateDivElement("input-group mb-2");
+
+        // social tags display
+        const social = {
+            1: "Facebook",
+            2: "Twitter",
+            3: "Instagram",
+            4: "Linked-in",
+            5: "Pinterest",
+            6: "Tumblr"
+        };
+
+        const socialMedia = generateOptionsForSelect(
+            social,
+            generateSelectInput(scounter, "social_id[]")
+        );
+
+        // url social
+        const socialLink = generateUrlInput(
+            scounter,
+            "page_link[]",
+            "Social Link"
+        );
+
+        // url share link
+        const shareLink = generateUrlInput(
+            scounter,
+            "share_link[]",
+            "Share Link"
+        );
+
+        // add to element
+        element.appendChild(socialMedia);
+        element.appendChild(socialLink);
+        element.appendChild(shareLink);
+
+        if (socialElement) {
+            socialElement.appendChild(element);
+        }
+    }
+    // working day inputs
     function generateInputs() {
         ++counter;
 
@@ -82,12 +141,31 @@ const moment = require("moment");
         return s;
     }
 
+    function generateUrlInput(counter, name, placeholder) {
+        const input = document.createElement("input");
+
+        // generate props
+        input.id = `${name
+            .replace("[]", "")
+            .split("_")
+            .join("-")}-${counter}`;
+        input.type = "url";
+        input.name = name;
+        input.placeholder = placeholder;
+        input.className = `form-control`;
+        input.pattern = `https?://.*`;
+        return input;
+    }
+
     function generateNumberInput(counter, name) {
         // init input globally
         const input = document.createElement("input");
 
         // generate inputs
-        input.id = `${name.split("_").join("-")}-${counter}`;
+        input.id = `${name
+            .replace("[]", "")
+            .split("_")
+            .join("-")}-${counter}`;
         input.type = "number";
         input.name = name;
         input.placeholder = "Work Duration";
@@ -102,7 +180,10 @@ const moment = require("moment");
     function generateSelectInput(counter, name) {
         const select = document.createElement("select");
         // generate select
-        select.id = `${name.split("_").join("-")}-${counter}`;
+        select.id = `${name
+            .replace("[]", "")
+            .split("_")
+            .join("-")}-${counter}`;
         select.name = name;
         select.className = `form-control`;
         select.required = "required";
@@ -146,40 +227,3 @@ const moment = require("moment");
         return keyValueHours;
     }
 })();
-
-/* <div class="form-group bg-light">
-    <div class="input-group">
-        <select name="day_of_week" id="day-of-week" class="text-capitalize form-control @error('day_of_week') is-invalid @enderror" required>
-            <option value selected disabled>Select Day of Week</option>
-            @foreach ($weekDays as $day)
-                <option value="{{ $loop->index }}" {{ $daySelected == $loop->iteration?'selected':null }}>{{ $day }}</option>
-            @endforeach
-        </select>
-        @error('day_of_week')
-            <p class="invalid-feedback">
-                {{ $message }}
-            </p>
-        @enderror
-        <select name="time_open" id="time-open" class="form-control @error('time_open') is-invalid @enderror" required>
-            <option value selected disabled>Select Time of Day</option>
-            @foreach ($dayTimes as $time)
-                <option value="{{ $loop->iteration }}" {{ $timeSelected == $loop->iteration?'selected':null }}>{{ $time }}</option>
-            @endforeach
-        </select>
-        @error('time_open')
-            <p class="invalid-feedback">
-                {{ $message }}
-            </p>
-        @enderror
-        <input type="number" min="1" max="24" class="form-control @error('work_duration') is-invalid @enderror" name="work_duration" placeholder="Work Duration" id="work-duration" value="{{ $durationSelected?$durationSelected:1 }}">
-        @error('work_duration')
-            <p class="invalid-feedback">
-                {{ $message }}
-            </p>
-        @enderror
-        <div class="input-group-append">
-            <span class="input-group-text text-muted">hrs</span>
-            <button class="btn btn-primary" title="Click To Add More"><i class="fas fa-plus"></i></button>
-        </div>
-    </div>
-</div> */
