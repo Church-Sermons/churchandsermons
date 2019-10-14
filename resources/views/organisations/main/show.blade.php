@@ -31,7 +31,7 @@
         </div>
     </div>
     <section id="details">
-        <div class="details-inner container my-5">
+        <div class="details-inner container py-3">
             @include('components.messages')
             <div class="row">
                 <div class="col-md-8">
