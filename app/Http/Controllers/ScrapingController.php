@@ -55,8 +55,9 @@ class ScrapingController extends Controller
 
         });
 
+
         // add to db
-        Organisation::insert($organisations);
+        // Organisation::insert($organisations);
 
         return response()->json(['organisations' => $organisations]);
     }
