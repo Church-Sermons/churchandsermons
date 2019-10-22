@@ -57,7 +57,7 @@
                                 </h4>
                                 <h6 class="h6 text-uppercase text-muted">{{ $organisation->category->name }}</h6>
                                 <p class="lead small">
-                                    {{ $organisation->description }}
+                                    {{ substr($organisation->description,0, 300).__(" ...") }}
                                 </p>
                                 <span class="d-block w-100 border"></span>
                                 <span class="my-2 d-block align-items-center">
