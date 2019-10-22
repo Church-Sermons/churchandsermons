@@ -29,6 +29,9 @@ Route::get('/test/organisations', function () {
     return view('organisations');
 });
 
+// scraping routes
+Route::get("/scraper/organisations", "ScrapingController@organisations");
+
 // User Routes
 Route::prefix('user')->group(function () {
     // Profile Details
