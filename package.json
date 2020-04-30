@@ -19,7 +19,7 @@
         "cross-env": "^5.1",
         "dropzone": "^5.5.1",
         "form-persistence": "^2.0.4",
-        "jquery": "^3.2",
+        "jquery": "^3.5",
         "laravel-mix": "^4.0.7",
         "lightbox2": "^2.11.1",
         "load-google-maps-api": "^2.0.1",
